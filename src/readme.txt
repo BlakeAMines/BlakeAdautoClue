@@ -1,0 +1,1 @@
+I, Blake Adauto, declare that I completed all the work for this assignment equitably

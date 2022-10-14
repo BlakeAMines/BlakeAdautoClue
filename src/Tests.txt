@@ -1,0 +1,8 @@
+Because of how my board is laid out, I decided to include tests for door directionality and position by testing for doors which I designed to be adjacent to each other
+This means that if the board is somehow misaligned, then the door with an expected direction might not be pointing that way, or it might not appear in the right space
+I also included an extra door direction test for a door that was far from any other
+
+Other tests such as the names of my rooms and number of doors are modified to pertain to my chosen names and positions
+
+I added a test to count the number of rooms which counts the number of labels on the board
+
