@@ -2,6 +2,7 @@ package clueGame;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -16,8 +17,6 @@ public class Board
 	private String layoutConfigFile;
 	private String setupConfigFile;
 	
-	private String setupSearch = "";
-	
 	private Map<Character, Room> roomMap;
 	
 	static Board theInstance = new Board();
@@ -25,13 +24,45 @@ public class Board
 	private Board()
 	{
         super();
-        
+                
 	} //end constructor
 	
 	public void initialize()
 	{
-			
+		this.loadConfigFiles();
+		
 	} //end initialize
+	
+	public static Board getInstance()
+	{
+		return theInstance;
+		
+	} //end getInstance
+	
+	public void loadConfigFiles()
+	{
+		roomMap = new HashMap<Character, Room>();
+		
+		try
+		{
+			loadSetupConfig();
+			loadLayoutConfig();
+			
+		} //end try
+		
+		catch(FileNotFoundException fileError)
+		{
+			
+			
+		} //end catch
+		
+		catch(BadConfigFormatException formatError)
+		{
+			
+			
+		} //end catch
+		
+	} //end loadConfigFiles
 	
 	//Establishes rooms
 	public void loadSetupConfig() throws BadConfigFormatException, FileNotFoundException
@@ -44,30 +75,31 @@ public class Board
 			FileReader readFile = new FileReader(setupConfigFile);
 			Scanner fileIn = new Scanner(readFile);
 			
-			String[] rooms;
-			
-			curLine = fileIn.nextLine();
-			setupSearch += curLine;
-					
-			//Takes input from the file as rows of comma separated values
-			while(fileIn.hasNextLine())
-			{				
-				rooms = curLine.split(",", 0);
+			String[] roomInfo;
+			char[] roomLabels;
 				
-				if(!rooms[0].contains("//"))
+			//Takes input from the file as rows of comma separated values
+			do 
+			{				
+				curLine = fileIn.nextLine();
+				
+				//Splits the string of room info into individual pieces
+				roomInfo = curLine.split(", ", 0);
+				
+				if(!roomInfo[0].contains("//"))
 				{
-					if(!rooms[0].equals("Room") && !rooms[0].equals("Space"))
+					if(!roomInfo[0].equals("Room") && !roomInfo[0].equals("Space"))
 					{
 						throw new BadConfigFormatException();
 						
-					} //end if
-							
-				} //end if
-					
-				curLine = fileIn.nextLine();
-				setupSearch += curLine;
-				
-			} //end while
+					} //end nested if				
+					roomLabels = roomInfo[2].toCharArray();
+
+					roomMap.put(roomLabels[0], new Room(roomInfo[1]));
+													
+				} //end nested if
+									
+			} while(fileIn.hasNextLine()); //end do while
 		
 		} //end try
 		
@@ -77,21 +109,18 @@ public class Board
 			
 		} //end catch
 		
-		System.out.println(setupSearch);
-		
 	} //end loadSetupConfig
 	
 	public void loadLayoutConfig() throws BadConfigFormatException, FileNotFoundException 
-	{
+	{		
 		int countCols = 0;
 		int countRows = 0;
 
 		String curLine = "";
-		
-		char[] cellInfo;
-		
+	
 		String[] rowList;
-		String[] tempList;
+		ArrayList<String[]> saveRows = new ArrayList<String[]>();
+		char[] cellInfo;
 		
 		try
 		{
@@ -100,25 +129,22 @@ public class Board
 			Scanner fileIn = new Scanner(readFile);
 			
 			curLine = fileIn.nextLine();
-			rowList = curLine.split(",", 0);
+			rowList = curLine.split(",", 0);			
+			saveRows.add(rowList);
 			
-			char[] curCell;
+			countRows++;
 					
 			//Counts the columns from the first row
 			//This doesn't need to count rows because any missing rows or columns will be picked up as a missing column
 			countCols = rowList.length;
-			
-			System.out.println(curLine);
 			
 			//Takes input from the file as rows of comma separated values
 			//Defines the size of the board
 			while(fileIn.hasNextLine())
 			{							
 				curLine = fileIn.nextLine();
-				
-				System.out.println(curLine);
-				
 				rowList = curLine.split(",", 0);
+				saveRows.add(rowList);
 				
 				if(rowList.length != countCols)
 				{
@@ -130,36 +156,52 @@ public class Board
 				
 			} //end while
 			
-			grid = new BoardCell[countRows][countCols];
+			fileIn.close();
 			
-			for(int i = 0; i < countRows; i++)
+			//Saves info about board dimensions
+			numRows = countRows;
+			numColumns = countCols;
+			grid = new BoardCell[numRows][numColumns];
+			
+			//Iterates through each index on the board grid
+			for(int i = 0; i < numRows; i++)
 			{
-				
-				
-			} //end for
-			
-				/*
-				grid[curRow][i] = new BoardCell(curRow, i, curCell[0]);
-				
-				if(curCell.length > 1)
-				{
-					if(curCell[1] == '*')
+				for(int j = 0; j < numColumns; j++)
+				{			
+					cellInfo = saveRows.get(i)[j].toCharArray();
+					System.out.print(cellInfo[0]);
+					grid[i][j] = new BoardCell(i, j, cellInfo[0]);
+
+					if(!roomMap.containsKey(cellInfo[0]))
 					{
-						grid[curRow][i].setCenter(true);
+						throw new BadConfigFormatException();
 						
 					} //end nested if
 					
-					else if(curCell[1] == '#') 
+					if(cellInfo.length > 1)
 					{
-						grid[curRow][i].setLabel(true);
+						if(cellInfo[1] == '*')
+						{
+							grid[i][j].setCenter(true);
+							
+						} //end nested if
 						
-					} //end nest else if
+						else if(cellInfo[1] == '#') 
+						{
+							grid[i][j].setLabel(true);
+							
+						} //end nest else if
+						
+					} //end nested if
 					
-				} //end nested if
-				*/
-		
+				} //end nested for
+				
+				System.out.println("");
+				
+			} //end for
+							
 		} //end try
-		
+				
 		catch(FileNotFoundException fileError)
 		{
 			throw fileError;
@@ -167,12 +209,6 @@ public class Board
 		} //end catch
 		
 	} //end loadLayoutConfig
-	
-	public static Board getInstance()
-	{
-		return theInstance;
-		
-	} //end getInstance
 	
 	public void setConfigFiles(String csvName, String txtName)
 	{
@@ -184,9 +220,7 @@ public class Board
 	//Overloading
 	public Room getRoom(char roomLabel)
 	{
-		//test data
-		return null;
-		//end test data
+		return roomMap.get(roomLabel);
 		
 	} //end getRoom
 	

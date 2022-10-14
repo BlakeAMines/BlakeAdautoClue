@@ -9,7 +9,7 @@ public class Room
 	
 	public Room(String initName)
 	{
-		
+		name = initName;
 		
 	} //end constructor
 	
