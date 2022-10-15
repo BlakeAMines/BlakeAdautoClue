@@ -227,7 +227,16 @@ public class Board
 							
 							} //end switch
 							
+							//Secret passage case
+							
+							
 						} //end nested else if
+						
+						else
+						{
+							grid[i][j].setSecretPassage(cellInfo[1]);
+							
+						} //end nested else
 						
 					} //end nested if
 					

@@ -16,8 +16,8 @@ import clueGame.Room;
 class FileInitTests
 {
 	public static final int LEGEND_SIZE = 11;
-	public static final int NUM_ROWS = 25;
-	public static final int NUM_COLUMNS = 21;
+	public static final int NUM_ROWS = 26;
+	public static final int NUM_COLUMNS = 22;
 	
 	private static Board board;
 	
@@ -59,6 +59,7 @@ class FileInitTests
 	@Test
 	public void boardDimensionsTest()
 	{
+		System.out.println("Rows " + board.getNumRows());
 		Assert.assertEquals(board.getNumRows(), NUM_ROWS);
 		Assert.assertEquals(board.getNumColumns(), NUM_COLUMNS);
 		
@@ -184,7 +185,7 @@ class FileInitTests
 		cell = board.getCell(25, 21);
 		room = board.getRoom(cell);
 		assertTrue( room != null);
-		assertEquals(room.getName(), "Walkway" );
+		assertEquals(room.getName(), "Unused" );
 		assertFalse(cell.isRoomCenter());
 		assertFalse(cell.isLabel());
 		
@@ -192,7 +193,7 @@ class FileInitTests
 		cell = board.getCell(0, 11);
 		room = board.getRoom(cell) ;
 		assertTrue( room != null);
-		assertEquals( room.getName(), "Unused");
+		assertEquals( room.getName(), "Walkway");
 		assertFalse( cell.isRoomCenter());
 		assertFalse( cell.isLabel());
 		

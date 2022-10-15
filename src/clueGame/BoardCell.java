@@ -8,14 +8,13 @@ public class BoardCell
 	private int col;
 	
 	private char initial;
-	
-	private DoorDirection doorDirection;
+	private char secretPassage;
 	
 	private boolean roomLabel;
 	private boolean roomCenter;
 	private boolean isDoorway;
 	
-	private char secretPassage;
+	private DoorDirection doorDirection;
 	
 	private Set<BoardCell> adjList;
 	
@@ -89,10 +88,15 @@ public class BoardCell
 
 	public char getSecretPassage() 
 	{
-		// TODO Auto-generated method stub
-		return 0;
+		return secretPassage;
 		
 	} //end getSecretPassage
+	
+	public void setSecretPassage(char passage)
+	{
+		secretPassage = passage;
+		
+	} //end setSecretPassage
 	
 	public char getInitial()
 	{
