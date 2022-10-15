@@ -183,14 +183,51 @@ public class Board
 						if(cellInfo[1] == '*')
 						{
 							grid[i][j].setCenter(true);
+							roomMap.get(cellInfo[0]).setCenterCell(grid[i][j]);
 							
 						} //end nested if
 						
 						else if(cellInfo[1] == '#') 
 						{
 							grid[i][j].setLabel(true);
+							roomMap.get(cellInfo[0]).setLabelCell(grid[i][j]);
 							
-						} //end nest else if
+						} //end nested else if
+						
+						else if(cellInfo[0] == 'W')
+						{
+							grid[i][j].setDoorway(true);
+							
+							switch(cellInfo[1])
+							{
+								case '^':
+									grid[i][j].setDoorDirection(DoorDirection.UP);
+									
+								break;
+								
+								case 'v':
+									grid[i][j].setDoorDirection(DoorDirection.DOWN);
+									
+								break;
+								
+								case '>':
+									grid[i][j].setDoorDirection(DoorDirection.RIGHT);
+									
+								break;
+								
+								case '<':
+									grid[i][j].setDoorDirection(DoorDirection.LEFT);
+									
+								break;
+								
+								default:
+									grid[i][j].setDoorDirection(DoorDirection.NONE);
+									
+								break;
+							
+							} //end switch
+							
+						} //end nested else if
 						
 					} //end nested if
 					
@@ -227,9 +264,7 @@ public class Board
 	//Overloading
 	public Room getRoom(BoardCell cell)
 	{
-		//test data
-		return null;
-		//end test data
+		return roomMap.get(cell.getInitial());
 		
 	} //end getRoom
 	

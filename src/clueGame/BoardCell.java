@@ -7,12 +7,13 @@ public class BoardCell
 	private int row;
 	private int col;
 	
-	char initial;
+	private char initial;
 	
 	private DoorDirection doorDirection;
 	
 	private boolean roomLabel;
 	private boolean roomCenter;
+	private boolean isDoorway;
 	
 	private char secretPassage;
 	
@@ -20,6 +21,10 @@ public class BoardCell
 	
 	public BoardCell(int initRow, int initCol, char initLabel)
 	{
+		roomLabel = false;
+		roomCenter = false;
+		isDoorway = false;
+		
 		row = initRow;
 		
 		col = initCol;
@@ -40,14 +45,23 @@ public class BoardCell
 		
 	} //end getDoorDirection
 	
+	public void setDoorDirection(DoorDirection door)
+	{
+		doorDirection = door;
+		
+	} //end setDoorDirection
+	
 	public boolean isDoorway()
 	{
-		//test data
-		return false;
-		
-		//end test data
+		return isDoorway;
 		
 	} //end isDoorway
+	
+	public void setDoorway(boolean door)
+	{
+		isDoorway = door;
+		
+	} //end setDoorway
 
 	public boolean isLabel() 
 	{
@@ -79,5 +93,11 @@ public class BoardCell
 		return 0;
 		
 	} //end getSecretPassage
+	
+	public char getInitial()
+	{
+		return initial;
+		
+	} //end getInitial
 	
 } //end BoardCell
