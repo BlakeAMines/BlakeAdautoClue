@@ -59,7 +59,6 @@ class FileInitTests
 	@Test
 	public void boardDimensionsTest()
 	{
-		System.out.println("Rows " + board.getNumRows());
 		Assert.assertEquals(board.getNumRows(), NUM_ROWS);
 		Assert.assertEquals(board.getNumColumns(), NUM_COLUMNS);
 		

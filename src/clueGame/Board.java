@@ -4,8 +4,12 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
+
+import Experiment.TestBoardCell;
 
 public class Board 
 {
@@ -18,6 +22,8 @@ public class Board
 	private String setupConfigFile;
 	
 	private Map<Character, Room> roomMap;
+	private Set<BoardCell> targets;
+	private Set<TestBoardCell> visited;
 	
 	static Board theInstance = new Board();
 	
@@ -64,6 +70,18 @@ public class Board
 		
 	} //end loadConfigFiles
 	
+	public void calcTargets(BoardCell startCell, int startingSteps)
+	{
+		
+		
+	} //end calcTargets
+	
+	public Set<BoardCell> getTargets()
+	{
+		return new HashSet<BoardCell>();
+		
+	} //end getTargets
+		
 	//Establishes rooms
 	public void loadSetupConfig() throws BadConfigFormatException, FileNotFoundException
 	{
@@ -300,5 +318,11 @@ public class Board
 		return numRows;
 		
 	} //end getNumRows
+	
+	public Set<BoardCell> getAdjList(int cellRow, int cellCol)
+	{
+		return new HashSet<BoardCell>();
+		
+	} //end 
 		
 } //end Board

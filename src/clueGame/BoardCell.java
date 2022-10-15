@@ -38,6 +38,12 @@ public class BoardCell
 		
 	} //end addAdj
 	
+	public void setOccupied(boolean occupy)
+	{
+		
+		
+	} //end setOccupied
+	
 	public DoorDirection getDoorDirection()
 	{
 		return doorDirection;
