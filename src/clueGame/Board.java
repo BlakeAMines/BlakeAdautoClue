@@ -29,7 +29,7 @@ public class Board
 	
 	public void initialize()
 	{
-		this.loadConfigFiles();
+		loadConfigFiles();
 		
 	} //end initialize
 	
@@ -41,7 +41,6 @@ public class Board
 	
 	public void loadConfigFiles()
 	{
-		roomMap = new HashMap<Character, Room>();
 		
 		try
 		{
@@ -56,9 +55,10 @@ public class Board
 			
 		} //end catch
 		
+		//Default Error Message which runs in addition to any other specific errors
 		catch(BadConfigFormatException formatError)
 		{
-			
+			formatError.logError();
 			
 		} //end catch
 		
@@ -67,6 +67,7 @@ public class Board
 	//Establishes rooms
 	public void loadSetupConfig() throws BadConfigFormatException, FileNotFoundException
 	{
+		roomMap = new HashMap<Character, Room>();
 		String curLine = "";
 		
 		try
@@ -90,9 +91,12 @@ public class Board
 				{
 					if(!roomInfo[0].equals("Room") && !roomInfo[0].equals("Space"))
 					{
-						throw new BadConfigFormatException();
+						BadConfigFormatException badSetup = new BadConfigFormatException(setupConfigFile);
+						badSetup.logError("Incorrect Setup Formatting");
+						throw badSetup;
 						
 					} //end nested if				
+					
 					roomLabels = roomInfo[2].toCharArray();
 
 					roomMap.put(roomLabels[0], new Room(roomInfo[1]));
@@ -148,7 +152,9 @@ public class Board
 				
 				if(rowList.length != countCols)
 				{
-					throw new BadConfigFormatException();
+					BadConfigFormatException badLayout = new BadConfigFormatException(layoutConfigFile);
+					badLayout.logError("Incorrect Columns");
+					throw badLayout;
 					
 				} //end if 
 								
@@ -174,7 +180,9 @@ public class Board
 
 					if(!roomMap.containsKey(cellInfo[0]))
 					{
-						throw new BadConfigFormatException();
+						BadConfigFormatException badLayout = new BadConfigFormatException(layoutConfigFile);
+						badLayout.logError("Board Contains Unspecified Room Character");
+						throw badLayout;
 						
 					} //end nested if
 					
@@ -241,8 +249,6 @@ public class Board
 					} //end nested if
 					
 				} //end nested for
-				
-				System.out.println("");
 				
 			} //end for
 							
