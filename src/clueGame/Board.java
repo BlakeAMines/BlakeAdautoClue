@@ -45,6 +45,13 @@ public class Board
 		
 	} //end getInstance
 	
+	public void setConfigFiles(String csvName, String txtName)
+	{
+		layoutConfigFile = "data/" + csvName;
+		setupConfigFile = "data/" + txtName;
+		
+	} //end setConfigFiles
+	
 	public void loadConfigFiles()
 	{
 		try
@@ -69,78 +76,7 @@ public class Board
 		
 	} //end loadConfigFiles
 	
-	public void calcTargets(BoardCell startCell, int startingSteps)
-	{
-		targets.clear();
-		visited.clear();
-		
-		visited.add(startCell);
-		
-		findAllTargetsRecursive(startCell, startingSteps);
-		
-	} //end calcTargets
-	
-	public void findAllTargetsRecursive(BoardCell curStartCell, int curSteps)
-	{
-		//Runs through each of the adjacent cells
-		for(BoardCell curCell : curStartCell.getCellAdjList())
-		{			
-			//Cells which have already been visited cannot be revisited
-			//Occupied cells cannot be visited unless they are a room
-			if(visited.contains(curCell) || (curCell.getOccupied() && !curCell.isRoomCenter()))
-			{				
-				continue;
-				
-			} //end nested if
-						
-			else
-			{
-				//The cell being investigated cannot be revisited
-				visited.add(curCell);
-				
-				if(curCell.isRoomCenter())
-				{
-					if(curSteps >= 1)
-					{
-						targets.add(curCell);
-						
-					} //end nested if
-					
-					continue;
-					 
-				} //end nested 
-				
-				//If there are no more moves to step away after, this is a target
-				if(curSteps == 1)
-				{
-					targets.add(curCell);
-					
-				} //end nested if
-				
-				//If there are more steps to take, they must be taken
-				else
-				{
-					//The same process is continued for the current cell with one less step available to take
-					findAllTargetsRecursive(curCell, curSteps - 1);
-					
-				} //end nested else
-				
-				//Once the possible paths off of a cell have been investigated, the move is undone and it is no longer considered to be visited
-				visited.remove(curCell);
-				
-			} //end nested else
-			
-		} //end for
-		
-	} //end findAllTargetsRecursive
-	
-	public Set<BoardCell> getTargets()
-	{
-		return targets;
-		
-	} //end getTargets
-		
-	//Establishes rooms
+	//Establishes rooms by reading a txt setup file and handles bad formatting with exceptions
 	public void loadSetupConfig() throws BadConfigFormatException, FileNotFoundException
 	{
 		roomMap = new HashMap<Character, Room>();
@@ -194,6 +130,7 @@ public class Board
 		
 	} //end loadSetupConfig
 	
+	//Sets up the board by reading a csv and handles improper formatting with exceptions
 	public void loadLayoutConfig() throws BadConfigFormatException, FileNotFoundException 
 	{		
 		int countCols = 0;
@@ -341,6 +278,112 @@ public class Board
 		
 	} //end loadLayoutConfig
 	
+	//Driver function for calculating targets given starting cell and dice roll
+	public void calcTargets(BoardCell startCell, int startingSteps)
+	{
+		targets.clear();
+		visited.clear();
+		
+		visited.add(startCell);
+		
+		findAllTargetsRecursive(startCell, startingSteps);
+		
+	} //end calcTargets
+	
+	//Recursive function explores possible movements
+	public void findAllTargetsRecursive(BoardCell curStartCell, int curSteps)
+	{
+		//Runs through each of the adjacent cells
+		for(BoardCell curCell : curStartCell.getCellAdjList())
+		{			
+			//Cells which have already been visited cannot be revisited
+			//Occupied cells cannot be visited unless they are a room
+			if(visited.contains(curCell) || (curCell.getOccupied() && !curCell.isRoomCenter()))
+			{				
+				continue;
+				
+			} //end nested if
+						
+			else
+			{
+				//The cell being investigated cannot be revisited
+				visited.add(curCell);
+				
+				if(curCell.isRoomCenter())
+				{
+					if(curSteps >= 1)
+					{
+						targets.add(curCell);
+						
+					} //end nested if
+					
+					continue;
+					 
+				} //end nested 
+				
+				//If there are no more moves to step away after, this is a target
+				if(curSteps == 1)
+				{
+					targets.add(curCell);
+					
+				} //end nested if
+				
+				//If there are more steps to take, they must be taken
+				else
+				{
+					//The same process is continued for the current cell with one less step available to take
+					findAllTargetsRecursive(curCell, curSteps - 1);
+					
+				} //end nested else
+				
+				//Once the possible paths off of a cell have been investigated, the move is undone and it is no longer considered to be visited
+				visited.remove(curCell);
+				
+			} //end nested else
+			
+		} //end for
+		
+	} //end findAllTargetsRecursive
+	
+	//Returns the room center of the room that a given door cell points to
+	public BoardCell findDoorPoint(BoardCell startCell)
+	{
+		BoardCell roomCenter;
+		
+		switch(startCell.getDoorDirection())
+		{
+			case UP:
+				roomCenter = roomMap.get(grid[startCell.getRow() - 1][startCell.getCol()].getInitial()).getCenterCell();
+								
+			break;
+			
+			case DOWN:
+				roomCenter = roomMap.get(grid[startCell.getRow() + 1][startCell.getCol()].getInitial()).getCenterCell();
+			
+			break;
+			
+			case RIGHT:
+				roomCenter = roomMap.get(grid[startCell.getRow()][startCell.getCol() + 1].getInitial()).getCenterCell();
+				
+			break;
+			
+			case LEFT:
+				roomCenter = roomMap.get(grid[startCell.getRow()][startCell.getCol() - 1].getInitial()).getCenterCell();
+
+			break;
+			
+			default:
+				System.out.println("ERRROR, no door pointer");
+				
+			return null;
+				
+		} //end switch 
+		
+		return roomCenter;
+		
+	} //end findDoorPoint
+		
+	//Driver function for calculating an adjacency list
 	public void calcAllAdj()
 	{
 		//Creates the adjacency list for each cell
@@ -358,52 +401,7 @@ public class Board
 				
 	} //end calcAllAdj
 	
-	public void setConfigFiles(String csvName, String txtName)
-	{
-		layoutConfigFile = "data/" + csvName;
-		setupConfigFile = "data/" + txtName;
-		
-	} //end setConfigFiles
-		
-	//Overloading
-	public Room getRoom(char roomLabel)
-	{
-		return roomMap.get(roomLabel);
-		
-	} //end getRoom
-	
-	//Overloading
-	public Room getRoom(BoardCell cell)
-	{
-		return roomMap.get(cell.getInitial());
-		
-	} //end getRoom
-	
-	public BoardCell getCell(int row, int col)
-	{
-		return grid[row][col];
-
-	} //end getCell
-	
-	public int getNumColumns()
-	{
-		return numColumns;
-		
-	} //end getNumCols
-	
-	public int getNumRows()
-	{
-		return numRows;
-		
-	} //end getNumRows
-	
-	public Set<BoardCell> getAdjList(int cellRow, int cellCol)
-	{
-		return grid[cellRow][cellCol].getCellAdjList();
-		
-	} //end 
-	
-	//Creates a Set of adjacent cells
+	//Handles logic for which cells will be adjacent to each other
 	public void calcAdjList(BoardCell cell)
 	{		
 		BoardCell tempCell;
@@ -472,42 +470,49 @@ public class Board
 		} //end if
 			
 	} //end calcAdjList
-
-	public BoardCell findDoorPoint(BoardCell startCell)
+	
+	public Set<BoardCell> getTargets()
 	{
-		BoardCell roomCenter;
+		return targets;
 		
-		switch(startCell.getDoorDirection())
-		{
-			case UP:
-				roomCenter = roomMap.get(grid[startCell.getRow() - 1][startCell.getCol()].getInitial()).getCenterCell();
-								
-			break;
-			
-			case DOWN:
-				roomCenter = roomMap.get(grid[startCell.getRow() + 1][startCell.getCol()].getInitial()).getCenterCell();
-			
-			break;
-			
-			case RIGHT:
-				roomCenter = roomMap.get(grid[startCell.getRow()][startCell.getCol() + 1].getInitial()).getCenterCell();
-				
-			break;
-			
-			case LEFT:
-				roomCenter = roomMap.get(grid[startCell.getRow()][startCell.getCol() - 1].getInitial()).getCenterCell();
+	} //end getTargets
+	
+	public Set<BoardCell> getAdjList(int cellRow, int cellCol)
+	{
+		return grid[cellRow][cellCol].getCellAdjList();
+		
+	} //end getAdjList
+	
+	//Overloading
+	public Room getRoom(char roomLabel)
+	{
+		return roomMap.get(roomLabel);
+		
+	} //end getRoom
+	
+	//Overloading
+	public Room getRoom(BoardCell cell)
+	{
+		return roomMap.get(cell.getInitial());
+		
+	} //end getRoom
+	
+	public BoardCell getCell(int row, int col)
+	{
+		return grid[row][col];
 
-			break;
-			
-			default:
-				System.out.println("ERRROR, no door pointer");
-				
-			return null;
-				
-		} //end switch 
+	} //end getCell
+	
+	public int getNumColumns()
+	{
+		return numColumns;
 		
-		return roomCenter;
+	} //end getNumCols
+	
+	public int getNumRows()
+	{
+		return numRows;
 		
-	} //end findDoorPoint
-			
+	} //end getNumRows
+		
 } //end Board
