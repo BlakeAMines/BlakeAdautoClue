@@ -119,7 +119,7 @@ class FileInitTests
 			
 		} //end for
 		
-		Assert.assertEquals(19, numDoors);
+		Assert.assertEquals(20, numDoors);
 		
 	} //end numDoorsTest
 	

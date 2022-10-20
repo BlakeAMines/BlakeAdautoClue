@@ -23,7 +23,7 @@ public class Board
 	
 	private Map<Character, Room> roomMap;
 	private Set<BoardCell> targets;
-	private Set<TestBoardCell> visited;
+	private Set<BoardCell> visited;
 	
 	static Board theInstance = new Board();
 	
@@ -47,7 +47,6 @@ public class Board
 	
 	public void loadConfigFiles()
 	{
-		
 		try
 		{
 			loadSetupConfig();
@@ -72,13 +71,72 @@ public class Board
 	
 	public void calcTargets(BoardCell startCell, int startingSteps)
 	{
+		targets.clear();
+		visited.clear();
 		
+		visited.add(startCell);
+		
+		findAllTargetsRecursive(startCell, startingSteps);
 		
 	} //end calcTargets
 	
+	public void findAllTargetsRecursive(BoardCell curStartCell, int curSteps)
+	{
+		//Runs through each of the adjacent cells
+		for(BoardCell curCell : curStartCell.getCellAdjList())
+		{			
+			//Cells which have already been visited cannot be revisited
+			//Occupied cells cannot be visited unless they are a room
+			if(visited.contains(curCell) || (curCell.getOccupied() && !curCell.isRoomCenter()))
+			{				
+				continue;
+				
+			} //end nested if
+						
+			else
+			{
+				//The cell being investigated cannot be revisited
+				visited.add(curCell);
+				
+				if(curCell.isRoomCenter())
+				{
+					if(curSteps >= 1)
+					{
+						targets.add(curCell);
+						
+					} //end nested if
+					
+					continue;
+					 
+				} //end nested 
+				
+				//If there are no more moves to step away after, this is a target
+				if(curSteps == 1)
+				{
+					targets.add(curCell);
+					
+				} //end nested if
+				
+				//If there are more steps to take, they must be taken
+				else
+				{
+					//The same process is continued for the current cell with one less step available to take
+					findAllTargetsRecursive(curCell, curSteps - 1);
+					
+				} //end nested else
+				
+				//Once the possible paths off of a cell have been investigated, the move is undone and it is no longer considered to be visited
+				visited.remove(curCell);
+				
+			} //end nested else
+			
+		} //end for
+		
+	} //end findAllTargetsRecursive
+	
 	public Set<BoardCell> getTargets()
 	{
-		return new HashSet<BoardCell>();
+		return targets;
 		
 	} //end getTargets
 		
@@ -86,6 +144,9 @@ public class Board
 	public void loadSetupConfig() throws BadConfigFormatException, FileNotFoundException
 	{
 		roomMap = new HashMap<Character, Room>();
+		targets = new HashSet<BoardCell>();
+		visited = new HashSet<BoardCell>();
+		
 		String curLine = "";
 		
 		try
@@ -159,7 +220,7 @@ public class Board
 			//Counts the columns from the first row
 			//This doesn't need to count rows because any missing rows or columns will be picked up as a missing column
 			countCols = rowList.length;
-			
+		
 			//Takes input from the file as rows of comma separated values
 			//Defines the size of the board
 			while(fileIn.hasNextLine())
@@ -193,7 +254,6 @@ public class Board
 				for(int j = 0; j < numColumns; j++)
 				{			
 					cellInfo = saveRows.get(i)[j].toCharArray();
-					System.out.print(cellInfo[0]);
 					grid[i][j] = new BoardCell(i, j, cellInfo[0]);
 
 					if(!roomMap.containsKey(cellInfo[0]))
@@ -253,11 +313,9 @@ public class Board
 							
 							} //end switch
 							
-							//Secret passage case
-							
-							
 						} //end nested else if
 						
+						//Secret passage case
 						else
 						{
 							grid[i][j].setSecretPassage(cellInfo[1]);
@@ -269,7 +327,10 @@ public class Board
 				} //end nested for
 				
 			} //end for
-							
+			
+			//This will calculate adjacency for the cells, but must run after the previous code to ensure the entire board exists
+			calcAllAdj();
+			
 		} //end try
 				
 		catch(FileNotFoundException fileError)
@@ -279,6 +340,23 @@ public class Board
 		} //end catch
 		
 	} //end loadLayoutConfig
+	
+	public void calcAllAdj()
+	{
+		//Creates the adjacency list for each cell
+		//This runs through separate to creating the board because the entire grid must be created first
+		for(int i = 0; i < numRows; i++)
+		{
+			for(int j = 0; j < numColumns; j++)
+			{			
+				//This cannot be run in the previous for loops because the adjacent cells of a given cell may not yet be created
+				calcAdjList(grid[i][j]);
+				
+			} //end nested for 
+			
+		} //end for
+				
+	} //end calcAllAdj
 	
 	public void setConfigFiles(String csvName, String txtName)
 	{
@@ -321,8 +399,115 @@ public class Board
 	
 	public Set<BoardCell> getAdjList(int cellRow, int cellCol)
 	{
-		return new HashSet<BoardCell>();
+		return grid[cellRow][cellCol].getCellAdjList();
 		
 	} //end 
+	
+	//Creates a Set of adjacent cells
+	public void calcAdjList(BoardCell cell)
+	{		
+		BoardCell tempCell;
+		boolean validCell = false;
+	
+		if(cell.isDoorway())
+		{
+			validCell = true;
+			
+			tempCell = findDoorPoint(cell);
+			cell.addAdj(tempCell);
+			tempCell.addAdj(cell);
+			
+		} //end nested if
 		
+		else if(cell.getInitial() == 'W')
+		{
+			validCell = true;
+			
+		} //end else if
+		
+		//Secret Passage case
+		else if(cell.isSecretPassage())
+		{
+			tempCell = roomMap.get(cell.getSecretPassage()).getCenterCell();
+			roomMap.get(cell.getInitial()).getCenterCell().addAdj(tempCell);
+			
+		} //end else if
+						
+		//incr will switch between plus or minus one to keep the following code more condense and readable
+		int incr = 1;
+		
+		if(validCell)
+		{
+			for(int i = 0; i < 2; i++)
+			{
+				incr *= -1;
+				
+				//If the cell directly above or below or to the left or right is inside the board, it might be adjacent
+				if((cell.getRow() + incr) >= 0 && cell.getRow() + incr < numRows)
+				{	
+					tempCell = grid[cell.getRow() + incr][cell.getCol()];
+					
+					if(tempCell.getInitial() == 'W')
+					{
+						cell.addAdj(tempCell);
+						
+					} //end nested if
+					
+				} //end nested if
+				
+				if(cell.getCol() + incr >= 0 && cell.getCol() + incr < numColumns)
+				{
+					tempCell = grid[cell.getRow()][cell.getCol() + incr];
+	
+					if(tempCell.getInitial() == 'W')
+					{
+						cell.addAdj(tempCell);
+						
+					} //end nested if
+					
+				} //end nested if
+				
+			} //end nested for 
+			
+		} //end if
+			
+	} //end calcAdjList
+
+	public BoardCell findDoorPoint(BoardCell startCell)
+	{
+		BoardCell roomCenter;
+		
+		switch(startCell.getDoorDirection())
+		{
+			case UP:
+				roomCenter = roomMap.get(grid[startCell.getRow() - 1][startCell.getCol()].getInitial()).getCenterCell();
+								
+			break;
+			
+			case DOWN:
+				roomCenter = roomMap.get(grid[startCell.getRow() + 1][startCell.getCol()].getInitial()).getCenterCell();
+			
+			break;
+			
+			case RIGHT:
+				roomCenter = roomMap.get(grid[startCell.getRow()][startCell.getCol() + 1].getInitial()).getCenterCell();
+				
+			break;
+			
+			case LEFT:
+				roomCenter = roomMap.get(grid[startCell.getRow()][startCell.getCol() - 1].getInitial()).getCenterCell();
+
+			break;
+			
+			default:
+				System.out.println("ERRROR, no door pointer");
+				
+			return null;
+				
+		} //end switch 
+		
+		return roomCenter;
+		
+	} //end findDoorPoint
+			
 } //end Board

@@ -1,6 +1,9 @@
 package clueGame;
 
+import java.util.HashSet;
 import java.util.Set;
+
+import Experiment.TestBoardCell;
 
 public class BoardCell 
 {
@@ -9,10 +12,12 @@ public class BoardCell
 	
 	private char initial;
 	private char secretPassage;
-	
+
+	private boolean isPassage;
 	private boolean roomLabel;
 	private boolean roomCenter;
 	private boolean isDoorway;
+	private boolean isOccupied;
 	
 	private DoorDirection doorDirection;
 	
@@ -22,7 +27,9 @@ public class BoardCell
 	{
 		roomLabel = false;
 		roomCenter = false;
+		isOccupied = false;
 		isDoorway = false;
+		isPassage = false;
 		
 		row = initRow;
 		
@@ -30,19 +37,33 @@ public class BoardCell
 		
 		initial = initLabel;
 		
+		adjList = new HashSet<BoardCell>();
+		
 	} //end constructor
 	
-	public void addAdj(BoardCell adjCell)
+	public void addAdj(BoardCell cell)
 	{
+		adjList.add(cell);
 		
+	} //end addAdjacency
+	
+	public Set<BoardCell> getCellAdjList()
+	{
+		return adjList;
 		
-	} //end addAdj
+	} //end getCellAdjList
 	
 	public void setOccupied(boolean occupy)
 	{
-		
+		isOccupied = occupy;
 		
 	} //end setOccupied
+	
+	public boolean getOccupied()
+	{
+		return isOccupied;
+		
+	} //end getOccupied
 	
 	public DoorDirection getDoorDirection()
 	{
@@ -98,9 +119,16 @@ public class BoardCell
 		
 	} //end getSecretPassage
 	
+	public boolean isSecretPassage()
+	{
+		return isPassage;
+		
+	} //end isSecretPassage
+	
 	public void setSecretPassage(char passage)
 	{
 		secretPassage = passage;
+		isPassage = true;
 		
 	} //end setSecretPassage
 	
@@ -109,5 +137,17 @@ public class BoardCell
 		return initial;
 		
 	} //end getInitial
+	
+	public int getRow()
+	{
+		return row;
+		
+	} //end getRow
+	
+	public int getCol()
+	{
+		return col;
+		
+	} //end getRow
 	
 } //end BoardCell

@@ -109,7 +109,6 @@ public class BoardAdjTargetTest306 {
 	
 	}
 	
-	
 	// Tests out of room center, 1, 3 and 4
 	// These are LIGHT BLUE on the planning spreadsheet
 	@Test
@@ -183,6 +182,7 @@ public class BoardAdjTargetTest306 {
 		// test a roll of 3
 		board.calcTargets(board.getCell(8, 17), 3);
 		targets= board.getTargets();
+		System.out.println("Size: " + targets.size());
 		assertEquals(12, targets.size());
 		assertTrue(targets.contains(board.getCell(12, 20)));
 		assertTrue(targets.contains(board.getCell(3, 20)));
