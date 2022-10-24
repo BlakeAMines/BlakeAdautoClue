@@ -63,7 +63,7 @@ public class Board
 		
 		catch(FileNotFoundException fileError)
 		{
-			
+			//Do something
 			
 		} //end catch
 		
@@ -219,36 +219,7 @@ public class Board
 						
 						else if(cellInfo[0] == 'W')
 						{
-							grid[i][j].setDoorway(true);
-							
-							switch(cellInfo[1])
-							{
-								case '^':
-									grid[i][j].setDoorDirection(DoorDirection.UP);
-									
-								break;
-								
-								case 'v':
-									grid[i][j].setDoorDirection(DoorDirection.DOWN);
-									
-								break;
-								
-								case '>':
-									grid[i][j].setDoorDirection(DoorDirection.RIGHT);
-									
-								break;
-								
-								case '<':
-									grid[i][j].setDoorDirection(DoorDirection.LEFT);
-									
-								break;
-								
-								default:
-									grid[i][j].setDoorDirection(DoorDirection.NONE);
-									
-								break;
-							
-							} //end switch
+							grid[i][j].makeDoor(cellInfo[1]);
 							
 						} //end nested else if
 						

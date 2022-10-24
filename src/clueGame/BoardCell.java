@@ -71,6 +71,42 @@ public class BoardCell
 		
 	} //end getDoorDirection
 	
+	public void makeDoor(char doorInfo)
+	{
+		setDoorway(true);
+		
+		switch(doorInfo)
+		{
+			case '^':
+				setDoorDirection(DoorDirection.UP);
+				
+			break;
+			
+			case 'v':
+				setDoorDirection(DoorDirection.DOWN);
+				
+			break;
+			
+			case '>':
+				setDoorDirection(DoorDirection.RIGHT);
+				
+			break;
+			
+			case '<':
+				setDoorDirection(DoorDirection.LEFT);
+				
+			break;
+			
+			default:
+				setDoorDirection(DoorDirection.NONE);
+				setDoorway(false);
+				
+			break;
+		
+		} //end switch
+		
+	} //end newDoor
+	
 	public void setDoorDirection(DoorDirection door)
 	{
 		doorDirection = door;
@@ -88,7 +124,7 @@ public class BoardCell
 		isDoorway = door;
 		
 	} //end setDoorway
-
+	
 	public boolean isLabel() 
 	{
 		return roomLabel;
