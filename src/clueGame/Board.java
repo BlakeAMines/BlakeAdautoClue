@@ -22,6 +22,7 @@ public class Board
 	private String setupConfigFile;
 	
 	private Map<Character, Room> roomMap;
+	private Map<Character, Room> trueRooms;
 	private Set<BoardCell> targets;
 	private Set<BoardCell> visited;
 	
@@ -80,6 +81,7 @@ public class Board
 	public void loadSetupConfig() throws BadConfigFormatException, FileNotFoundException
 	{
 		roomMap = new HashMap<Character, Room>();
+		trueRooms = new HashMap<Character, Room>();
 		targets = new HashSet<BoardCell>();
 		visited = new HashSet<BoardCell>();
 		
@@ -110,12 +112,20 @@ public class Board
 						badSetup.logError("Incorrect Setup Formatting");
 						throw badSetup;
 						
-					} //end nested if				
-					
+					} //end nested if	
+										
 					roomLabels = roomInfo[2].toCharArray();
-
-					roomMap.put(roomLabels[0], new Room(roomInfo[1]));
-													
+					
+					Room tempRoom = new Room(roomInfo[1]);
+					
+					roomMap.put(roomLabels[0], tempRoom);
+					
+					if(roomInfo[0] == "Room")
+					{
+						trueRooms.put(roomLabels[0], tempRoom);
+						
+					} //end nested if
+					
 				} //end nested if
 									
 			} while(fileIn.hasNextLine()); //end do while
@@ -133,14 +143,11 @@ public class Board
 	//Sets up the board by reading a csv and handles improper formatting with exceptions
 	public void loadLayoutConfig() throws BadConfigFormatException, FileNotFoundException 
 	{		
-		int countCols = 0;
-		int countRows = 0;
-
 		String curLine = "";
 	
 		String[] rowList;
-		ArrayList<String[]> saveRows = new ArrayList<String[]>();
 		char[] cellInfo;
+		ArrayList<String[]> saveRows = new ArrayList<String[]>();
 		
 		try
 		{
@@ -151,12 +158,10 @@ public class Board
 			curLine = fileIn.nextLine();
 			rowList = curLine.split(",", 0);			
 			saveRows.add(rowList);
-			
-			countRows++;
-					
+
 			//Counts the columns from the first row
 			//This doesn't need to count rows because any missing rows or columns will be picked up as a missing column
-			countCols = rowList.length;
+			numColumns = rowList.length;
 		
 			//Takes input from the file as rows of comma separated values
 			//Defines the size of the board
@@ -166,23 +171,20 @@ public class Board
 				rowList = curLine.split(",", 0);
 				saveRows.add(rowList);
 				
-				if(rowList.length != countCols)
+				if(rowList.length != numColumns)
 				{
 					BadConfigFormatException badLayout = new BadConfigFormatException(layoutConfigFile);
 					badLayout.logError("Incorrect Columns");
 					throw badLayout;
 					
 				} //end if 
-								
-				countRows++;
 				
 			} //end while
 			
+			numRows = saveRows.size();
+			
 			fileIn.close();
 			
-			//Saves info about board dimensions
-			numRows = countRows;
-			numColumns = countCols;
 			grid = new BoardCell[numRows][numColumns];
 			
 			//Iterates through each index on the board grid
@@ -203,33 +205,8 @@ public class Board
 					
 					if(cellInfo.length > 1)
 					{
-						if(cellInfo[1] == '*')
-						{
-							grid[i][j].setCenter(true);
-							roomMap.get(cellInfo[0]).setCenterCell(grid[i][j]);
-							
-						} //end nested if
-						
-						else if(cellInfo[1] == '#') 
-						{
-							grid[i][j].setLabel(true);
-							roomMap.get(cellInfo[0]).setLabelCell(grid[i][j]);
-							
-						} //end nested else if
-						
-						else if(cellInfo[0] == 'W')
-						{
-							grid[i][j].makeDoor(cellInfo[1]);
-							
-						} //end nested else if
-						
-						//Secret passage case
-						else
-						{
-							grid[i][j].setSecretPassage(cellInfo[1]);
-							
-						} //end nested else
-						
+						handleCellInfo(grid[i][j], cellInfo[0], cellInfo[1]);
+												
 					} //end nested if
 					
 				} //end nested for
@@ -248,6 +225,37 @@ public class Board
 		} //end catch
 		
 	} //end loadLayoutConfig
+	
+	public void handleCellInfo(BoardCell cell, char cellLabel, char cellInfo)
+	{
+		if(cellInfo == '*')
+		{
+			cell.setCenter(true);
+			roomMap.get(cellLabel).setCenterCell(cell);
+			
+		} //end nested if
+		
+		else if(cellInfo == '#') 
+		{
+			cell.setLabel(true);
+			roomMap.get(cellLabel).setLabelCell(cell);
+			
+		} //end nested else if
+		
+		//Secret passage case
+		else if(roomMap.containsKey(cellInfo))
+		{
+			cell.setSecretPassage(cellInfo);
+			
+		} //end nested else
+		
+		else if(cellLabel == 'W')
+		{
+			cell.makeDoor(cellInfo);
+			
+		} //end nested else if
+				
+	} //end handleCellInfo
 	
 	//Driver function for calculating targets given starting cell and dice roll
 	public void calcTargets(BoardCell startCell, int startingSteps)
