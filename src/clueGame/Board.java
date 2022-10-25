@@ -226,6 +226,7 @@ public class Board
 		
 	} //end loadLayoutConfig
 	
+	//I considered handling this inside of a cell, but because it involved rooms, I decided to include it in 
 	public void handleCellInfo(BoardCell cell, char cellLabel, char cellInfo)
 	{
 		if(cellInfo == '*')
@@ -275,33 +276,19 @@ public class Board
 		//Runs through each of the adjacent cells
 		for(BoardCell curCell : curStartCell.getCellAdjList())
 		{			
-			//Cells which have already been visited cannot be revisited
-			//Occupied cells cannot be visited unless they are a room
-			if(visited.contains(curCell) || (curCell.getOccupied() && !curCell.isRoomCenter()))
-			{				
-				continue;
-				
-			} //end nested if
-						
-			else
+			if(!visited.contains(curCell) && (!curCell.getOccupied() || curCell.isRoomCenter()))
 			{
 				//The cell being investigated cannot be revisited
 				visited.add(curCell);
 				
-				if(curCell.isRoomCenter())
+				if(curCell.isRoomCenter() && curSteps >= 1)
 				{
-					if(curSteps >= 1)
-					{
-						targets.add(curCell);
-						
-					} //end nested if
-					
-					continue;
+					targets.add(curCell);
 					 
 				} //end nested 
 				
 				//If there are no more moves to step away after, this is a target
-				if(curSteps == 1)
+				else if(curSteps == 1)
 				{
 					targets.add(curCell);
 					
