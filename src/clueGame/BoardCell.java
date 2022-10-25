@@ -109,11 +109,15 @@ public class BoardCell
 		
 	} //end newDoor
 	
-	public void setAllowed(boolean allow)
+	public void handleAllow()
 	{
-		isAllowed = allow;
+		if(roomLabel || initial == 'W')
+		{
+			isAllowed = true;
+			
+		}
 		
-	} //end setAllowed
+	} //end handleAllow
 	
 	public boolean isAllowed()
 	{

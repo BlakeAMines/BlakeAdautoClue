@@ -33,8 +33,13 @@ public class Board
                 
 	} //end constructor
 	
+	//Works as a pseudo-constructor to load a new Clue game
 	public void initialize()
-	{
+	{		
+		roomMap = new HashMap<>();
+		targets = new HashSet<>();
+		visited = new HashSet<>();
+		
 		loadConfigFiles();
 		
 	} //end initialize
@@ -64,7 +69,7 @@ public class Board
 		
 		catch(FileNotFoundException fileError)
 		{
-			//Do something
+			System.out.println("Error reading file");
 			
 		} //end catch
 		
@@ -79,11 +84,7 @@ public class Board
 	
 	//Establishes rooms by reading a txt setup file and handles bad formatting with exceptions
 	public void loadSetupConfig() throws BadConfigFormatException, FileNotFoundException
-	{
-		roomMap = new HashMap<>();
-		targets = new HashSet<>();
-		visited = new HashSet<>();
-		
+	{		
 		String curLine = "";
 		String[] roomInfo;
 		char[] roomLabels;
@@ -128,14 +129,18 @@ public class Board
 	public void loadLayoutConfig() throws BadConfigFormatException, FileNotFoundException 
 	{		
 		String curLine = "";
-	
+		
+		//rowList is used to hold the cell initials in a row as strings
 		String[] rowList;
+		
+		//cellInfo is used to store the info about a cell like its initial and possible secondary info
 		char[] cellInfo;
-		ArrayList<String[]> saveRows = new ArrayList<String[]>();
+		
+		//This saves the board information for use after reading it in
+		ArrayList<String[]> saveRows = new ArrayList<>();
 
 		//FileReader and Scanner for file input
 		FileReader readFile = new FileReader(layoutConfigFile);
-		
 		try (Scanner fileIn = new Scanner(readFile)) 
 		{
 			curLine = fileIn.nextLine();
@@ -174,7 +179,10 @@ public class Board
 		{
 			for(int j = 0; j < numColumns; j++)
 			{			
+				//Saves the string information as characters
 				cellInfo = saveRows.get(i)[j].toCharArray();
+				
+				//Creates a new boardCell with the given initial
 				grid[i][j] = new BoardCell(i, j, cellInfo[0]);
 
 				if(!roomMap.containsKey(cellInfo[0]))
@@ -191,11 +199,7 @@ public class Board
 											
 				} //end nested if
 				
-				else if(cellInfo[0] == 'W')
-				{
-					grid[i][j].setAllowed(true);
-					
-				} //end else if
+				grid[i][j].handleAllow();
 				
 			} //end nested for
 			
@@ -208,7 +212,6 @@ public class Board
 	{
 		if(cellInfo == '*')
 		{
-			cell.setAllowed(true);
 			cell.setCenter(true);
 			roomMap.get(cellLabel).setCenterCell(cell);
 			
@@ -230,7 +233,6 @@ public class Board
 		
 		else if(cellLabel == 'W')
 		{
-			cell.setAllowed(true);
 			cell.makeDoor(cellInfo);
 			
 		} //end nested else if
