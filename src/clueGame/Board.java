@@ -191,6 +191,12 @@ public class Board
 											
 				} //end nested if
 				
+				else if(cellInfo[0] == 'W')
+				{
+					grid[i][j].setAllowed(true);
+					
+				} //end else if
+				
 			} //end nested for
 			
 		} //end for
@@ -202,6 +208,7 @@ public class Board
 	{
 		if(cellInfo == '*')
 		{
+			cell.setAllowed(true);
 			cell.setCenter(true);
 			roomMap.get(cellLabel).setCenterCell(cell);
 			
@@ -223,6 +230,7 @@ public class Board
 		
 		else if(cellLabel == 'W')
 		{
+			cell.setAllowed(true);
 			cell.makeDoor(cellInfo);
 			
 		} //end nested else if
@@ -346,12 +354,12 @@ public class Board
 		BoardCell tempCell;
 		
 		//This will handle the special cases for adjacencies (doors and passages) and return if the cell is available
-		boolean validCell = handleValid(cell);
+		handleValid(cell);
 				
 		//incr will switch between plus or minus one to keep the following code more condense
 		int incr = 1;
 		
-		if(validCell)
+		if(cell.isAllowed())
 		{
 			for(int i = 0; i < 2; i++)
 			{
@@ -388,28 +396,18 @@ public class Board
 			
 	} //end calcAdjList
 	
-	public boolean handleValid(BoardCell cell)
+	public void handleValid(BoardCell cell)
 	{
 		BoardCell tempCell;
-	
-		boolean validCell = false;
-		
+
 		if(cell.isDoorway())
 		{
-			validCell = true;
-			
 			tempCell = findDoorPoint(cell);
 			cell.addAdj(tempCell);
 			tempCell.addAdj(cell);
 			
 		} //end nested if
-		
-		else if(cell.getInitial() == 'W')
-		{
-			validCell = true;
-			
-		} //end else if
-		
+				
 		//Secret Passage case
 		else if(cell.isSecretPassage())
 		{
@@ -417,8 +415,6 @@ public class Board
 			roomMap.get(cell.getInitial()).getCenterCell().addAdj(tempCell);
 			
 		} //end else if
-		
-		return validCell;
 		
 	} //end calcValid
 	

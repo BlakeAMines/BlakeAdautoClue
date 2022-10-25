@@ -115,6 +115,12 @@ public class BoardCell
 		
 	} //end setAllowed
 	
+	public boolean isAllowed()
+	{
+		return isAllowed;
+		
+	} //end isAllowed
+	
 	public void setDoorDirection(DoorDirection door)
 	{
 		doorDirection = door;
