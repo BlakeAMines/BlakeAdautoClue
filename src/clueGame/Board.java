@@ -80,10 +80,10 @@ public class Board
 	//Establishes rooms by reading a txt setup file and handles bad formatting with exceptions
 	public void loadSetupConfig() throws BadConfigFormatException, FileNotFoundException
 	{
-		roomMap = new HashMap<Character, Room>();
-		trueRooms = new HashMap<Character, Room>();
-		targets = new HashSet<BoardCell>();
-		visited = new HashSet<BoardCell>();
+		roomMap = new HashMap<>();
+		trueRooms = new HashMap<>();
+		targets = new HashSet<>();
+		visited = new HashSet<>();
 		
 		String curLine = "";
 		
@@ -120,7 +120,7 @@ public class Board
 					
 					roomMap.put(roomLabels[0], tempRoom);
 					
-					if(roomInfo[0] == "Room")
+					if(roomInfo[0].equals("Room"))
 					{
 						trueRooms.put(roomLabels[0], tempRoom);
 						
@@ -263,7 +263,6 @@ public class Board
 	{
 		targets.clear();
 		visited.clear();
-		
 		visited.add(startCell);
 		
 		findAllTargetsRecursive(startCell, startingSteps);
@@ -338,6 +337,9 @@ public class Board
 
 			break;
 			
+			case NONE:
+				return startCell;
+			
 			default:
 				System.out.println("ERRROR, no door pointer");
 				
@@ -371,33 +373,11 @@ public class Board
 	public void calcAdjList(BoardCell cell)
 	{		
 		BoardCell tempCell;
-		boolean validCell = false;
-	
-		if(cell.isDoorway())
-		{
-			validCell = true;
-			
-			tempCell = findDoorPoint(cell);
-			cell.addAdj(tempCell);
-			tempCell.addAdj(cell);
-			
-		} //end nested if
 		
-		else if(cell.getInitial() == 'W')
-		{
-			validCell = true;
-			
-		} //end else if
-		
-		//Secret Passage case
-		else if(cell.isSecretPassage())
-		{
-			tempCell = roomMap.get(cell.getSecretPassage()).getCenterCell();
-			roomMap.get(cell.getInitial()).getCenterCell().addAdj(tempCell);
-			
-		} //end else if
-						
-		//incr will switch between plus or minus one to keep the following code more condense and readable
+		//This will handle the special cases for adjacencies (doors and passages) and return if the cell is available
+		boolean validCell = handleValid(cell);
+				
+		//incr will switch between plus or minus one to keep the following code more condense
 		int incr = 1;
 		
 		if(validCell)
@@ -437,6 +417,40 @@ public class Board
 			
 	} //end calcAdjList
 	
+	public boolean handleValid(BoardCell cell)
+	{
+		BoardCell tempCell;
+	
+		boolean validCell = false;
+		
+		if(cell.isDoorway())
+		{
+			validCell = true;
+			
+			tempCell = findDoorPoint(cell);
+			cell.addAdj(tempCell);
+			tempCell.addAdj(cell);
+			
+		} //end nested if
+		
+		else if(cell.getInitial() == 'W')
+		{
+			validCell = true;
+			
+		} //end else if
+		
+		//Secret Passage case
+		else if(cell.isSecretPassage())
+		{
+			tempCell = roomMap.get(cell.getSecretPassage()).getCenterCell();
+			roomMap.get(cell.getInitial()).getCenterCell().addAdj(tempCell);
+			
+		} //end else if
+		
+		return validCell;
+		
+	} //end calcValid
+	
 	public Set<BoardCell> getTargets()
 	{
 		return targets;
@@ -449,14 +463,14 @@ public class Board
 		
 	} //end getAdjList
 	
-	//Overloading
+	//Overloading getRoom using room symbol
 	public Room getRoom(char roomLabel)
 	{
 		return roomMap.get(roomLabel);
 		
 	} //end getRoom
 	
-	//Overloading
+	//Overloading getRoom using cell
 	public Room getRoom(BoardCell cell)
 	{
 		return roomMap.get(cell.getInitial());

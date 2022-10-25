@@ -14,6 +14,7 @@ public class BoardCell
 	private char secretPassage;
 
 	private boolean isPassage;
+	private boolean isWalkable;
 	private boolean roomLabel;
 	private boolean roomCenter;
 	private boolean isDoorway;
