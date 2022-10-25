@@ -22,7 +22,6 @@ public class Board
 	private String setupConfigFile;
 	
 	private Map<Character, Room> roomMap;
-	private Map<Character, Room> trueRooms;
 	private Set<BoardCell> targets;
 	private Set<BoardCell> visited;
 	
@@ -59,6 +58,7 @@ public class Board
 		{
 			loadSetupConfig();
 			loadLayoutConfig();
+			calcAllAdj();
 			
 		} //end try
 		
@@ -81,21 +81,17 @@ public class Board
 	public void loadSetupConfig() throws BadConfigFormatException, FileNotFoundException
 	{
 		roomMap = new HashMap<>();
-		trueRooms = new HashMap<>();
 		targets = new HashSet<>();
 		visited = new HashSet<>();
 		
 		String curLine = "";
-		
-		try
-		{
-			//FileReader and Scanner for file input
-			FileReader readFile = new FileReader(setupConfigFile);
-			Scanner fileIn = new Scanner(readFile);
-			
-			String[] roomInfo;
-			char[] roomLabels;
-				
+		String[] roomInfo;
+		char[] roomLabels;
+
+		//FileReader and Scanner for file input
+		FileReader readFile = new FileReader(setupConfigFile);
+		try (Scanner fileIn = new Scanner(readFile)) 
+		{				
 			//Takes input from the file as rows of comma separated values
 			do 
 			{				
@@ -112,7 +108,7 @@ public class Board
 						badSetup.logError("Incorrect Setup Formatting");
 						throw badSetup;
 						
-					} //end nested if	
+					} //end nested if
 										
 					roomLabels = roomInfo[2].toCharArray();
 					
@@ -120,23 +116,11 @@ public class Board
 					
 					roomMap.put(roomLabels[0], tempRoom);
 					
-					if(roomInfo[0].equals("Room"))
-					{
-						trueRooms.put(roomLabels[0], tempRoom);
-						
-					} //end nested if
-					
 				} //end nested if
 									
 			} while(fileIn.hasNextLine()); //end do while
-		
-		} //end try
-		
-		catch(FileNotFoundException fileError)
-		{
-			//throw fileError;
 			
-		} //end catch
+		} //end try
 		
 	} //end loadSetupConfig
 	
@@ -148,13 +132,12 @@ public class Board
 		String[] rowList;
 		char[] cellInfo;
 		ArrayList<String[]> saveRows = new ArrayList<String[]>();
+
+		//FileReader and Scanner for file input
+		FileReader readFile = new FileReader(layoutConfigFile);
 		
-		try
+		try (Scanner fileIn = new Scanner(readFile)) 
 		{
-			//FileReader and Scanner for file input
-			FileReader readFile = new FileReader(layoutConfigFile);
-			Scanner fileIn = new Scanner(readFile);
-			
 			curLine = fileIn.nextLine();
 			rowList = curLine.split(",", 0);			
 			saveRows.add(rowList);
@@ -162,7 +145,7 @@ public class Board
 			//Counts the columns from the first row
 			//This doesn't need to count rows because any missing rows or columns will be picked up as a missing column
 			numColumns = rowList.length;
-		
+
 			//Takes input from the file as rows of comma separated values
 			//Defines the size of the board
 			while(fileIn.hasNextLine())
@@ -180,49 +163,37 @@ public class Board
 				} //end if 
 				
 			} //end while
-			
-			numRows = saveRows.size();
-			
-			fileIn.close();
-			
-			grid = new BoardCell[numRows][numColumns];
-			
-			//Iterates through each index on the board grid
-			for(int i = 0; i < numRows; i++)
-			{
-				for(int j = 0; j < numColumns; j++)
-				{			
-					cellInfo = saveRows.get(i)[j].toCharArray();
-					grid[i][j] = new BoardCell(i, j, cellInfo[0]);
 
-					if(!roomMap.containsKey(cellInfo[0]))
-					{
-						BadConfigFormatException badLayout = new BadConfigFormatException(layoutConfigFile);
-						badLayout.logError("Board Contains Unspecified Room Character");
-						throw badLayout;
-						
-					} //end nested if
-					
-					if(cellInfo.length > 1)
-					{
-						handleCellInfo(grid[i][j], cellInfo[0], cellInfo[1]);
-												
-					} //end nested if
-					
-				} //end nested for
-				
-			} //end for
-			
-			//This will calculate adjacency for the cells, but must run after the previous code to ensure the entire board exists
-			calcAllAdj();
-			
 		} //end try
-				
-		catch(FileNotFoundException fileError)
+
+		numRows = saveRows.size();		
+		grid = new BoardCell[numRows][numColumns];
+		
+		//Iterates through each index on the board grid
+		for(int i = 0; i < numRows; i++)
 		{
-			throw fileError;
+			for(int j = 0; j < numColumns; j++)
+			{			
+				cellInfo = saveRows.get(i)[j].toCharArray();
+				grid[i][j] = new BoardCell(i, j, cellInfo[0]);
+
+				if(!roomMap.containsKey(cellInfo[0]))
+				{
+					BadConfigFormatException badLayout = new BadConfigFormatException(layoutConfigFile);
+					badLayout.logError("Board Contains Unspecified Room Character");
+					throw badLayout;
+					
+				} //end nested if
+				
+				if(cellInfo.length > 1)
+				{
+					handleCellInfo(grid[i][j], cellInfo[0], cellInfo[1]);
+											
+				} //end nested if
+				
+			} //end nested for
 			
-		} //end catch
+		} //end for
 		
 	} //end loadLayoutConfig
 	

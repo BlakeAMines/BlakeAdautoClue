@@ -14,7 +14,7 @@ public class BoardCell
 	private char secretPassage;
 
 	private boolean isPassage;
-	private boolean isWalkable;
+	private boolean isAllowed;
 	private boolean roomLabel;
 	private boolean roomCenter;
 	private boolean isDoorway;
@@ -31,6 +31,7 @@ public class BoardCell
 		isOccupied = false;
 		isDoorway = false;
 		isPassage = false;
+		isAllowed = false;
 		
 		row = initRow;
 		
@@ -38,7 +39,7 @@ public class BoardCell
 		
 		initial = initLabel;
 		
-		adjList = new HashSet<BoardCell>();
+		adjList = new HashSet<>();
 		
 	} //end constructor
 	
@@ -107,6 +108,12 @@ public class BoardCell
 		} //end switch
 		
 	} //end newDoor
+	
+	public void setAllowed(boolean allow)
+	{
+		isAllowed = allow;
+		
+	} //end setAllowed
 	
 	public void setDoorDirection(DoorDirection door)
 	{
