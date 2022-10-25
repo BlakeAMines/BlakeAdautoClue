@@ -203,7 +203,7 @@ public class Board
 		
 	} //end loadLayoutConfig
 	
-	//I considered handling this inside of a cell, but because it involved rooms, I decided to include it in 
+	//I considered handling this inside of a cell, but because it involved rooms, I decided to include it in Board
 	public void handleCellInfo(BoardCell cell, char cellLabel, char cellInfo)
 	{
 		if(cellInfo == '*')
@@ -237,99 +237,6 @@ public class Board
 				
 	} //end handleCellInfo
 	
-	//Driver function for calculating targets given starting cell and dice roll
-	public void calcTargets(BoardCell startCell, int startingSteps)
-	{
-		targets.clear();
-		visited.clear();
-		visited.add(startCell);
-		
-		findAllTargetsRecursive(startCell, startingSteps);
-		
-	} //end calcTargets
-	
-	//Recursive function explores possible movements
-	public void findAllTargetsRecursive(BoardCell curStartCell, int curSteps)
-	{
-		//Runs through each of the adjacent cells
-		for(BoardCell curCell : curStartCell.getCellAdjList())
-		{			
-			if(!visited.contains(curCell) && (!curCell.getOccupied() || curCell.isRoomCenter()))
-			{
-				//The cell being investigated cannot be revisited
-				visited.add(curCell);
-				
-				if(curCell.isRoomCenter() && curSteps >= 1)
-				{
-					targets.add(curCell);
-					 
-				} //end nested 
-				
-				//If there are no more moves to step away after, this is a target
-				else if(curSteps == 1)
-				{
-					targets.add(curCell);
-					
-				} //end nested if
-				
-				//If there are more steps to take, they must be taken
-				else
-				{
-					//The same process is continued for the current cell with one less step available to take
-					findAllTargetsRecursive(curCell, curSteps - 1);
-					
-				} //end nested else
-				
-				//Once the possible paths off of a cell have been investigated, the move is undone and it is no longer considered to be visited
-				visited.remove(curCell);
-				
-			} //end nested else
-			
-		} //end for
-		
-	} //end findAllTargetsRecursive
-	
-	//Returns the room center of the room that a given door cell points to
-	public BoardCell findDoorPoint(BoardCell startCell)
-	{
-		BoardCell roomCenter;
-		
-		switch(startCell.getDoorDirection())
-		{
-			case UP:
-				roomCenter = roomMap.get(grid[startCell.getRow() - 1][startCell.getCol()].getInitial()).getCenterCell();
-								
-			break;
-			
-			case DOWN:
-				roomCenter = roomMap.get(grid[startCell.getRow() + 1][startCell.getCol()].getInitial()).getCenterCell();
-			
-			break;
-			
-			case RIGHT:
-				roomCenter = roomMap.get(grid[startCell.getRow()][startCell.getCol() + 1].getInitial()).getCenterCell();
-				
-			break;
-			
-			case LEFT:
-				roomCenter = roomMap.get(grid[startCell.getRow()][startCell.getCol() - 1].getInitial()).getCenterCell();
-
-			break;
-			
-			case NONE:
-				return startCell;
-			
-			default:
-				System.out.println("ERRROR, no door pointer");
-				
-			return null;
-				
-		} //end switch 
-		
-		return roomCenter;
-		
-	} //end findDoorPoint
-		
 	//Driver function for calculating an adjacency list
 	public void calcAllAdj()
 	{
@@ -396,6 +303,99 @@ public class Board
 			
 	} //end calcAdjList
 	
+	//Returns the room center of the room that a given door cell points to
+	public BoardCell findDoorPoint(BoardCell startCell)
+	{
+		BoardCell roomCenter;
+		
+		switch(startCell.getDoorDirection())
+		{
+			case UP:
+				roomCenter = roomMap.get(grid[startCell.getRow() - 1][startCell.getCol()].getInitial()).getCenterCell();
+								
+			break;
+			
+			case DOWN:
+				roomCenter = roomMap.get(grid[startCell.getRow() + 1][startCell.getCol()].getInitial()).getCenterCell();
+			
+			break;
+			
+			case RIGHT:
+				roomCenter = roomMap.get(grid[startCell.getRow()][startCell.getCol() + 1].getInitial()).getCenterCell();
+				
+			break;
+			
+			case LEFT:
+				roomCenter = roomMap.get(grid[startCell.getRow()][startCell.getCol() - 1].getInitial()).getCenterCell();
+
+			break;
+			
+			case NONE:
+				return startCell;
+			
+			default:
+				System.out.println("ERRROR, no door pointer");
+				
+			return null;
+				
+		} //end switch 
+		
+		return roomCenter;
+		
+	} //end findDoorPoint
+	
+	//Driver function for calculating targets given starting cell and dice roll
+	public void calcTargets(BoardCell startCell, int startingSteps)
+	{
+		targets.clear();
+		visited.clear();
+		visited.add(startCell);
+		
+		findAllTargetsRecursive(startCell, startingSteps);
+		
+	} //end calcTargets
+	
+	//Recursive function explores possible movements
+	public void findAllTargetsRecursive(BoardCell curStartCell, int curSteps)
+	{
+		//Runs through each of the adjacent cells
+		for(BoardCell curCell : curStartCell.getCellAdjList())
+		{			
+			if(!visited.contains(curCell) && (!curCell.getOccupied() || curCell.isRoomCenter()))
+			{
+				//The cell being investigated cannot be revisited
+				visited.add(curCell);
+				
+				if(curCell.isRoomCenter() && curSteps >= 1)
+				{
+					targets.add(curCell);
+					 
+				} //end nested 
+				
+				//If there are no more moves to step away after, this is a target
+				else if(curSteps == 1)
+				{
+					targets.add(curCell);
+					
+				} //end nested if
+				
+				//If there are more steps to take, they must be taken
+				else
+				{
+					//The same process is continued for the current cell with one less step available to take
+					findAllTargetsRecursive(curCell, curSteps - 1);
+					
+				} //end nested else
+				
+				//Once the possible paths off of a cell have been investigated, the move is undone and it is no longer considered to be visited
+				visited.remove(curCell);
+				
+			} //end nested else
+			
+		} //end for
+		
+	} //end findAllTargetsRecursive
+		
 	public void handleValid(BoardCell cell)
 	{
 		BoardCell tempCell;
