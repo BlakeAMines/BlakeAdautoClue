@@ -9,15 +9,15 @@ public abstract class Player
 	
 	private Set<Card> cards;
 	
-	private char curRoomKey;	
+	private String curRoomName;	
 	private int curRow;
 	private int curColumn;
 	
-	public Player(String initName, String initColor, char initRoomKey)
+	public Player(String initName, String initColor, String initRoomName)
 	{
 		name = initName;
 		color = initColor;
-		curRoomKey = initRoomKey;
+		curRoomName = initRoomName;
 		
 	} //end constructor
 	

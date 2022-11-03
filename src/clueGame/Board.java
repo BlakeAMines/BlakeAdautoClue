@@ -39,9 +39,10 @@ public class Board
 	public void initialize()
 	{		
 		roomMap = new HashMap<>();
+		playerList = new HashSet<>();
 		targets = new HashSet<>();
 		visited = new HashSet<>();
-		
+				
 		loadConfigFiles();
 		
 	} //end initialize
@@ -88,7 +89,9 @@ public class Board
 	public void loadSetupConfig() throws BadConfigFormatException, FileNotFoundException
 	{		
 		String curLine = "";
-		String[] roomInfo;
+		
+		//readInfo has info from the text file as seperate strings ([0] is title, [1] is name, etc.)
+		String[] readInfo;
 		char[] roomLabels;
 
 		//FileReader and Scanner for file input
@@ -101,24 +104,44 @@ public class Board
 				curLine = fileIn.nextLine();
 				
 				//Splits the string of room info into individual pieces
-				roomInfo = curLine.split(", ", 0);
+				readInfo = curLine.split(", ", 0);
 				
-				if(!roomInfo[0].contains("//"))
+				if(!readInfo[0].contains("//"))
 				{
-					if(!roomInfo[0].equals("Room") && !roomInfo[0].equals("Space"))
+					if(readInfo[0].equals("Room") || readInfo[0].equals("Space"))
+					{
+						roomLabels = readInfo[2].toCharArray();
+						
+						Room tempRoom = new Room(readInfo[1]);
+						
+						roomMap.put(roomLabels[0], tempRoom);
+							
+					} //end nested if
+					
+					else if(readInfo[0].equals("Player"))
+					{
+						if(readInfo[4].equals("Human"))
+						{
+							playerList.add(new HumanPlayer(readInfo[1], readInfo[2], readInfo[3]));
+							
+						} //end nested if
+						
+						else
+						{
+							playerList.add(new ComputerPlayer(readInfo[1], readInfo[2], readInfo[3]));
+							
+						} //end nested else
+						
+					} //end nested else if
+					
+					else
 					{
 						BadConfigFormatException badSetup = new BadConfigFormatException(setupConfigFile);
 						badSetup.logError("Incorrect Setup Formatting");
 						throw badSetup;
 						
 					} //end nested if
-										
-					roomLabels = roomInfo[2].toCharArray();
-					
-					Room tempRoom = new Room(roomInfo[1]);
-					
-					roomMap.put(roomLabels[0], tempRoom);
-					
+															
 				} //end nested if
 									
 			} while(fileIn.hasNextLine()); //end do while
@@ -468,7 +491,7 @@ public class Board
 	
 	public Set<Player> getPlayerList()
 	{
-		return new HashSet<>();
+		return playerList;
 		
 	} //end getPlayerList
 		
