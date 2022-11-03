@@ -25,6 +25,8 @@ public class Board
 	private Set<BoardCell> targets;
 	private Set<BoardCell> visited;
 	
+	private Set<Player> playerList;
+	
 	static Board theInstance = new Board();
 	
 	private Board()
@@ -463,5 +465,11 @@ public class Board
 		return numRows;
 		
 	} //end getNumRows
+	
+	public Set<Player> getPlayerList()
+	{
+		return new HashSet<>();
+		
+	} //end getPlayerList
 		
 } //end Board

@@ -1,10 +1,15 @@
 package clueGame;
 
-abstract class Player 
+import java.util.Set;
+
+public abstract class Player 
 {
 	private String name;
 	private String color;
-	private char curRoomKey;
+	
+	private Set<Card> cards;
+	
+	private char curRoomKey;	
 	private int curRow;
 	private int curColumn;
 	
@@ -16,6 +21,16 @@ abstract class Player
 		
 	} //end constructor
 	
-	abstract void updateHand(Card card);
+	public void updateHand(Card card)
+	{
+		
+		
+	} //end updateHand
+	
+	public String getName()
+	{
+		return "Null";
+		
+	} //end getName;
 	
 } //end Player

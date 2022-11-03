@@ -26,7 +26,7 @@ public class BoardAdjTargetTest
 	}
 
 	//These tests are TURQUOISE in the planning document
-	//@Test
+	@Test
 	public void testAdjacenciesRooms()
 	{
 		//Study adjacencies with secret passage
@@ -51,7 +51,7 @@ public class BoardAdjTargetTest
 	} //end testAdjacenciesRooms
 
 	//These tests are TURQUOISE in the planning document
-	//@Test
+	@Test
 	public void testAdjacencyDoor()
 	{
 		Set<BoardCell> testList = board.getAdjList(20, 6);		
