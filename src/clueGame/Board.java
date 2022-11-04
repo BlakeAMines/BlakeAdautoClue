@@ -27,6 +27,8 @@ public class Board
 	
 	private Set<Player> playerList;
 	
+	private ArrayList<Card> gameDeck;
+	
 	static Board theInstance = new Board();
 	
 	private Board()
@@ -495,4 +497,10 @@ public class Board
 		
 	} //end getPlayerList
 		
+	public ArrayList<Card> getGameDeck()
+	{
+		return new ArrayList<Card>();
+		
+	} //end getGameDeck
+	
 } //end Board

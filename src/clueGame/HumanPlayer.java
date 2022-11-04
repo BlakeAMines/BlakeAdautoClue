@@ -7,5 +7,12 @@ public class HumanPlayer extends Player
 		super(initName, initColor, initRoomName);
 
 	} //end Constructor
+	
+	@Override
+	public String getType()
+	{
+		return "Human";
+		
+	} //end getType
 
 } //end HumanPlayer

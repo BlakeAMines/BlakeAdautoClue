@@ -8,4 +8,11 @@ public class ComputerPlayer extends Player
 
 	} //end Constructor	
 	
+	@Override
+	public String getType()
+	{
+		return "Computer";
+		
+	} //end getType
+	
 } //end ComputerPlayer

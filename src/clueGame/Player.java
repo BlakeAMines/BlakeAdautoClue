@@ -29,8 +29,14 @@ public abstract class Player
 	
 	public String getName()
 	{
-		return "Null";
+		return name;
 		
 	} //end getName;
+	
+	public String getType()
+	{
+		return null;
+		
+	} //end getType
 	
 } //end Player
