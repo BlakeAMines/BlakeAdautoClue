@@ -52,6 +52,7 @@ public class Board
 		
 		generateAnswer();
 		shuffleDeck();
+		distributeDeck();
 		
 	} //end initialize
 	
@@ -561,5 +562,11 @@ public class Board
 		return theAnswer;
 		
 	} //end getAnswer
+	
+	public void distributeDeck()
+	{
+		
+		
+	} //end distributeDeck
 	
 } //end Board

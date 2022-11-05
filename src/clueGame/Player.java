@@ -23,7 +23,7 @@ public abstract class Player
 	
 	public void updateHand(Card card)
 	{
-		
+		cards.add(card);
 		
 	} //end updateHand
 	
@@ -44,5 +44,11 @@ public abstract class Player
 		return color;
 		
 	} //end getColor
+	
+	public Set<Card> getHand()
+	{
+		return cards;
+		
+	} //end getHand
 	
 } //end Player

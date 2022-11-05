@@ -1,6 +1,7 @@
 package Tests;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Assert;
@@ -180,5 +181,20 @@ public class GameSetupTests
 		Assert.assertTrue(solutionCount >= 15);
 				
 	} //end testAnswer
+	
+	@Test
+	public void testDistribute()
+	{
+		Set<Player> testList = board.getPlayerList();
+		
+		int answerCount = 0;
+		
+		for(Player curPlayer : testList)
+		{
+			Assert.assertTrue(curPlayer.getHand().size() <= (NUM_CARDS/NUM_PLAYERS) + 1);
+			
+		} //end for
+				
+	} //end testDistribute
 		
 } //end GameSetupTests
