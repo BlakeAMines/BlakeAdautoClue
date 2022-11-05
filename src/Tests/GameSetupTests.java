@@ -187,16 +187,68 @@ public class GameSetupTests
 	@Test
 	public void testDistribute()
 	{
+		Set<Card> testSet = new HashSet<>();
+		
+		board.initialize();
+		
+		boolean foundHuman = false;
+		boolean foundComputer = false;
+		boolean foundRoom = false;
+		boolean foundWeapon = false;
+		
+		
 		List<Player> testPlayers = board.getPlayerList();
-				
+						
 		int foundCount = 0;
 		
 		for(int i = 0; i < testPlayers.size(); i++)
-		{
+		{			
+			for(int j = 0; j < testPlayers.get(i).getHand().size(); j++)
+			{
+				testSet.add(testPlayers.get(i).getHand().get(j));
+				
+				//Found the human card handed out
+				if(testPlayers.get(i).getHand().get(j).getName().equals("Regular Person"))
+				{
+					foundHuman = true;
+					
+				} //end nested if
+				
+				//Found a computer card handed out
+				else if(testPlayers.get(i).getHand().get(j).getName().equals("Friendly Person"))
+				{
+					foundComputer = true;
+					
+				} //end nested else if
+				
+				//Found a room card handed out
+				else if(testPlayers.get(i).getHand().get(j).getName().equals("Garden Room"))
+				{
+					foundRoom = true;
+					
+				} //end nested else if
+				
+				//Found a weapon card handed out
+				else if(testPlayers.get(i).getHand().get(j).getName().equals("Metal Ball"))
+				{
+					foundWeapon = true;
+					
+				} //end nested else if
+				
+			} //end nested for
+						
 			Assert.assertTrue(testPlayers.get(i).getHand().size() <= (NUM_CARDS/NUM_PLAYERS + 1) && testPlayers.get(i).getHand().size() >= (NUM_CARDS/NUM_PLAYERS) );
-			
+						
 		} //end for
-								
+			
+		//Because Sets cannot have duplicates, this ensures that no card was dealt twice
+		Assert.assertEquals(testSet.size(), NUM_CARDS);
+		
+		Assert.assertTrue(foundHuman);	
+		Assert.assertTrue(foundComputer);	
+		Assert.assertTrue(foundRoom);	
+		Assert.assertTrue(foundWeapon);	
+							
 	} //end testDistribute
 		
 } //end GameSetupTests
