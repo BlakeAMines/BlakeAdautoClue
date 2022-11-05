@@ -3,9 +3,11 @@ package clueGame;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -48,8 +50,8 @@ public class Board
 				
 		loadConfigFiles();
 		
-		//shuffleDeck();
-		//generateAnswer();
+		generateAnswer();
+		shuffleDeck();
 		
 	} //end initialize
 	
@@ -523,13 +525,40 @@ public class Board
 	
 	public void shuffleDeck()
 	{
-		
+		Collections.shuffle(gameDeck);
 		
 	} //end shuffleDeck
 	
+	public void generateAnswer()
+	{
+		int numRooms = 9;
+		int numPeople = 6;
+		int numWeapons = 6;
+		
+		int random;
+		
+		Card getRoom;
+		Card getPerson;
+		Card getWeapon;
+		
+		Random rand = new Random(0);
+		
+		random = rand.nextInt(numRooms);
+		getRoom = gameDeck.get(random);
+		
+		random = rand.nextInt(numPeople);
+		getPerson = gameDeck.get(random + numRooms);
+		
+		random = rand.nextInt(numWeapons);
+		getWeapon = gameDeck.get(random + numRooms + numPeople);	
+		
+		theAnswer = new Solution(getRoom, getPerson, getWeapon);
+		
+	} //end generateAnswer
+	
 	public Solution getAnswer()
 	{
-		return new Solution();
+		return theAnswer;
 		
 	} //end getAnswer
 	

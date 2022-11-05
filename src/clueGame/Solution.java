@@ -6,10 +6,18 @@ public class Solution
 	private Card person;
 	private Card weapon;
 	
-	public boolean equals()
+	public Solution(Card initRoom, Card initPerson, Card initWeapon)
 	{
-		return false;
+		room = initRoom;
+		person = initPerson;
+		weapon = initWeapon;
 		
+	} //end constructor
+	
+	public boolean equals(Solution target)
+	{
+		return(room.equals(target.getRoom()) && person.equals(target.getPerson()) && weapon.equals(target.getWeapon()));
+
 	} //end equals
 	
 	public Card getRoom()

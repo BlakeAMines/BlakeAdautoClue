@@ -42,6 +42,7 @@ public class GameSetupTests
 		boolean foundComputer = false;
 		boolean foundHuman = false;
 		
+		//This runs through the gameBoard's playerList and ensures that predetermined characters are in the txts
 		for(Player curPlayer : testList)
 		{
 			if(curPlayer.getName().equals("Frightening Person"))
@@ -64,6 +65,7 @@ public class GameSetupTests
 			
 		} //end for
 		
+		//If the people are found, these result as true
 		Assert.assertTrue(foundComputer);
 		Assert.assertTrue(foundHuman);
 		
@@ -75,9 +77,11 @@ public class GameSetupTests
 		boolean foundPlayer = false;
 		boolean foundComputer = false;
 		boolean foundWeapon = false;
+		boolean foundRoom = false;
 		
 		ArrayList<Card> testDeck = board.getGameDeck();
 				
+		//This runs through the board's deck of cards to ensure that preselected cards are found
 		for(int i = 0; i < testDeck.size(); i++)
 		{
 			if(testDeck.get(i).getName().equals("Regular Person"))
@@ -97,14 +101,23 @@ public class GameSetupTests
 				foundWeapon = true;
 				
 			} //end nested else if
+			
+			else if(testDeck.get(i).getName().equals("Observatory"))
+			{
+				foundRoom = true;
+				
+			} //end else if
 					
 		} //end for 
 		
+		//This ensures that the right amount of cards are added to the deck
 		Assert.assertEquals(NUM_CARDS, testDeck.size());
 		
+		//This tests if each of the predetermined cards are found in the deck
 		Assert.assertTrue(foundPlayer);
 		Assert.assertTrue(foundComputer);
 		Assert.assertTrue(foundWeapon);
+		Assert.assertTrue(foundRoom);
 				
 	} //end gameDeckTest
 	
@@ -113,11 +126,20 @@ public class GameSetupTests
 	{
 		int equalsScore = 0;
 		
-		ArrayList<Card> testDeck = board.getGameDeck();
+		ArrayList<Card> testDeck = new ArrayList<>();
+		
+		//This sets the current deck to a copy of the board's deck before shuffling
+		for(int i = 0; i < board.getGameDeck().size(); i++)
+		{
+			testDeck.add(board.getGameDeck().get(i));
+
+		} //end for
 		
 		board.shuffleDeck();
 		
-		for(int i = 0; i < testDeck.size(); i++)
+		//After shuffling the deck, this compares the previous deck and the shuffled deck
+		//This ensures that the cards are diffferent
+		for(int i = 0; i < board.getGameDeck().size(); i++)
 		{
 			if(testDeck.get(i).equals(board.getGameDeck().get(i)))
 			{
@@ -128,7 +150,7 @@ public class GameSetupTests
 		} //end for
 		
 		//This ensures that no more than half of the deck slots are the same between two shuffled decks
-		Assert.assertTrue(equalsScore < (testDeck.size() / 2));
+		Assert.assertTrue(equalsScore < (board.getGameDeck().size() / 2));
 		
 	} //end testShuffle
 	
@@ -139,8 +161,8 @@ public class GameSetupTests
 		
 		Solution testAnswer;
 		
-		testAnswer = board.getAnswer();
-		
+		testAnswer = board.getAnswer();			
+				
 		for(int i = 0; i < 10000; i ++)
 		{
 			board.shuffleDeck();

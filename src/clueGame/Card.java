@@ -8,7 +8,7 @@ public class Card
 	
 	public boolean equals(Card target)
 	{
-		return false;
+		return (cardName.equals(target.getName()));
 		
 	} //end equals
 	
