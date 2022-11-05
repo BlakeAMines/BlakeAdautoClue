@@ -27,6 +27,8 @@ public class Board
 	
 	private ArrayList<Card> gameDeck;
 	
+	private Solution theAnswer;
+	
 	static Board theInstance = new Board();
 	
 	private Board()
@@ -45,6 +47,9 @@ public class Board
 		visited = new HashSet<>();
 				
 		loadConfigFiles();
+		
+		//shuffleDeck();
+		//generateAnswer();
 		
 	} //end initialize
 	
@@ -515,5 +520,17 @@ public class Board
 		} //end if
 		
 	} //end makeCard
+	
+	public void shuffleDeck()
+	{
+		
+		
+	} //end shuffleDeck
+	
+	public Solution getAnswer()
+	{
+		return new Solution();
+		
+	} //end getAnswer
 	
 } //end Board

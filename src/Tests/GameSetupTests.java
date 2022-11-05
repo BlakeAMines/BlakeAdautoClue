@@ -11,6 +11,7 @@ import clueGame.Board;
 import clueGame.Card;
 import clueGame.HumanPlayer;
 import clueGame.Player;
+import clueGame.Solution;
 
 public class GameSetupTests 
 {
@@ -107,4 +108,32 @@ public class GameSetupTests
 				
 	} //end gameDeckTest
 	
+	@Test
+	public void testAnswer()
+	{
+		int solutionCount = 0;
+		
+		Solution testAnswer;
+		
+		testAnswer = board.getAnswer();
+		
+		for(int i = 0; i < 10000; i ++)
+		{
+			board.shuffleDeck();
+			board.getAnswer();
+			
+			if(testAnswer.equals(board.getAnswer()))
+			{
+				solutionCount++;
+				
+			} //end nested if
+			
+		} //end for
+		
+		//There is a 1/342 chance that a predetermined solution will be picked
+		//Given 10,000 trials, there should be about 31 of the same solution, so I chose to test for about half of that
+		Assert.assertTrue(solutionCount >= 15);
+				
+	} //end testAnswer
+		
 } //end GameSetupTests
