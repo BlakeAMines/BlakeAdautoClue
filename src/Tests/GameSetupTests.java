@@ -47,10 +47,12 @@ public class GameSetupTests
 		//This runs through the gameBoard's playerList and ensures that predetermined characters are in the txts
 		for(int i = 0; i < testList.size(); i++)
 		{
+			//These if and else if statements check for certain characters which should be in the playerList
 			if(testList.get(i).getName().equals("Frightening Person"))
 			{
 				foundComputer = true;
 				
+				//These assertions check that the player's information is read in correctly
 				Assert.assertEquals(testList.get(i).getType(), "Computer");
 				Assert.assertEquals(testList.get(i).getColor(), "Red");
 				
@@ -60,6 +62,7 @@ public class GameSetupTests
 			{
 				foundHuman = true;
 				
+				//These assertions check that the player's information is read in correctly
 				Assert.assertEquals(testList.get(i).getType(), "Human");
 				Assert.assertEquals(testList.get(i).getColor(), "Green");
 				
@@ -86,6 +89,8 @@ public class GameSetupTests
 		//This runs through the board's deck of cards to ensure that preselected cards are found
 		for(int i = 0; i < testDeck.size(); i++)
 		{
+			//These if and else if statements check for certain cards in the deck
+			//They ensure that specific weapons, rooms, and different kinds of players are included
 			if(testDeck.get(i).getName().equals("Regular Person"))
 			{
 				foundPlayer = true;
@@ -159,16 +164,17 @@ public class GameSetupTests
 	@Test
 	public void testAnswer()
 	{
+		//solutionCount keeps track of how many times a randomly generated answer matches a predetermined one
 		int solutionCount = 0;
 		
 		Solution testAnswer;
-		
-		testAnswer = board.getAnswer();		
-				
+	
+		testAnswer = board.getAnswer();	
+
 		for(int i = 0; i < 10000; i ++)
 		{
 			board.initialize();
-				
+
 			if(testAnswer.equals(board.getAnswer()))
 			{
 				solutionCount++;
@@ -201,10 +207,12 @@ public class GameSetupTests
 						
 		int foundCount = 0;
 		
+		//This runs through the playerList, then each player's hand to ensure cards are dealt properly
 		for(int i = 0; i < testPlayers.size(); i++)
 		{			
 			for(int j = 0; j < testPlayers.get(i).getHand().size(); j++)
 			{
+				//This adds a player's hand to another set to ensure cards are dealt once
 				testSet.add(testPlayers.get(i).getHand().get(j));
 				
 				//Found the human card handed out
