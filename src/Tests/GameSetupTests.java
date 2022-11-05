@@ -179,23 +179,24 @@ public class GameSetupTests
 		
 		//There is a 1/342 chance that a predetermined solution will be picked
 		//Given 10,000 trials, there should be about 31 of the same solution, so I chose to test for about half of that
-		Assert.assertTrue(solutionCount >= 15);
+		//The 100 ensures that the random chance is happening randomly and not every time
+		Assert.assertTrue(solutionCount >= 15 && solutionCount < 100);
 				
 	} //end testAnswer
 	
 	@Test
 	public void testDistribute()
 	{
-		List<Player> testList = board.getPlayerList();
+		List<Player> testPlayers = board.getPlayerList();
 				
-		int answerCount = 0;
+		int foundCount = 0;
 		
-		for(int i = 0; i < testList.size(); i++)
+		for(int i = 0; i < testPlayers.size(); i++)
 		{
-			Assert.assertTrue(testList.get(i).getHand().size() <= (NUM_CARDS/NUM_PLAYERS + 1) && testList.get(i).getHand().size() >= (NUM_CARDS/NUM_PLAYERS) );
+			Assert.assertTrue(testPlayers.get(i).getHand().size() <= (NUM_CARDS/NUM_PLAYERS + 1) && testPlayers.get(i).getHand().size() >= (NUM_CARDS/NUM_PLAYERS) );
 			
 		} //end for
-						
+								
 	} //end testDistribute
 		
 } //end GameSetupTests
