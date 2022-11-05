@@ -109,6 +109,30 @@ public class GameSetupTests
 	} //end gameDeckTest
 	
 	@Test
+	public void testShuffle()
+	{
+		int equalsScore = 0;
+		
+		ArrayList<Card> testDeck = board.getGameDeck();
+		
+		board.shuffleDeck();
+		
+		for(int i = 0; i < testDeck.size(); i++)
+		{
+			if(testDeck.get(i).equals(board.getGameDeck().get(i)))
+			{
+				equalsScore++;
+				
+			} //end nested if
+			
+		} //end for
+		
+		//This ensures that no more than half of the deck slots are the same between two shuffled decks
+		Assert.assertTrue(equalsScore < (testDeck.size() / 2));
+		
+	} //end testShuffle
+	
+	@Test
 	public void testAnswer()
 	{
 		int solutionCount = 0;
