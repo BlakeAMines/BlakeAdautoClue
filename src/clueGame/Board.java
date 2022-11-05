@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
@@ -25,7 +26,7 @@ public class Board
 	private Set<BoardCell> targets;
 	private Set<BoardCell> visited;
 	
-	private Set<Player> playerList;
+	private ArrayList<Player> playerList;
 	
 	private ArrayList<Card> gameDeck;
 	
@@ -43,16 +44,16 @@ public class Board
 	public void initialize()
 	{		
 		roomMap = new HashMap<>();
-		playerList = new HashSet<>();
+		playerList = new ArrayList<>();
 		gameDeck = new ArrayList<>();
 		targets = new HashSet<>();
 		visited = new HashSet<>();
 				
 		loadConfigFiles();
-		
 		generateAnswer();
 		shuffleDeck();
 		distributeDeck();
+		
 		
 	} //end initialize
 	
@@ -502,7 +503,7 @@ public class Board
 		
 	} //end getNumRows
 	
-	public Set<Player> getPlayerList()
+	public List<Player> getPlayerList()
 	{
 		return playerList;
 		
@@ -565,7 +566,11 @@ public class Board
 	
 	public void distributeDeck()
 	{
-		
+		for(int i = 0; i < gameDeck.size(); i++)
+		{
+			playerList.get(i % playerList.size()).updateHand(gameDeck.get(i));
+			
+		} //end for 
 		
 	} //end distributeDeck
 	

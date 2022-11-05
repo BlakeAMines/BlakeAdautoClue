@@ -2,6 +2,7 @@ package Tests;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.Assert;
@@ -37,30 +38,30 @@ public class GameSetupTests
 	@Test
 	public void playerInfo()
 	{
-		Set<Player> testList = board.getPlayerList();
+		List<Player> testList = board.getPlayerList();
 		Assert.assertEquals(6, testList.size());
 		
 		boolean foundComputer = false;
 		boolean foundHuman = false;
 		
 		//This runs through the gameBoard's playerList and ensures that predetermined characters are in the txts
-		for(Player curPlayer : testList)
+		for(int i = 0; i < testList.size(); i++)
 		{
-			if(curPlayer.getName().equals("Frightening Person"))
+			if(testList.get(i).getName().equals("Frightening Person"))
 			{
 				foundComputer = true;
 				
-				Assert.assertEquals(curPlayer.getType(), "Computer");
-				Assert.assertEquals(curPlayer.getColor(), "Red");
+				Assert.assertEquals(testList.get(i).getType(), "Computer");
+				Assert.assertEquals(testList.get(i).getColor(), "Red");
 				
 			} //end nested if
 			
-			else if(curPlayer.getName().equals("Regular Person"))
+			else if(testList.get(i).getName().equals("Regular Person"))
 			{
 				foundHuman = true;
 				
-				Assert.assertEquals(curPlayer.getType(), "Human");
-				Assert.assertEquals(curPlayer.getColor(), "Green");
+				Assert.assertEquals(testList.get(i).getType(), "Human");
+				Assert.assertEquals(testList.get(i).getColor(), "Green");
 				
 			} //end nested else if
 			
@@ -185,16 +186,16 @@ public class GameSetupTests
 	@Test
 	public void testDistribute()
 	{
-		Set<Player> testList = board.getPlayerList();
-		
+		List<Player> testList = board.getPlayerList();
+				
 		int answerCount = 0;
 		
-		for(Player curPlayer : testList)
+		for(int i = 0; i < testList.size(); i++)
 		{
-			Assert.assertTrue(curPlayer.getHand().size() <= (NUM_CARDS/NUM_PLAYERS) + 1);
+			Assert.assertTrue(testList.get(i).getHand().size() <= (NUM_CARDS/NUM_PLAYERS + 1) && testList.get(i).getHand().size() >= (NUM_CARDS/NUM_PLAYERS) );
 			
 		} //end for
-				
+						
 	} //end testDistribute
 		
 } //end GameSetupTests

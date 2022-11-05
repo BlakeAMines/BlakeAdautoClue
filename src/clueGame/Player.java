@@ -1,5 +1,7 @@
 package clueGame;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public abstract class Player 
@@ -7,7 +9,7 @@ public abstract class Player
 	private String name;
 	private String color;
 	
-	private Set<Card> cards;
+	private ArrayList<Card> cards;
 	
 	private String curRoomName;	
 	private int curRow;
@@ -15,6 +17,8 @@ public abstract class Player
 	
 	protected Player(String initName, String initColor, String initRoomName)
 	{
+		cards = new ArrayList<Card>();
+		
 		name = initName;
 		color = initColor;
 		curRoomName = initRoomName;
@@ -45,7 +49,7 @@ public abstract class Player
 		
 	} //end getColor
 	
-	public Set<Card> getHand()
+	public List<Card> getHand()
 	{
 		return cards;
 		
