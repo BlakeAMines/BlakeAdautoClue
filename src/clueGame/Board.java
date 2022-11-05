@@ -541,7 +541,7 @@ public class Board
 		Card getPerson;
 		Card getWeapon;
 		
-		Random rand = new Random(0);
+		Random rand = new Random();
 		
 		random = rand.nextInt(numRooms);
 		getRoom = gameDeck.get(random);

@@ -161,13 +161,12 @@ public class GameSetupTests
 		
 		Solution testAnswer;
 		
-		testAnswer = board.getAnswer();			
+		testAnswer = board.getAnswer();		
 				
 		for(int i = 0; i < 10000; i ++)
 		{
-			board.shuffleDeck();
-			board.getAnswer();
-			
+			board.initialize();
+				
 			if(testAnswer.equals(board.getAnswer()))
 			{
 				solutionCount++;
