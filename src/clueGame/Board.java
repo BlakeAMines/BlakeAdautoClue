@@ -9,8 +9,6 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
-import Experiment.TestBoardCell;
-
 public class Board 
 {
 	private BoardCell[][] grid;
@@ -42,6 +40,7 @@ public class Board
 	{		
 		roomMap = new HashMap<>();
 		playerList = new HashSet<>();
+		gameDeck = new ArrayList<>();
 		targets = new HashSet<>();
 		visited = new HashSet<>();
 				
@@ -108,8 +107,8 @@ public class Board
 				//Splits the string of room info into individual pieces
 				readInfo = curLine.split(", ", 0);
 				
-				if(!readInfo[0].contains("//"))
-				{
+				if(!curLine.contains("//"))
+				{					
 					if(readInfo[0].equals("Room") || readInfo[0].equals("Space"))
 					{
 						roomLabels = readInfo[2].toCharArray();
@@ -135,16 +134,20 @@ public class Board
 						} //end nested else
 						
 					} //end nested else if
-					
-					else
+										
+					else if(!readInfo[0].equals("Weapon"))
 					{
 						BadConfigFormatException badSetup = new BadConfigFormatException(setupConfigFile);
 						badSetup.logError("Incorrect Setup Formatting");
 						throw badSetup;
 						
 					} //end nested if
-															
+
+					makeCard(readInfo[1], readInfo[0]);		
+					
 				} //end nested if
+				
+				
 									
 			} while(fileIn.hasNextLine()); //end do while
 			
@@ -499,8 +502,18 @@ public class Board
 		
 	public ArrayList<Card> getGameDeck()
 	{
-		return new ArrayList<Card>();
+		return gameDeck;
 		
 	} //end getGameDeck
+	
+	public void makeCard(String cardName, String cardType)
+	{
+		if(!cardType.equals("Space"))
+		{
+			gameDeck.add(new Card(cardName, cardType));
+			
+		} //end if
+		
+	} //end makeCard
 	
 } //end Board

@@ -13,7 +13,7 @@ public abstract class Player
 	private int curRow;
 	private int curColumn;
 	
-	public Player(String initName, String initColor, String initRoomName)
+	protected Player(String initName, String initColor, String initRoomName)
 	{
 		name = initName;
 		color = initColor;
@@ -38,5 +38,11 @@ public abstract class Player
 		return null;
 		
 	} //end getType
+	
+	public String getColor()
+	{
+		return color;
+		
+	} //end getColor
 	
 } //end Player

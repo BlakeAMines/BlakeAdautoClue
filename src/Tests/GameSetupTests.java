@@ -48,6 +48,7 @@ public class GameSetupTests
 				foundComputer = true;
 				
 				Assert.assertEquals(curPlayer.getType(), "Computer");
+				Assert.assertEquals(curPlayer.getColor(), "Red");
 				
 			} //end nested if
 			
@@ -56,6 +57,7 @@ public class GameSetupTests
 				foundHuman = true;
 				
 				Assert.assertEquals(curPlayer.getType(), "Human");
+				Assert.assertEquals(curPlayer.getColor(), "Green");
 				
 			} //end nested else if
 			
@@ -69,10 +71,40 @@ public class GameSetupTests
 	@Test
 	public void gameDeckTest()
 	{
+		boolean foundPlayer = false;
+		boolean foundComputer = false;
+		boolean foundWeapon = false;
+		
 		ArrayList<Card> testDeck = board.getGameDeck();
 				
+		for(int i = 0; i < testDeck.size(); i++)
+		{
+			if(testDeck.get(i).getName().equals("Regular Person"))
+			{
+				foundPlayer = true;
+				
+			} //end nested if			
+			
+			else if(testDeck.get(i).getName().equals("Glowing Person"))
+			{
+				foundComputer = true;
+				
+			} //end else if
+			
+			else if(testDeck.get(i).getName().equals("Priceless Dinosaur Tooth"))
+			{
+				foundWeapon = true;
+				
+			} //end nested else if
+					
+		} //end for 
+		
 		Assert.assertEquals(NUM_CARDS, testDeck.size());
 		
+		Assert.assertTrue(foundPlayer);
+		Assert.assertTrue(foundComputer);
+		Assert.assertTrue(foundWeapon);
+				
 	} //end gameDeckTest
 	
 } //end GameSetupTests
