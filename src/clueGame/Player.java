@@ -26,7 +26,7 @@ public abstract class Player
 		
 	} //end constructor
 	
-	public Card disproveSuggestion()
+	public Card disproveSuggestion(Solution suggestion)
 	{
 		return new Card("Empty", "Empty");
 		
