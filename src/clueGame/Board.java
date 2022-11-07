@@ -614,7 +614,7 @@ public class Board
 	
 	public boolean checkAccusation(Solution accusation)
 	{
-		return false;
+		return theAnswer.equals(accusation);
 		
 	} //end checkAccusation;
 	
