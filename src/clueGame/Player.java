@@ -28,7 +28,22 @@ public abstract class Player
 	
 	public Card disproveSuggestion(Solution suggestion)
 	{
-		return new Card("Empty", "Empty");
+		Card response = null;
+		Card checkCard;
+		
+		for(int i = 0; i < cards.size(); i++)
+		{
+			checkCard = cards.get(i);
+			
+			if(checkCard.equals(suggestion.getRoom()) || checkCard.equals(suggestion.getPerson()) || checkCard.equals(suggestion.getWeapon()))
+			{
+				response = checkCard;
+				
+			} //end nested if
+			
+		} //end for
+		
+		return response;
 		
 	} //end disproveSuggestion
 	
