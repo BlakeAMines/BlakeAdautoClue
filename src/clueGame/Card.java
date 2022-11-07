@@ -8,12 +8,12 @@ public class Card
 	
 	public boolean equals(Card target)
 	{
-		return (cardName.equals(target.getName()));
+		return (cardName.equals(target.getName()) && cardType.equals(target.getType()));
 		
 	} //end equals
 	
 	public Card(String initCardName, String initCardType)
-	{
+	{		
 		cardName = initCardName;
 		
 		if(initCardType.equals("Room"))
@@ -22,7 +22,7 @@ public class Card
 			
 		} //end if
 		
-		else if(initCardType.equals("Person"))
+		else if(initCardType.equals("Player"))
 		{
 			cardType = CardType.PERSON;
 			
@@ -41,5 +41,11 @@ public class Card
 		return cardName;
 		
 	} //end getName
+	
+	public CardType getType()
+	{
+		return cardType;
+		
+	} //end getType
 	
 } //end card

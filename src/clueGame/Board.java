@@ -19,6 +19,10 @@ public class Board
 	private int numRows;
 	private int numColumns;
 	
+	private int numRooms;
+	private int numPeople;
+	private int numWeapons;
+	
 	private String layoutConfigFile;
 	private String setupConfigFile;
 	
@@ -28,7 +32,8 @@ public class Board
 	
 	private ArrayList<Player> playerList;
 	
-	private ArrayList<Card> gameDeck;
+	private ArrayList<Card> cleanDeck;
+ 	private ArrayList<Card> gameDeck;
 	
 	private Solution theAnswer;
 	
@@ -46,17 +51,22 @@ public class Board
 		roomMap = new HashMap<>();
 		playerList = new ArrayList<>();
 		gameDeck = new ArrayList<>();
+		cleanDeck = new ArrayList<>();
 		targets = new HashSet<>();
 		visited = new HashSet<>();
 				
+		numRooms = 0;
+		numPeople = 0;
+		numWeapons = 0;
+		
 		loadConfigFiles();
 		generateAnswer();
+		loadCleanDeck();
 		shuffleDeck();
 		distributeDeck();
 		
-		
 	} //end initialize
-	
+
 	public static Board getInstance()
 	{
 		return theInstance;
@@ -103,7 +113,7 @@ public class Board
 		//readInfo has info from the text file as seperate strings ([0] is title, [1] is name, etc.)
 		String[] readInfo;
 		char[] roomLabels;
-
+		
 		//FileReader and Scanner for file input
 		FileReader readFile = new FileReader(setupConfigFile);
 		try (Scanner fileIn = new Scanner(readFile)) 
@@ -120,6 +130,12 @@ public class Board
 				{					
 					if(readInfo[0].equals("Room") || readInfo[0].equals("Space"))
 					{
+						if(readInfo[0].equals("Room"))
+						{
+							numRooms++;
+							
+						} //end nested if
+						
 						roomLabels = readInfo[2].toCharArray();
 						
 						Room tempRoom = new Room(readInfo[1]);
@@ -130,6 +146,8 @@ public class Board
 					
 					else if(readInfo[0].equals("Player"))
 					{
+						numPeople++;
+						
 						if(readInfo[4].equals("Human"))
 						{
 							playerList.add(new HumanPlayer(readInfo[1], readInfo[2], readInfo[3]));
@@ -143,21 +161,25 @@ public class Board
 						} //end nested else
 						
 					} //end nested else if
-										
-					else if(!readInfo[0].equals("Weapon"))
+						
+					else if(readInfo[0].equals("Weapon"))
+					{
+						numWeapons++;
+						
+					} //end else if
+					
+					else
 					{
 						BadConfigFormatException badSetup = new BadConfigFormatException(setupConfigFile);
 						badSetup.logError("Incorrect Setup Formatting");
 						throw badSetup;
 						
 					} //end nested if
-
+										
 					makeCard(readInfo[1], readInfo[0]);		
 					
 				} //end nested if
-				
-				
-									
+							
 			} while(fileIn.hasNextLine()); //end do while
 			
 		} //end try
@@ -515,6 +537,12 @@ public class Board
 		
 	} //end getGameDeck
 	
+	public ArrayList<Card> getCleanDeck()
+	{
+		return cleanDeck;
+		
+	} //end getCleanDeck
+	
 	public void makeCard(String cardName, String cardType)
 	{
 		if(!cardType.equals("Space"))
@@ -532,29 +560,29 @@ public class Board
 	} //end shuffleDeck
 	
 	public void generateAnswer()
-	{
-		int numRooms = 9;
-		int numPeople = 6;
-		int numWeapons = 6;
-		
+	{		
 		int random;
 		
 		Card getRoom;
 		Card getPerson;
 		Card getWeapon;
-		
+				
 		Random rand = new Random();
 		
-		random = rand.nextInt(numRooms);
-		getRoom = gameDeck.get(random);
+		if(numRooms > 0 && numPeople > 0 && numWeapons > 0)
+		{		
+			random = rand.nextInt(numRooms);
+			getRoom = gameDeck.get(random);
+			
+			random = rand.nextInt(numPeople);
+			getPerson = gameDeck.get(random + numRooms);
+			
+			random = rand.nextInt(numWeapons);
+			getWeapon = gameDeck.get(random + numRooms + numPeople);	
+			
+			theAnswer = new Solution(getRoom, getPerson, getWeapon);
 		
-		random = rand.nextInt(numPeople);
-		getPerson = gameDeck.get(random + numRooms);
-		
-		random = rand.nextInt(numWeapons);
-		getWeapon = gameDeck.get(random + numRooms + numPeople);	
-		
-		theAnswer = new Solution(getRoom, getPerson, getWeapon);
+		} //end if
 		
 	} //end generateAnswer
 	
@@ -566,12 +594,38 @@ public class Board
 	
 	public void distributeDeck()
 	{
-		for(int i = 0; i < gameDeck.size(); i++)
+		if(numRooms > 0 && numPeople > 0 && numWeapons > 0)
 		{
-			playerList.get(i % playerList.size()).updateHand(gameDeck.get(i));
-			
-		} //end for 
+			for(int i = 0; i < gameDeck.size(); i++)
+			{
+				playerList.get(i % playerList.size()).updateHand(gameDeck.get(i));
+				
+			} //end nested for 
+		
+		} //end if
 		
 	} //end distributeDeck
+	
+	public boolean checkAccusation(Solution accusation)
+	{
+		return false;
+		
+	} //end checkAccusation;
+	
+	public Card handleSuggestion(Solution testSuggestion)
+	{
+		return new Card("Empty", "Empty");
+		
+	} //end handleSuggestion
+	
+	public void loadCleanDeck()
+	{
+		for(int i = 0; i < gameDeck.size(); i++)
+		{
+			cleanDeck.add(gameDeck.get(i));
+			
+		} //end for
+		
+	} //end loadCleanDeck
 	
 } //end Board
