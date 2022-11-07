@@ -52,7 +52,6 @@ public class GameplayTests
 		testPlayer.updateHand(goodRoom);
 		testPlayer.updateHand(goodPerson);
 		testPlayer.updateHand(goodWeapon);
-		testPlayer.updateHand(badRoom);
 		
 		Solution testAnswer = new Solution(goodRoom, goodPerson, goodWeapon);
 		board.setAnswer(testAnswer);
@@ -116,9 +115,41 @@ public class GameplayTests
 	@Test
 	public void testDisproveThree()
 	{
-		Solution testSuggest = new Solution(goodRoom, goodPerson, goodWeapon);
+		int roomCount = 0;
+		int personCount = 0;
+		int weaponCount = 0;
 		
-		Assert.assertTrue(false);
+		Card curCard;
+		
+		Solution testSuggest = new Solution(goodRoom, goodPerson, goodWeapon);
+
+		for(int i = 0; i < 90; i++)
+		{
+			curCard = testPlayer.disproveSuggestion(testSuggest);
+			
+			if(curCard.equals(goodRoom))
+			{
+				roomCount++;
+				
+			} //end nested if
+			
+			else if(curCard.equals(goodPerson))
+			{
+				personCount++;
+				
+			} //end nested else if
+			
+			else if(curCard.equals(goodWeapon))
+			{
+				weaponCount++;
+				
+			} //end nested else if
+			
+		} //end for
+		
+		Assert.assertTrue(roomCount >= 15);
+		Assert.assertTrue(personCount >= 15);
+		Assert.assertTrue(weaponCount >= 15);
 		
 	} //end testDisprove
 	

@@ -2,6 +2,7 @@ package clueGame;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 public abstract class Player 
@@ -16,6 +17,8 @@ public abstract class Player
 	private int curRow;
 	private int curColumn;
 	
+	private Random rand;
+	
 	protected Player(String initName, String initColor, String initRoomName)
 	{
 		cards = new ArrayList<Card>();
@@ -24,6 +27,8 @@ public abstract class Player
 		color = initColor;
 		curRoomName = initRoomName;
 		
+		rand = new Random();
+		
 	} //end constructor
 	
 	public Card disproveSuggestion(Solution suggestion)
@@ -31,17 +36,50 @@ public abstract class Player
 		Card response = null;
 		Card checkCard;
 		
+		ArrayList<Card> matchCards = new ArrayList<>();
+		
 		for(int i = 0; i < cards.size(); i++)
 		{
 			checkCard = cards.get(i);
 			
-			if(checkCard.equals(suggestion.getRoom()) || checkCard.equals(suggestion.getPerson()) || checkCard.equals(suggestion.getWeapon()))
+			if(checkCard.equals(suggestion.getRoom()))
 			{
-				response = checkCard;
+				matchCards.add(suggestion.getRoom());
+				
+			} //end nested if
+			
+			if(checkCard.equals(suggestion.getPerson()))
+			{
+				matchCards.add(suggestion.getPerson());
+				
+			} //end nested if
+			
+			if(checkCard.equals(suggestion.getWeapon()))
+			{
+				matchCards.add(suggestion.getWeapon());
 				
 			} //end nested if
 			
 		} //end for
+		
+		if(!matchCards.isEmpty())
+		{
+			if(matchCards.size() == 1)
+			{
+				response = matchCards.get(0);
+				
+			} //end nested if
+			
+			else
+			{
+				int random;
+				random = rand.nextInt(matchCards.size());
+				
+				response = matchCards.get(random);
+				
+			} //end nested else
+			
+		} //end if
 		
 		return response;
 		
