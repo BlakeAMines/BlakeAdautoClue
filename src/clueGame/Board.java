@@ -60,8 +60,8 @@ public class Board
 		numWeapons = 0;
 		
 		loadConfigFiles();
-		generateAnswer();
 		loadCleanDeck();
+		generateAnswer();
 		shuffleDeck();
 		distributeDeck();
 		
@@ -572,13 +572,13 @@ public class Board
 		if(numRooms > 0 && numPeople > 0 && numWeapons > 0)
 		{		
 			random = rand.nextInt(numRooms);
-			getRoom = gameDeck.get(random);
+			getRoom = cleanDeck.get(random);
 			
 			random = rand.nextInt(numPeople);
-			getPerson = gameDeck.get(random + numRooms);
+			getPerson = cleanDeck.get(random + numRooms);
 			
 			random = rand.nextInt(numWeapons);
-			getWeapon = gameDeck.get(random + numRooms + numPeople);	
+			getWeapon = cleanDeck.get(random + numRooms + numPeople);	
 			
 			theAnswer = new Solution(getRoom, getPerson, getWeapon);
 		
@@ -605,6 +605,12 @@ public class Board
 		} //end if
 		
 	} //end distributeDeck
+	
+	public void setAnswer(Solution newAnswer)
+	{
+		theAnswer = newAnswer;
+		
+	} //end setAnswer
 	
 	public boolean checkAccusation(Solution accusation)
 	{
