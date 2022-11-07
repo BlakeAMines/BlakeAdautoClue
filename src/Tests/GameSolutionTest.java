@@ -156,7 +156,11 @@ public class GameSolutionTest
 	@Test
 	public void handleSuggestionTest()
 	{
+		Card wrongCard = new Card("Empty", "Empty");
 		
+		Solution testSuggest = new Solution(wrongCard, wrongCard, wrongCard);
+		
+		Assert.assertNull(board.handleSuggestion(testSuggest));
 		
 	} //end handleSuggestionTest
 	
