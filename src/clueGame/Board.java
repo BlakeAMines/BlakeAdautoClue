@@ -620,6 +620,14 @@ public class Board
 	
 	public Card handleSuggestion(Solution testSuggestion)
 	{
+		int start = 0;
+		
+		for(int i = start; i < playerList.size(); i++)
+		{
+			playerList.get(i % playerList.size()).disproveSuggestion(testSuggestion);
+			
+		} //end for
+		
 		return new Card("Empty", "Empty");
 		
 	} //end handleSuggestion
