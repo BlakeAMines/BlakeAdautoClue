@@ -8,7 +8,7 @@ public class Card
 	
 	public boolean equals(Card target)
 	{
-		return (cardName.equals(target.getName()));
+		return (cardName.equals(target.getName()) && cardType.equals(target.getType()));
 		
 	} //end equals
 	
@@ -41,5 +41,11 @@ public class Card
 		return cardName;
 		
 	} //end getName
+	
+	public CardType getType()
+	{
+		return cardType;
+		
+	} //end getType
 	
 } //end card

@@ -10,6 +10,7 @@ public abstract class Player
 	private String color;
 	
 	private ArrayList<Card> cards;
+	private Set<Card> seenCards;
 	
 	private String curRoomName;	
 	private int curRow;
@@ -24,6 +25,18 @@ public abstract class Player
 		curRoomName = initRoomName;
 		
 	} //end constructor
+	
+	public Card disproveSuggestion()
+	{
+		return new Card("Empty", "Empty");
+		
+	} //end disproveSuggestion
+	
+	public void updateSeen(Card card)
+	{
+		
+		
+	} //end updateSeen
 	
 	public void updateHand(Card card)
 	{

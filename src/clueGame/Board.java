@@ -28,7 +28,8 @@ public class Board
 	
 	private ArrayList<Player> playerList;
 	
-	private ArrayList<Card> gameDeck;
+	private ArrayList<Card> cleanDeck;
+ 	private ArrayList<Card> gameDeck;
 	
 	private Solution theAnswer;
 	
@@ -51,12 +52,12 @@ public class Board
 				
 		loadConfigFiles();
 		generateAnswer();
+		//cleanDeck = gameDeck;
 		shuffleDeck();
 		distributeDeck();
 		
-		
 	} //end initialize
-	
+
 	public static Board getInstance()
 	{
 		return theInstance;
@@ -515,6 +516,12 @@ public class Board
 		
 	} //end getGameDeck
 	
+	public ArrayList<Card> getCleanDeck()
+	{
+		return cleanDeck;
+		
+	} //end getCleanDeck
+	
 	public void makeCard(String cardName, String cardType)
 	{
 		if(!cardType.equals("Space"))
@@ -573,5 +580,17 @@ public class Board
 		} //end for 
 		
 	} //end distributeDeck
+	
+	public boolean checkAccusation(Solution accusation)
+	{
+		return false;
+		
+	} //end checkAccusation;
+	
+	public Card handleSuggestion(Solution testSuggestion)
+	{
+		return new Card("Empty", "Empty");
+		
+	} //end handleSuggestion
 	
 } //end Board

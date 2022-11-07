@@ -11,7 +11,6 @@ import org.junit.jupiter.api.BeforeAll;
 
 import clueGame.Board;
 import clueGame.Card;
-import clueGame.HumanPlayer;
 import clueGame.Player;
 import clueGame.Solution;
 
@@ -133,16 +132,7 @@ public class GameSetupTests
 	{
 		int equalsScore = 0;
 		
-		ArrayList<Card> testDeck = new ArrayList<>();
-		
-		//This sets the current deck to a copy of the board's deck before shuffling
-		for(int i = 0; i < board.getGameDeck().size(); i++)
-		{
-			testDeck.add(board.getGameDeck().get(i));
-
-		} //end for
-		
-		board.shuffleDeck();
+		ArrayList<Card> testDeck = board.getCleanDeck();
 		
 		//After shuffling the deck, this compares the previous deck and the shuffled deck
 		//This ensures that the cards are diffferent

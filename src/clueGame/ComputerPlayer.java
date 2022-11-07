@@ -15,4 +15,16 @@ public class ComputerPlayer extends Player
 		
 	} //end getType
 	
+	public Solution makeSuggestion()
+	{
+		return new Solution(new Card("Empty", "Empty"), new Card("Empty", "Empty"), new Card("Empty", "Empty"));
+		
+	} //end makeAccusation
+	
+	public BoardCell selectTarget()
+	{
+		return new BoardCell(-1, -1, '!');
+		
+	} //eng selectTarget
+	
 } //end ComputerPlayer
