@@ -13,7 +13,7 @@ public class Card
 	} //end equals
 	
 	public Card(String initCardName, String initCardType)
-	{
+	{		
 		cardName = initCardName;
 		
 		if(initCardType.equals("Room"))
@@ -22,7 +22,7 @@ public class Card
 			
 		} //end if
 		
-		else if(initCardType.equals("Person"))
+		else if(initCardType.equals("Player"))
 		{
 			cardType = CardType.PERSON;
 			

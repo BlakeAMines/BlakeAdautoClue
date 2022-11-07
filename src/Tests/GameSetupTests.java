@@ -146,6 +146,8 @@ public class GameSetupTests
 			
 		} //end for
 		
+		System.out.println(equalsScore);
+		
 		//This ensures that no more than half of the deck slots are the same between two shuffled decks
 		Assert.assertTrue(equalsScore < (board.getGameDeck().size() / 2));
 		
@@ -172,6 +174,8 @@ public class GameSetupTests
 			} //end nested if
 			
 		} //end for
+		
+		System.out.println(solutionCount);
 		
 		//There is a 1/342 chance that a predetermined solution will be picked
 		//Given 10,000 trials, there should be about 31 of the same solution, so I chose to test for about half of that
