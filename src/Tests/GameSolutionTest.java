@@ -10,7 +10,7 @@ import clueGame.ComputerPlayer;
 import clueGame.Player;
 import clueGame.Solution;
 
-public class GameplayTests 
+public class GameSolutionTest 
 {
 	private static Board board;
 	
@@ -95,7 +95,7 @@ public class GameplayTests
 	} //end badWeaponAccuseTest
 	
 	@Test
-	public void testDisproveOne()
+	public void disproveOneTest()
 	{
 		Solution testSuggest = new Solution(goodRoom, badPerson, badWeapon);
 		
@@ -104,7 +104,7 @@ public class GameplayTests
 	} //end testDisprove
 	
 	@Test
-	public void testDisproveNone()
+	public void disproveNoneTest()
 	{
 		Solution testSuggest = new Solution(badRoom, badPerson, badWeapon);
 		
@@ -113,7 +113,7 @@ public class GameplayTests
 	} //end testDisprove
 	
 	@Test
-	public void testDisproveThree()
+	public void disproveThreeTest()
 	{
 		int roomCount = 0;
 		int personCount = 0;
@@ -152,5 +152,12 @@ public class GameplayTests
 		Assert.assertTrue(weaponCount >= 15);
 		
 	} //end testDisprove
+	
+	@Test
+	public void handleSuggestionTest()
+	{
+		
+		
+	} //end handleSuggestionTest
 	
 } //end GameplayTests
