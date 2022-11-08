@@ -129,13 +129,75 @@ public class ComputerAITest
 	} //end testCreate
 	
 	@Test
-	public void roomTargetsTest()
+	public void unseenRoomTargetsTest()
 	{
+		testPlayer.setCoords(3, 18);
+		
+		board.calcTargets(board.getCell(3, 18), 1);
+		
+		Assert.assertTrue(testPlayer.selectTarget(board.getTargets()).equals(board.getCell(1, 20)));
+		
+	} //end unseenTargetsTest
+	
+	@Test
+	public void seenRoomTargetsTest()
+	{
+		int hadRoom = 0;
+		
 		testPlayer.setCoords(3, 4);
 		
 		board.calcTargets(board.getCell(3, 4), 1);
 		
-		Assert.assertTrue(testPlayer.selectTarget(board.getTargets()).equals(board.getCell(2, 1)));
+		for(int i = 0; i < 20; i++)
+		{
+			if(testPlayer.selectTarget(board.getTargets()).equals(board.getCell(2, 1)))
+			{
+				hadRoom++;
+				
+			} //end nested if
+			
+		} //end for
+		
+		Assert.assertTrue(hadRoom >= 4 && hadRoom <= 10);
+		
+	} //end seenRoomTargetsTest
+	
+	@Test
+	public void randomTargetsTest()
+	{
+		int cellCounter1 = 0;
+		int cellCounter2 = 0;
+		int cellCounter3 = 0;
+		
+		testPlayer.setCoords(5, 7);
+		
+		board.calcTargets(board.getCell(5, 7), 4);
+		
+		for(int i = 0; i < 40; i++)
+		{
+			if(testPlayer.selectTarget(board.getTargets()).equals(board.getCell(4, 4)))
+			{
+				cellCounter1++;
+				
+			} //end nested if
+			
+			if(testPlayer.selectTarget(board.getTargets()).equals(board.getCell(4, 10)))
+			{
+				cellCounter2++;
+				
+			} //end nested if
+			
+			if(testPlayer.selectTarget(board.getTargets()).equals(board.getCell(6, 10)))
+			{
+				cellCounter3++;
+				
+			} //end nested if
+			
+		} //end for
+		
+		Assert.assertTrue(cellCounter1 >= 5 && cellCounter1 <= 20);
+		Assert.assertTrue(cellCounter2 >= 5 && cellCounter1 <= 20);
+		Assert.assertTrue(cellCounter3 >= 5 && cellCounter1 <= 20);
 		
 	} //end randomTargetsTest
 	

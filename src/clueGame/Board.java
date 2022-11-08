@@ -664,4 +664,22 @@ public class Board
 		
 	} //end setGameDeck
 	
+	public Card cellToCard(BoardCell cell)
+	{
+		Card searchRoom = new Card(roomMap.get(cell.getInitial()).getName(), "Room");
+		
+		for(int i = 0; i < gameDeck.size(); i++)
+		{
+			if(gameDeck.get(i).equals(searchRoom))
+			{
+				return gameDeck.get(i);
+				
+			} //end nested if
+			
+		} //end for
+		
+		return null;
+		
+	} //end cellToCard
+	
 } //end Board

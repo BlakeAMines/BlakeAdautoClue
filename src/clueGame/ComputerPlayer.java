@@ -60,15 +60,28 @@ public class ComputerPlayer extends Player
 	
 	public BoardCell selectTarget(Set<BoardCell> targets)
 	{
-		BoardCell pickCell = null;
+		int counter = 0;
+		int random = rand.nextInt(targets.size());
+
+		for(BoardCell curCell : targets)
+		{
+			if(curCell.isRoomCenter() && !seenCards.contains(Board.getInstance().cellToCard(curCell)))
+			{				
+				return curCell;
+				
+			} //end nested if
+			
+		} //end for
 		
 		for(BoardCell curCell : targets)
 		{
-			if(curCell.isRoomCenter())
+			if(counter == random)
 			{
 				return curCell;
 				
 			} //end nested if
+			
+			counter++;
 			
 		} //end for
 		
