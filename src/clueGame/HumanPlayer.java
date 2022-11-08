@@ -9,9 +9,9 @@ public class HumanPlayer extends Player
 	} //end Constructor
 	
 	@Override
-	public String getType()
+	public boolean isHuman()
 	{
-		return "Human";
+		return true;
 		
 	} //end getType
 

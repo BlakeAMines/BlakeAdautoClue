@@ -103,11 +103,7 @@ public abstract class Player
 		
 	} //end getName;
 	
-	public String getType()
-	{
-		return null;
-		
-	} //end getType
+	public abstract boolean isHuman();
 	
 	public String getColor()
 	{

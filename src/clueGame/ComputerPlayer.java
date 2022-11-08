@@ -9,9 +9,9 @@ public class ComputerPlayer extends Player
 	} //end Constructor	
 	
 	@Override
-	public String getType()
+	public boolean isHuman()
 	{
-		return "Computer";
+		return false;
 		
 	} //end getType
 	

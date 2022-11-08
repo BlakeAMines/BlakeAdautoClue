@@ -52,7 +52,7 @@ public class GameSetupTests
 				foundComputer = true;
 				
 				//These assertions check that the player's information is read in correctly
-				Assert.assertEquals(testList.get(i).getType(), "Computer");
+				Assert.assertFalse(testList.get(i).isHuman());
 				Assert.assertEquals(testList.get(i).getColor(), "Red");
 				
 			} //end nested if
@@ -62,7 +62,7 @@ public class GameSetupTests
 				foundHuman = true;
 				
 				//These assertions check that the player's information is read in correctly
-				Assert.assertEquals(testList.get(i).getType(), "Human");
+				Assert.assertTrue(testList.get(i).isHuman());
 				Assert.assertEquals(testList.get(i).getColor(), "Green");
 				
 			} //end nested else if
@@ -198,9 +198,7 @@ public class GameSetupTests
 		
 		
 		List<Player> testPlayers = board.getPlayerList();
-						
-		int foundCount = 0;
-		
+
 		//This runs through the playerList, then each player's hand to ensure cards are dealt properly
 		for(int i = 0; i < testPlayers.size(); i++)
 		{			

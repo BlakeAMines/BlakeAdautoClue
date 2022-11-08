@@ -650,4 +650,10 @@ public class Board
 		
 	} //end loadCleanDeck
 	
+	public void setPlayerList(ArrayList<Player> newList)
+	{
+		playerList = newList;
+		
+	} //end setPlayerList
+	
 } //end Board

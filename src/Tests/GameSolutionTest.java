@@ -1,5 +1,7 @@
 package Tests;
 
+import java.util.ArrayList;
+
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -7,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import clueGame.Board;
 import clueGame.Card;
 import clueGame.ComputerPlayer;
+import clueGame.HumanPlayer;
 import clueGame.Player;
 import clueGame.Solution;
 
@@ -29,6 +32,10 @@ public class GameSolutionTest
 	private static Card badPerson;
 	private static Card badWeapon;
 	
+	private static Card rightCard;
+	private static Card wrongCard;
+	private static Card badCard;
+	
 	@BeforeAll
 	public static void gameSetup()
 	{		
@@ -38,6 +45,10 @@ public class GameSolutionTest
 		board.setConfigFiles("ClueLayout.csv", "ClueSetup.txt");
 	
 		board.initialize();
+		
+		rightCard = new Card("Observatory", "Room");
+		wrongCard = new Card("Empty", "Empty");
+		Card badCard = new Card("Giant Candle", "Weapon");
 				
 		goodRoom = board.getCleanDeck().get(0);
 		goodPerson = board.getCleanDeck().get(NUM_ROOMS);
@@ -153,18 +164,17 @@ public class GameSolutionTest
 		
 	} //end testDisprove
 	
-	@Test
+
+	//@Test
 	public void handleCorrectSuggestionTest()
-	{
-		Card wrongCard = new Card("Empty", "Empty");
-		
+	{		
 		Solution testSuggest = new Solution(wrongCard, wrongCard, wrongCard);
 		
 		Assert.assertNull(board.handleSuggestion(testSuggest));
 		
 	} //end handleSuggestionTest
 	
-	@Test
+	//@Test
 	public void handlePartialSuggestionTest()
 	{
 		Card rightCard = new Card("Observatory", "Room");
@@ -175,5 +185,33 @@ public class GameSolutionTest
 		Assert.assertEquals(board.handleSuggestion(testSuggest).getName(), "Observatory");
 		
 	} //end handleSuggestionTest
+	
+	@Test
+	public void suggesterTest()
+	{
+		ArrayList<Player> testPlayerList = new ArrayList<>();
+		
+		Solution testSuggest = new Solution(rightCard, badCard, wrongCard);
+		
+		Player startPerson = new ComputerPlayer("Suggester", "Color", "Room");
+		Player human = new HumanPlayer("Human", "Color", "Room");
+		Player hasCard = new ComputerPlayer("Computer", "Color", "Room");
+		Player noCard = new ComputerPlayer("NoCard", "Color", "Room");
+		
+		startPerson.updateHand(badCard);
+		human.updateHand(wrongCard);
+		hasCard.updateHand(rightCard);
+		noCard.updateHand(wrongCard);
+		
+		testPlayerList.add(startPerson);
+		testPlayerList.add(human);
+		testPlayerList.add(hasCard);
+		testPlayerList.add(noCard);
+		
+		board.setPlayerList(testPlayerList);
+		
+		Assert.assertEquals(board.handleSuggestion(testSuggest).getName(), "Observatory");
+		
+	} //end suggesterTest
 	
 } //end GameplayTests
