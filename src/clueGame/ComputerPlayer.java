@@ -1,6 +1,7 @@
 package clueGame;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 public class ComputerPlayer extends Player
 {
@@ -57,8 +58,20 @@ public class ComputerPlayer extends Player
 		
 	} //end makeAccusation
 	
-	public BoardCell selectTarget()
+	public BoardCell selectTarget(Set<BoardCell> targets)
 	{
+		BoardCell pickCell = null;
+		
+		for(BoardCell curCell : targets)
+		{
+			if(curCell.isRoomCenter())
+			{
+				return curCell;
+				
+			} //end nested if
+			
+		} //end for
+		
 		return new BoardCell(-1, -1, '!');
 		
 	} //eng selectTarget

@@ -133,7 +133,9 @@ public class ComputerAITest
 	{
 		testPlayer.setCoords(3, 4);
 		
-		Assert.assertTrue(testPlayer.selectTarget().equals(board.getCell(2, 1)));
+		board.calcTargets(board.getCell(3, 4), 1);
+		
+		Assert.assertTrue(testPlayer.selectTarget(board.getTargets()).equals(board.getCell(2, 1)));
 		
 	} //end randomTargetsTest
 	
