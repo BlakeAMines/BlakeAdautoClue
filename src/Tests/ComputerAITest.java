@@ -51,9 +51,7 @@ public class ComputerAITest
 		unseenRoom = board.getCleanDeck().get(1);
 		unseenPerson = board.getCleanDeck().get(NUM_ROOMS + 1);
 		unseenWeapon = board.getCleanDeck().get(NUM_ROOMS + NUM_PLAYERS + 1);
-		
-		testPlayer = new ComputerPlayer("TestName", "TestColor", "TestRoom");
-		
+			
 		tempDeck = new ArrayList<>();
 		
 		tempDeck.add(seenRoom);
@@ -64,7 +62,10 @@ public class ComputerAITest
 		tempDeck.add(unseenWeapon);
 
 		board.setGameDeck(tempDeck);
+		board.loadCleanDeck();
 		board.shuffleDeck();
+		
+		testPlayer = new ComputerPlayer("TestName", "TestColor", "TestRoom");
 		
 		testPlayer.updateSeen(seenRoom);
 		testPlayer.updateSeen(seenPerson);

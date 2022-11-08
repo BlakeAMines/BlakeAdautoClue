@@ -642,6 +642,8 @@ public class Board
 	
 	public void loadCleanDeck()
 	{
+		cleanDeck.clear();
+		
 		for(int i = 0; i < gameDeck.size(); i++)
 		{
 			cleanDeck.add(gameDeck.get(i));

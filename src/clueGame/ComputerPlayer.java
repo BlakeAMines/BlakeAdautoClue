@@ -19,7 +19,27 @@ public class ComputerPlayer extends Player
 	
 	public Solution makeSuggestion()
 	{		
-		return new Solution(curRoom, new Card("Empty", "Empty"), new Card("Empty", "Empty"));
+		Card suggestPerson = null;
+		
+		boolean foundPerson = false;
+		boolean foundWeapon = false;
+		
+		int random;
+		
+		while(!foundPerson)
+		{
+			random = rand.nextInt(unseenCards.size());
+			
+			if(unseenCards.get(random).getType().equals(CardType.PERSON))
+			{
+				suggestPerson = unseenCards.get(random);
+				foundPerson = true;
+				
+			} //end if
+			
+		} //end while
+		
+		return new Solution(curRoom, suggestPerson, new Card("Empty", "Empty"));
 		
 	} //end makeAccusation
 	

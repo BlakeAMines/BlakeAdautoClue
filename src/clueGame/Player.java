@@ -12,14 +12,14 @@ public abstract class Player
 	private String color;
 	
 	private ArrayList<Card> cards;
-	private Set<Card> seenCards;
-	private ArrayList<Card> unseenCards;
+	protected Set<Card> seenCards;
+	protected ArrayList<Card> unseenCards;
 	
 	protected Card curRoom;	
 	private int curRow;
 	private int curColumn;
 	
-	private Random rand;
+	protected Random rand;
 	
 	protected Player(String initName, String initColor, String initRoomName)
 	{
@@ -33,10 +33,11 @@ public abstract class Player
 		
 		rand = new Random();
 		
-		ArrayList<Card> gameDeck = Board.getInstance().getCleanDeck();
-		for(int i = 0; i < gameDeck.size(); i++)
+		ArrayList<Card> tempGameDeck = Board.getInstance().getCleanDeck();
+		for(int i = 0; i < tempGameDeck.size(); i++)
 		{
-			unseenCards.add(gameDeck.get(i));
+			System.out.println(tempGameDeck.get(i).getName());
+			unseenCards.add(tempGameDeck.get(i));
 			
 		} //end for 
 		
