@@ -22,8 +22,18 @@ public class GameSolutionTest
 	public static final int NUM_PLAYERS = 6;
 	public static final int NUM_WEAPONS = 6;
 	
+	private static ArrayList<Player> testPlayerList;
+	
+	//This Player is used to test Player functions
 	private static Player testPlayer;
 	
+	//These players are used to test Board functions
+	private static Player startPerson;
+	private static Player human;
+	private static Player hasCard;
+	private static Player noCard;
+	
+	//These cards are used to create solutions and suggestions
 	private static Card goodRoom;
 	private static Card goodPerson;
 	private static Card goodWeapon;
@@ -31,11 +41,7 @@ public class GameSolutionTest
 	private static Card badRoom;
 	private static Card badPerson;
 	private static Card badWeapon;
-	
-	private static Card rightCard;
-	private static Card wrongCard;
-	private static Card badCard;
-	
+		
 	@BeforeAll
 	public static void gameSetup()
 	{		
@@ -45,11 +51,8 @@ public class GameSolutionTest
 		board.setConfigFiles("ClueLayout.csv", "ClueSetup.txt");
 	
 		board.initialize();
-		
-		rightCard = new Card("Observatory", "Room");
-		wrongCard = new Card("Empty", "Empty");
-		Card badCard = new Card("Giant Candle", "Weapon");
-				
+						
+		//This uses an unshuffled deck to set cards to known values
 		goodRoom = board.getCleanDeck().get(0);
 		goodPerson = board.getCleanDeck().get(NUM_ROOMS);
 		goodWeapon = board.getCleanDeck().get(NUM_ROOMS + NUM_PLAYERS);
@@ -58,17 +61,40 @@ public class GameSolutionTest
 		badPerson = board.getCleanDeck().get(NUM_ROOMS + 1);
 		badWeapon = board.getCleanDeck().get(NUM_ROOMS + NUM_PLAYERS + 1);
 		
+		//This creates a testPlayer whose hand has three known cards
 		testPlayer = new ComputerPlayer("Name", "PieceColor", "StartRoom");
 				
 		testPlayer.updateHand(goodRoom);
 		testPlayer.updateHand(goodPerson);
 		testPlayer.updateHand(goodWeapon);
 		
+		//This creates four players with predetermined hands and puts them in a list to test correct behavior with a given solution
+		startPerson = new ComputerPlayer("Suggester", "Color", "Room");
+		human = new HumanPlayer("Human", "Color", "Room");
+		hasCard = new ComputerPlayer("Computer", "Color", "Room");
+		noCard = new ComputerPlayer("NoCard", "Color", "Room");
+		
+		startPerson.updateHand(goodPerson);
+		human.updateHand(badRoom);
+		hasCard.updateHand(goodRoom);
+		noCard.updateHand(badRoom);
+		
+		testPlayerList = new ArrayList<>();
+				
+		testPlayerList.add(startPerson);
+		testPlayerList.add(human);
+		testPlayerList.add(hasCard);
+		testPlayerList.add(noCard);
+		
+		board.setPlayerList(testPlayerList);
+		
+		//This sets the board's answer to a known combination of cards
 		Solution testAnswer = new Solution(goodRoom, goodPerson, goodWeapon);
 		board.setAnswer(testAnswer);
 		
 	} //end gameSetup
 	
+	//This test is responsible for ensuring the Board can pattern-match a correct accusation to the answer
 	@Test
 	public void goodAccusationTest()
 	{
@@ -78,6 +104,7 @@ public class GameSolutionTest
 		
 	} //end checkAccusationTest
 	
+	//These three tests ensure that all three of the cards must be correct for the board to accept the accusation
 	@Test
 	public void badRoomAccuseTest()
 	{
@@ -105,6 +132,7 @@ public class GameSolutionTest
 				
 	} //end badWeaponAccuseTest
 	
+	//This ensures a player will present a card if they can
 	@Test
 	public void disproveOneTest()
 	{
@@ -114,6 +142,7 @@ public class GameSolutionTest
 		
 	} //end testDisprove
 	
+	//This ensures that null is returned when a player cannot present any card
 	@Test
 	public void disproveNoneTest()
 	{
@@ -123,6 +152,7 @@ public class GameSolutionTest
 		
 	} //end testDisprove
 	
+	//This ensures that the player randomly presents a card when they have more than one available
 	@Test
 	public void disproveThreeTest()
 	{
@@ -132,9 +162,9 @@ public class GameSolutionTest
 		
 		Card curCard;
 		
-		Solution testSuggest = new Solution(goodRoom, goodPerson, goodWeapon);
+		Solution testSuggest = new Solution(goodRoom, goodPerson, badWeapon);
 
-		for(int i = 0; i < 90; i++)
+		for(int i = 0; i < 60; i++)
 		{
 			curCard = testPlayer.disproveSuggestion(testSuggest);
 			
@@ -158,59 +188,41 @@ public class GameSolutionTest
 			
 		} //end for
 		
+		//These tests ensure that the player presents possible cards randomly while holding those not in a suggestion
 		Assert.assertTrue(roomCount >= 15);
 		Assert.assertTrue(personCount >= 15);
-		Assert.assertTrue(weaponCount >= 15);
+		Assert.assertEquals(weaponCount, 0);
 		
 	} //end testDisprove
 	
-
-	//@Test
+	//This ensures that the Board returns null when no players have a card in a suggestion
+	//Note: no players in the Board's temporary playerList have badPerson in their hand
+	@Test
 	public void handleCorrectSuggestionTest()
 	{		
-		Solution testSuggest = new Solution(wrongCard, wrongCard, wrongCard);
+		Solution testSuggest = new Solution(badPerson, badPerson, badPerson);
 		
 		Assert.assertNull(board.handleSuggestion(testSuggest));
 		
 	} //end handleSuggestionTest
 	
-	//@Test
+	//This ensures that if a player has a card from a suggestion, they will present it
+	@Test
 	public void handlePartialSuggestionTest()
 	{
-		Card rightCard = new Card("Observatory", "Room");
-		Card wrongCard = new Card("Empty", "Empty");
+		Solution testSuggest = new Solution(goodRoom, badPerson, badPerson);
 		
-		Solution testSuggest = new Solution(rightCard, wrongCard, wrongCard);
-		
-		Assert.assertEquals(board.handleSuggestion(testSuggest).getName(), "Observatory");
+		Assert.assertEquals(board.handleSuggestion(testSuggest).getName(), goodRoom.getName());
 		
 	} //end handleSuggestionTest
 	
+	//This ensures that the player who makes a suggestion will not present a card
 	@Test
 	public void suggesterTest()
 	{
-		ArrayList<Player> testPlayerList = new ArrayList<>();
-		
-		Solution testSuggest = new Solution(rightCard, badCard, wrongCard);
-		
-		Player startPerson = new ComputerPlayer("Suggester", "Color", "Room");
-		Player human = new HumanPlayer("Human", "Color", "Room");
-		Player hasCard = new ComputerPlayer("Computer", "Color", "Room");
-		Player noCard = new ComputerPlayer("NoCard", "Color", "Room");
-		
-		startPerson.updateHand(badCard);
-		human.updateHand(wrongCard);
-		hasCard.updateHand(rightCard);
-		noCard.updateHand(wrongCard);
-		
-		testPlayerList.add(startPerson);
-		testPlayerList.add(human);
-		testPlayerList.add(hasCard);
-		testPlayerList.add(noCard);
-		
-		board.setPlayerList(testPlayerList);
-		
-		Assert.assertEquals(board.handleSuggestion(testSuggest).getName(), "Observatory");
+		Solution testSuggest = new Solution(goodRoom, goodPerson, goodWeapon);
+						
+		Assert.assertEquals(board.handleSuggestion(testSuggest).getName(), goodRoom.getName());
 		
 	} //end suggesterTest
 	
