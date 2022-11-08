@@ -75,7 +75,7 @@ public class GameSolutionTest
 		noCard = new ComputerPlayer("NoCard", "Color", "Room");
 		
 		startPerson.updateHand(goodPerson);
-		human.updateHand(badRoom);
+		human.updateHand(badWeapon);
 		hasCard.updateHand(goodRoom);
 		noCard.updateHand(badRoom);
 		
@@ -225,5 +225,16 @@ public class GameSolutionTest
 		Assert.assertEquals(board.handleSuggestion(testSuggest).getName(), goodRoom.getName());
 		
 	} //end suggesterTest
+	
+	@Test
+	public void orderTest()
+	{
+		//For this Solution, the hasCard and noCard both have cards in the suggestion
+		//The hasCard's card should be returned as it comes first in the order
+		Solution testSuggest = new Solution(goodRoom, badRoom, badPerson);
+		
+		Assert.assertEquals(board.handleSuggestion(testSuggest).getName(), goodRoom.getName());
+		
+	} //end orderTest
 	
 } //end GameplayTests

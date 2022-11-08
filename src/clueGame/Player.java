@@ -1,6 +1,7 @@
 package clueGame;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -13,7 +14,7 @@ public abstract class Player
 	private ArrayList<Card> cards;
 	private Set<Card> seenCards;
 	
-	private String curRoomName;	
+	private Card curRoom;	
 	private int curRow;
 	private int curColumn;
 	
@@ -21,7 +22,8 @@ public abstract class Player
 	
 	protected Player(String initName, String initColor, String initRoomName)
 	{
-		cards = new ArrayList<Card>();
+		cards = new ArrayList<>();
+		seenCards = new HashSet<>();
 		
 		name = initName;
 		color = initColor;
@@ -87,7 +89,7 @@ public abstract class Player
 	
 	public void updateSeen(Card card)
 	{
-		
+		seenCards.add(card);
 		
 	} //end updateSeen
 	
@@ -116,5 +118,11 @@ public abstract class Player
 		return cards;
 		
 	} //end getHand
+	
+	public void setRoom(Card setRoom)
+	{
+		curRoom = setRoom;
+		
+	} //end setRoom
 	
 } //end Player
