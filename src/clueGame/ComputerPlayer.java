@@ -20,6 +20,7 @@ public class ComputerPlayer extends Player
 	public Solution makeSuggestion()
 	{		
 		Card suggestPerson = null;
+		Card suggestWeapon = null;
 		
 		boolean foundPerson = false;
 		boolean foundWeapon = false;
@@ -29,17 +30,30 @@ public class ComputerPlayer extends Player
 		while(!foundPerson)
 		{
 			random = rand.nextInt(unseenCards.size());
-			
+
 			if(unseenCards.get(random).getType().equals(CardType.PERSON))
 			{
 				suggestPerson = unseenCards.get(random);
 				foundPerson = true;
 				
-			} //end if
+			} //end nested if
 			
 		} //end while
 		
-		return new Solution(curRoom, suggestPerson, new Card("Empty", "Empty"));
+		while(!foundWeapon)
+		{
+			random = rand.nextInt(unseenCards.size());
+			
+			if(unseenCards.get(random).getType().equals(CardType.WEAPON))
+			{
+				suggestWeapon = unseenCards.get(random);
+				foundWeapon = true;
+				
+			} //end nested if					
+			
+		} //end while
+				
+		return new Solution(curRoom, suggestPerson, suggestWeapon);
 		
 	} //end makeAccusation
 	

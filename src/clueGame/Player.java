@@ -36,7 +36,6 @@ public abstract class Player
 		ArrayList<Card> tempGameDeck = Board.getInstance().getCleanDeck();
 		for(int i = 0; i < tempGameDeck.size(); i++)
 		{
-			System.out.println(tempGameDeck.get(i).getName());
 			unseenCards.add(tempGameDeck.get(i));
 			
 		} //end for 

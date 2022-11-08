@@ -96,7 +96,7 @@ public class ComputerAITest
 	{
 		testPlayer.setRoom(seenRoom);
 		
-		Assert.assertTrue(testPlayer.makeSuggestion().getPerson().equals(unseenWeapon));
+		Assert.assertTrue(testPlayer.makeSuggestion().getWeapon().equals(unseenWeapon));
 		
 	} //end testCreate
 	
