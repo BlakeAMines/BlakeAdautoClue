@@ -154,13 +154,25 @@ public class GameSolutionTest
 	} //end testDisprove
 	
 	@Test
-	public void handleSuggestionTest()
+	public void handleCorrectSuggestionTest()
 	{
 		Card wrongCard = new Card("Empty", "Empty");
 		
 		Solution testSuggest = new Solution(wrongCard, wrongCard, wrongCard);
 		
 		Assert.assertNull(board.handleSuggestion(testSuggest));
+		
+	} //end handleSuggestionTest
+	
+	@Test
+	public void handlePartialSuggestionTest()
+	{
+		Card rightCard = new Card("Observatory", "Room");
+		Card wrongCard = new Card("Empty", "Empty");
+		
+		Solution testSuggest = new Solution(rightCard, wrongCard, wrongCard);
+		
+		Assert.assertEquals(board.handleSuggestion(testSuggest).getName(), "Observatory");
 		
 	} //end handleSuggestionTest
 	
