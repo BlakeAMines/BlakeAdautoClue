@@ -37,11 +37,5 @@ public class Solution
 		return weapon;
 		
 	} //end getRoom
-
-	public boolean contains(Card seenRoom) 
-	{
-		return false;
-		
-	}
 	
 } //end Solution

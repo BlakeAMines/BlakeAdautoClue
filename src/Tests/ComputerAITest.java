@@ -62,6 +62,9 @@ public class ComputerAITest
 		tempDeck.add(unseenRoom);
 		tempDeck.add(unseenPerson);
 		tempDeck.add(unseenWeapon);
+
+		board.setGameDeck(tempDeck);
+		board.shuffleDeck();
 		
 		testPlayer.updateSeen(seenRoom);
 		testPlayer.updateSeen(seenPerson);
@@ -78,5 +81,22 @@ public class ComputerAITest
 		
 	} //end testCreate
 	
+	@Test
+	public void testPerson()
+	{
+		testPlayer.setRoom(seenRoom);
+		
+		Assert.assertTrue(testPlayer.makeSuggestion().getPerson().equals(unseenPerson));
+		
+	} //end testCreate
+	
+	@Test
+	public void testWeapon()
+	{
+		testPlayer.setRoom(seenRoom);
+		
+		Assert.assertTrue(testPlayer.makeSuggestion().getPerson().equals(unseenWeapon));
+		
+	} //end testCreate
 	
 } //end ComputerAITest

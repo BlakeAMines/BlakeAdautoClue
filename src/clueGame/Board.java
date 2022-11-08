@@ -656,4 +656,10 @@ public class Board
 		
 	} //end setPlayerList
 	
+	public void setGameDeck(ArrayList<Card> newDeck)
+	{
+		gameDeck = newDeck;
+		
+	} //end setGameDeck
+	
 } //end Board

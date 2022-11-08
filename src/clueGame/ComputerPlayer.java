@@ -1,5 +1,7 @@
 package clueGame;
 
+import java.util.ArrayList;
+
 public class ComputerPlayer extends Player
 {
 	public ComputerPlayer(String initName, String initColor, String initRoomName) 
@@ -16,8 +18,8 @@ public class ComputerPlayer extends Player
 	} //end getType
 	
 	public Solution makeSuggestion()
-	{
-		return new Solution(new Card("Empty", "Empty"), new Card("Empty", "Empty"), new Card("Empty", "Empty"));
+	{		
+		return new Solution(curRoom, new Card("Empty", "Empty"), new Card("Empty", "Empty"));
 		
 	} //end makeAccusation
 	

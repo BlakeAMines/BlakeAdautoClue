@@ -13,8 +13,9 @@ public abstract class Player
 	
 	private ArrayList<Card> cards;
 	private Set<Card> seenCards;
+	private ArrayList<Card> unseenCards;
 	
-	private Card curRoom;	
+	protected Card curRoom;	
 	private int curRow;
 	private int curColumn;
 	
@@ -23,13 +24,21 @@ public abstract class Player
 	protected Player(String initName, String initColor, String initRoomName)
 	{
 		cards = new ArrayList<>();
+		unseenCards = new ArrayList<>();
 		seenCards = new HashSet<>();
 		
 		name = initName;
 		color = initColor;
-		curRoomName = initRoomName;
+		//curRoomName = initRoomName;
 		
 		rand = new Random();
+		
+		ArrayList<Card> gameDeck = Board.getInstance().getCleanDeck();
+		for(int i = 0; i < gameDeck.size(); i++)
+		{
+			unseenCards.add(gameDeck.get(i));
+			
+		} //end for 
 		
 	} //end constructor
 	
@@ -90,6 +99,7 @@ public abstract class Player
 	public void updateSeen(Card card)
 	{
 		seenCards.add(card);
+		unseenCards.remove(card);
 		
 	} //end updateSeen
 	
