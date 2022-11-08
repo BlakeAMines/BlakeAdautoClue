@@ -628,7 +628,7 @@ public class Board
 		{
 			disproveCard = playerList.get(i % playerList.size()).disproveSuggestion(testSuggestion);
 			
-			if(disproveCard != null)
+			if(disproveCard != null && i != start)
 			{
 				return disproveCard;
 				
