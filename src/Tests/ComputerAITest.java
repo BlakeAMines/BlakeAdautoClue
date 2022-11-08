@@ -31,6 +31,7 @@ public class ComputerAITest
 	private static Card unseenRoom;
 	private static Card unseenPerson;
 	private static Card unseenWeapon;
+	private static Card unseenWeapon2;
 	
 	private static ComputerPlayer testPlayer;
 	
@@ -51,6 +52,7 @@ public class ComputerAITest
 		unseenRoom = board.getCleanDeck().get(1);
 		unseenPerson = board.getCleanDeck().get(NUM_ROOMS + 1);
 		unseenWeapon = board.getCleanDeck().get(NUM_ROOMS + NUM_PLAYERS + 1);
+		unseenWeapon2 = board.getCleanDeck().get(NUM_ROOMS + NUM_PLAYERS + 2);
 			
 		tempDeck = new ArrayList<>();
 		
@@ -94,10 +96,45 @@ public class ComputerAITest
 	@Test
 	public void testWeapon()
 	{
+		int foundCount1 = 0;
+		int foundCount2 = 0;
+		
 		testPlayer.setRoom(seenRoom);
 		
-		Assert.assertTrue(testPlayer.makeSuggestion().getWeapon().equals(unseenWeapon));
+		Card tempWeapon = null;
+		
+		for(int i = 0; i < 10; i++)
+		{
+			if(testPlayer.makeSuggestion().getWeapon().equals(unseenWeapon))
+			{
+				foundCount1++;
+				
+			} //end nested if
+			
+			if(testPlayer.makeSuggestion().getWeapon().equals(unseenWeapon))
+			{
+				foundCount2++;
+				
+			} //end nested if
+			
+			tempWeapon = testPlayer.makeSuggestion().getWeapon();
+			
+		} //end for
+			
+		Assert.assertTrue(foundCount1 >= 2 && foundCount2 >= 2);
+		Assert.assertTrue(foundCount1 >= 2 && foundCount2 >= 2);	
+		
+		Assert.assertTrue(tempWeapon.equals(unseenWeapon) || tempWeapon.equals(unseenWeapon2));
 		
 	} //end testCreate
+	
+	@Test
+	public void roomTargetsTest()
+	{
+		testPlayer.setCoords(3, 4);
+		
+		Assert.assertTrue(testPlayer.selectTarget().equals(board.getCell(2, 1)));
+		
+	} //end randomTargetsTest
 	
 } //end ComputerAITest

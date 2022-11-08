@@ -135,4 +135,11 @@ public abstract class Player
 		
 	} //end setRoom
 	
+	public void setCoords(int setRow, int setCol)
+	{
+		curRow = setRow;
+		curColumn = setCol;
+		
+	} //end setCoords
+	
 } //end Player
