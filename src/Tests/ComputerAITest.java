@@ -30,8 +30,8 @@ public class ComputerAITest
 		
 	private static Card unseenRoom;
 	private static Card unseenPerson;
+	private static Card unseenPerson2;
 	private static Card unseenWeapon;
-	private static Card unseenWeapon2;
 	
 	private static ComputerPlayer testPlayer;
 	
@@ -44,29 +44,34 @@ public class ComputerAITest
 		board.setConfigFiles("ClueLayout.csv", "ClueSetup.txt");
 	
 		board.initialize();
-		
+
+		//This sets seen cards to known values
 		seenRoom = board.getCleanDeck().get(0);
 		seenPerson = board.getCleanDeck().get(NUM_ROOMS);
 		seenWeapon = board.getCleanDeck().get(NUM_ROOMS + NUM_PLAYERS);
 		
+		//This sets unseen cards to known values
 		unseenRoom = board.getCleanDeck().get(1);
 		unseenPerson = board.getCleanDeck().get(NUM_ROOMS + 1);
+		unseenPerson2 = board.getCleanDeck().get(NUM_ROOMS + 2);
 		unseenWeapon = board.getCleanDeck().get(NUM_ROOMS + NUM_PLAYERS + 1);
-		unseenWeapon2 = board.getCleanDeck().get(NUM_ROOMS + NUM_PLAYERS + 2);
 			
 		tempDeck = new ArrayList<>();
 		
+		//This creates a controlled gameDeck to keep predictable values and comparisons
 		tempDeck.add(seenRoom);
 		tempDeck.add(seenPerson);
 		tempDeck.add(seenWeapon);
 		tempDeck.add(unseenRoom);
 		tempDeck.add(unseenPerson);
+		tempDeck.add(unseenPerson2);
 		tempDeck.add(unseenWeapon);
-
+		
 		board.setGameDeck(tempDeck);
 		board.loadCleanDeck();
 		board.shuffleDeck();
 		
+		//This creates a new player with a known hand
 		testPlayer = new ComputerPlayer("TestName", "TestColor", "TestRoom");
 		
 		testPlayer.updateSeen(seenRoom);
@@ -75,6 +80,7 @@ public class ComputerAITest
 		
 	} //end gameSetup
 	
+	//This ensures that the player always includes their current room when making a suggestion
 	@Test
 	public void testRoom()
 	{
@@ -84,50 +90,54 @@ public class ComputerAITest
 		
 	} //end testCreate
 	
+	//This ensures that the player chooses a person who they have not seen yet and chooses randomly when they have multiple options
 	@Test
 	public void testPerson()
 	{
-		testPlayer.setRoom(seenRoom);
-		
-		Assert.assertTrue(testPlayer.makeSuggestion().getPerson().equals(unseenPerson));
-		
-	} //end testCreate
-	
-	@Test
-	public void testWeapon()
-	{
+		//These counters are used to check that both of the available selections are taken randomly
 		int foundCount1 = 0;
 		int foundCount2 = 0;
 		
 		testPlayer.setRoom(seenRoom);
 		
-		Card tempWeapon = null;
+		Card tempPerson = null;
 		
 		for(int i = 0; i < 10; i++)
 		{
-			if(testPlayer.makeSuggestion().getWeapon().equals(unseenWeapon))
+			if(testPlayer.makeSuggestion().getPerson().equals(unseenPerson))
 			{
 				foundCount1++;
 				
 			} //end nested if
 			
-			if(testPlayer.makeSuggestion().getWeapon().equals(unseenWeapon))
+			if(testPlayer.makeSuggestion().getPerson().equals(unseenPerson2))
 			{
 				foundCount2++;
 				
 			} //end nested if
 			
-			tempWeapon = testPlayer.makeSuggestion().getWeapon();
+			tempPerson = testPlayer.makeSuggestion().getPerson();
 			
 		} //end for
 			
-		Assert.assertTrue(foundCount1 >= 2 && foundCount2 >= 2);
-		Assert.assertTrue(foundCount1 >= 2 && foundCount2 >= 2);	
+		Assert.assertTrue(foundCount1 >= 2 && foundCount1 <= 8);
+		Assert.assertTrue(foundCount2 >= 2 && foundCount2 <= 8);	
 		
-		Assert.assertTrue(tempWeapon.equals(unseenWeapon) || tempWeapon.equals(unseenWeapon2));
+		Assert.assertTrue(tempPerson.equals(unseenPerson) || tempPerson.equals(unseenPerson2));
 		
 	} //end testCreate
 	
+	//This test is the same as testing for people but ensures that if only one weapon is available, it is selected
+	@Test
+	public void testWeapon()
+	{	
+		testPlayer.setRoom(seenRoom);
+				
+		Assert.assertTrue(testPlayer.makeSuggestion().getWeapon().equals(unseenWeapon));
+		
+	} //end testCreate
+	
+	//This ensures that if an unseen room is available, it is always selected
 	@Test
 	public void unseenRoomTargetsTest()
 	{
@@ -139,6 +149,7 @@ public class ComputerAITest
 		
 	} //end unseenTargetsTest
 	
+	//This ensures that rooms are selected randomly if they've been seen before
 	@Test
 	public void seenRoomTargetsTest()
 	{
@@ -148,7 +159,7 @@ public class ComputerAITest
 		
 		board.calcTargets(board.getCell(3, 4), 1);
 		
-		for(int i = 0; i < 20; i++)
+		for(int i = 0; i < 30; i++)
 		{
 			if(testPlayer.selectTarget(board.getTargets()).equals(board.getCell(2, 1)))
 			{
@@ -158,10 +169,11 @@ public class ComputerAITest
 			
 		} //end for
 		
-		Assert.assertTrue(hadRoom >= 4 && hadRoom <= 10);
+		Assert.assertTrue(hadRoom >= 1 && hadRoom <= 20);
 		
 	} //end seenRoomTargetsTest
 	
+	//This tests for the random selections of cells when no rooms are available
 	@Test
 	public void randomTargetsTest()
 	{
@@ -173,7 +185,7 @@ public class ComputerAITest
 		
 		board.calcTargets(board.getCell(5, 7), 4);
 		
-		for(int i = 0; i < 40; i++)
+		for(int i = 0; i < 45; i++)
 		{
 			if(testPlayer.selectTarget(board.getTargets()).equals(board.getCell(4, 4)))
 			{
@@ -195,9 +207,9 @@ public class ComputerAITest
 			
 		} //end for
 		
-		Assert.assertTrue(cellCounter1 >= 5 && cellCounter1 <= 20);
-		Assert.assertTrue(cellCounter2 >= 5 && cellCounter1 <= 20);
-		Assert.assertTrue(cellCounter3 >= 5 && cellCounter1 <= 20);
+		Assert.assertTrue(cellCounter1 >= 1 && cellCounter1 <= 30);
+		Assert.assertTrue(cellCounter2 >= 1 && cellCounter1 <= 30);
+		Assert.assertTrue(cellCounter3 >= 1 && cellCounter1 <= 30);
 		
 	} //end randomTargetsTest
 	
