@@ -1,5 +1,6 @@
 package Tests;
 
+import clueGame.GameControlPanel;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;

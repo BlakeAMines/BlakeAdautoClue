@@ -236,15 +236,15 @@ public class Board
 		grid = new BoardCell[numRows][numColumns];
 		
 		//Iterates through each index on the board grid
-		for(int i = 0; i < numRows; i++)
+		for(int curRow = 0; curRow < numRows; curRow++)
 		{
-			for(int j = 0; j < numColumns; j++)
+			for(int curColumn = 0; curColumn < numColumns; curColumn++)
 			{			
 				//Saves the string information as characters
-				cellInfo = saveRows.get(i)[j].toCharArray();
+				cellInfo = saveRows.get(curRow)[curColumn].toCharArray();
 				
 				//Creates a new boardCell with the given initial
-				grid[i][j] = new BoardCell(i, j, cellInfo[0]);
+				grid[curRow][curColumn] = new BoardCell(curRow, curColumn, cellInfo[0]);
 
 				if(!roomMap.containsKey(cellInfo[0]))
 				{
@@ -256,11 +256,11 @@ public class Board
 				
 				if(cellInfo.length > 1)
 				{
-					handleCellInfo(grid[i][j], cellInfo[0], cellInfo[1]);
+					handleCellInfo(grid[curRow][curColumn], cellInfo[0], cellInfo[1]);
 											
 				} //end nested if
 				
-				grid[i][j].handleAllow();
+				grid[curRow][curColumn].handleAllow();
 				
 			} //end nested for
 			
