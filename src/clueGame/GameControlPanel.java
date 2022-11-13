@@ -11,11 +11,11 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
 public class GameControlPanel extends JPanel
-{
-	Player curPlayer;
-	int curRoll;
-	String curGuess;
-	String curResult;
+{	
+	private JTextField nameVal;
+	private JTextField rollVal;
+	private JTextField guessVal;
+	private JTextField guessResult;
 	
 	public GameControlPanel() 
 	{
@@ -31,12 +31,12 @@ public class GameControlPanel extends JPanel
 		
 		turnPanel.setLayout(new GridLayout(2, 0));
 		turnPanel.add(new JLabel("Whose turn?"));
-		JTextField nameVal = new JTextField("Name");
+		nameVal = new JTextField("Name");
 		nameVal.setEditable(false);
 		turnPanel.add(nameVal);
 
 		rollPanel.add(new JLabel("Roll: "));
-		JTextField rollVal = new JTextField(Integer.toString(5));
+		rollVal = new JTextField(Integer.toString(5));
 		rollVal.setEditable(false);
 		rollPanel.add(rollVal);
 		
@@ -49,7 +49,7 @@ public class GameControlPanel extends JPanel
 		JPanel temp1x0 = new JPanel();
 		temp1x0.setBorder(new TitledBorder(new EtchedBorder(), "Guess"));
 		temp1x0.setLayout(new GridLayout(0, 1));
-		JTextField guessVal = new JTextField("I have no guess!");
+		guessVal = new JTextField("I have no guess!");
 		guessVal.setEditable(false);
 		temp1x0.add(guessVal);
 		inner0x2.add(temp1x0);
@@ -57,7 +57,7 @@ public class GameControlPanel extends JPanel
 		temp1x0 = new JPanel();
 		temp1x0.setBorder(new TitledBorder(new EtchedBorder(), "Guess Result"));
 		temp1x0.setLayout(new GridLayout(0, 1));
-		JTextField guessResult = new JTextField("So you have nothing?");
+		guessResult = new JTextField("So you have nothing?");
 		guessResult.setEditable(false);
 		temp1x0.add(guessResult);
 		inner0x2.add(temp1x0);
@@ -68,26 +68,21 @@ public class GameControlPanel extends JPanel
 	
 	public void setGuess(String guess)
 	{
-		curGuess = guess;
+		guessVal.setText(guess);
 		
 	} //end guess
 	
 	public void setPlayer(Player player)
 	{
-		curPlayer = player;
+		nameVal.setText(player.getName());
+		rollVal.setText(Integer.toString(player.getRoll()));
 		
 	} //end setPlayer
 	
 	public void setResult(String result)
 	{
-		curResult = result;
+		guessResult.setText(result);
 		
 	} //end setResult
-	
-	public void setRollNum(int rollNum)
-	{
-		curRoll = rollNum;
-		
-	} //end setRollNum
 	
 } //end GameControlPanel

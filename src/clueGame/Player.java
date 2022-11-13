@@ -19,6 +19,8 @@ public abstract class Player
 	private int curRow;
 	private int curColumn;
 	
+	int rollNum;
+	
 	protected Random rand;
 	
 	protected Player(String initName, String initColor, String initRoomName)
@@ -29,8 +31,7 @@ public abstract class Player
 		
 		name = initName;
 		color = initColor;
-		//curRoomName = initRoomName;
-		
+
 		rand = new Random();
 		
 		ArrayList<Card> tempGameDeck = Board.getInstance().getCleanDeck();
@@ -39,6 +40,14 @@ public abstract class Player
 			unseenCards.add(tempGameDeck.get(i));
 			
 		} //end for 
+		
+	} //end constructor
+	
+	protected Player(String initName, String initColor, String initRoomName, int roll)
+	{
+		name = initName;
+		color = initColor;
+		rollNum = roll;		
 		
 	} //end constructor
 	
@@ -141,5 +150,11 @@ public abstract class Player
 		curColumn = setCol;
 		
 	} //end setCoords
+	
+	public int getRoll()
+	{
+		return rollNum;
+		
+	} //end getRoll
 	
 } //end Player

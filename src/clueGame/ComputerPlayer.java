@@ -11,6 +11,12 @@ public class ComputerPlayer extends Player
 
 	} //end Constructor	
 	
+	public ComputerPlayer(String initName, String initColor, String initRoomName, int roll)
+	{
+		super(initName, initColor, initRoomName, roll);
+		
+	} //end constructor
+	
 	@Override
 	public boolean isHuman()
 	{

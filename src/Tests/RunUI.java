@@ -37,7 +37,11 @@ public class RunUI
 		frame.setSize(750, 180);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
-
+		
+		panel.setGuess("New Guess");
+		panel.setPlayer(new ComputerPlayer("New Name", "Color", "Room", 6));
+		panel.setResult("New Result");
+		
 	} //end gameSetup
 	
 	@Test
