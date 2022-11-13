@@ -42,7 +42,7 @@ public class RunUI
 		panel.setTurn("HI", 5);
 		panel.setGuess( "I have no guess!");
 		panel.setGuessResult( "So you have nothing?");
-		*/		
+		*/
 		
 	} //end gameSetup
 	
