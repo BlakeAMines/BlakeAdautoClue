@@ -1,6 +1,7 @@
 package Tests;
 
 import clueGame.GameControlPanel;
+import clueGame.HumanPlayer;
 
 import java.awt.BorderLayout;
 import java.util.ArrayList;
@@ -32,7 +33,11 @@ public class RunUI
 	@BeforeAll
 	public static void gameSetup()
 	{		
+		board = Board.getInstance();
 
+		board.setConfigFiles("ClueLayout.csv", "ClueSetup.txt");
+
+		board.initialize();
 		
 	} //end gameSetup
 	
@@ -57,12 +62,17 @@ public class RunUI
 	@Test
 	public void testCardPanel()
 	{
-		CardsPanel panel = new CardsPanel();
+		HumanPlayer testPlayer = new HumanPlayer("New name", "New Color", "New Room");
+		testPlayer.setSeen(board.getCleanDeck());
+		
+		CardsPanel panel = new CardsPanel(testPlayer);
 		JFrame frame = new JFrame();
 		frame.setContentPane(panel);
 		frame.setSize(180, 750);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
+		
+		panel.updateKnown();
 		
 		System.out.println("Make a breakpoint here");
 		

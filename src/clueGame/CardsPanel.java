@@ -1,6 +1,9 @@
 package clueGame;
 
 import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -10,8 +13,18 @@ import javax.swing.border.TitledBorder;
 
 public class CardsPanel extends JPanel
 {
-	public CardsPanel()
-	{
+	private JPanel handPeople;
+	private JPanel seenPeople;
+	private JPanel handRooms;
+	private JPanel seenRooms;
+	private JPanel handWeapons;
+	private JPanel seenWeapons;
+	private Player player;
+	
+	public CardsPanel(Player initPlayer)
+	{		
+		player = initPlayer;
+		
 		setLayout(new GridLayout(0, 1));
 		
 		JPanel knownCards = new JPanel();
@@ -21,39 +34,90 @@ public class CardsPanel extends JPanel
 		JPanel people = new JPanel();
 		people.setLayout(new GridLayout(0, 1));
 		people.setBorder(new TitledBorder(new EtchedBorder(), "People"));
+		
 		people.add(new JLabel("In Hand: "));
-		people.add(new JTextField("Hey"));
+		handPeople = new JPanel();
+		handPeople.setLayout(new GridLayout(0, 1));
+		people.add(handPeople);
+
 		people.add(new JLabel("Seen: "));
-		people.add(new JTextField("See ya"));
+		seenPeople = new JPanel();
+		seenPeople.setLayout(new GridLayout(0, 1));
+		people.add(seenPeople);
 		
 		JPanel rooms = new JPanel();
 		rooms.setLayout(new GridLayout(0, 1));
 		rooms.setBorder(new TitledBorder(new EtchedBorder(), "Rooms"));
+		
 		rooms.add(new JLabel("In Hand: "));
-		rooms.add(new JTextField("Hi"));
+		handRooms = new JPanel();
+		handRooms.setLayout(new GridLayout(0, 1));
+		rooms.add(handRooms);
+		
 		rooms.add(new JLabel("Seen: "));
-		rooms.add(new JTextField("Bye"));
+		seenRooms = new JPanel();
+		seenRooms.setLayout(new GridLayout(0, 1));
+		rooms.add(seenRooms);
 		
 		JPanel weapons = new JPanel();
 		weapons.setLayout(new GridLayout(0, 1));
 		weapons.setBorder(new TitledBorder(new EtchedBorder(), "Weapons"));
+		
 		weapons.add(new JLabel("In Hand: "));
-		weapons.add(new JTextField("Hello"));
+		handWeapons = new JPanel();
+		handWeapons.setLayout(new GridLayout(0, 1));
+		weapons.add(handWeapons);
+		
 		weapons.add(new JLabel("Seen: "));
-		weapons.add(new JTextField("Goodbye"));
+		seenWeapons = new JPanel();
+		seenWeapons.setLayout(new GridLayout(0, 1));
+		weapons.add(seenWeapons);
 		
 		knownCards.add(people);
 		knownCards.add(rooms);
 		knownCards.add(weapons);
 		
 		add(knownCards);
-		
+
 	} //end CardsPanel	
 
 	public void updateKnown()
 	{
+		handPeople.removeAll();
+		seenPeople.removeAll();
 		
+		Set<Card> seenCards = player.getSeen();
+		List<Card> hand = player.getHand();
+		
+		for(Card curCard : seenCards)
+		{
+			if(curCard.getType().equals(CardType.PERSON) && !hand.contains(curCard))
+			{
+				seenPeople.add(new JTextField(curCard.getName()));
+				
+			} //end nested if
+			
+			else if(curCard.getType().equals(CardType.ROOM) && !hand.contains(curCard))
+			{
+				seenRooms.add(new JTextField(curCard.getName()));
+				
+			} //end nested else if
+			
+			else if(curCard.getType().equals(CardType.WEAPON) && !hand.contains(curCard))
+			{
+				seenWeapons.add(new JTextField(curCard.getName()));
+				
+			} //end nested else if
+			
+		} //end for
 		
 	} //end updateKnown
+	
+	public void inHand()
+	{
+		
+		
+	} //end inHand
+
 	
 } //end CardsPanel

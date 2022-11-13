@@ -157,4 +157,28 @@ public abstract class Player
 		
 	} //end getRoll
 	
+	public void setSeen(ArrayList<Card> setSeenCards)
+	{
+		seenCards.clear();
+		
+		for(int i = 0; i < setSeenCards.size(); i++)
+		{
+			seenCards.add(setSeenCards.get(i));
+			
+		} //end for		
+		
+	} //end setSeen
+	
+	public void setHand(ArrayList<Card> setHand)
+	{
+		cards = setHand;
+		
+	} //end setHand
+	
+	public Set<Card> getSeen()
+	{
+		return seenCards;
+		
+	} //end getSeen
+	
 } //end Player
