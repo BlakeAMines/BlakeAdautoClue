@@ -13,9 +13,9 @@ import javax.swing.border.TitledBorder;
 public class GameControlPanel extends JPanel
 {
 	Player curPlayer;
-	int rollNum;
+	int curRoll;
 	String curGuess;
-	String guessResult;
+	String curResult;
 	
 	public GameControlPanel() 
 	{
@@ -26,46 +26,42 @@ public class GameControlPanel extends JPanel
 		
 		setLayout(new GridLayout(2, 0));
 		
+		inner1x4.setLayout(new GridLayout(1, 4));
 		inner0x2.setLayout(new GridLayout(0, 2));
 		
-		inner1x4.setLayout(new GridLayout(1, 4));
-		
 		turnPanel.setLayout(new GridLayout(2, 0));
-		
-		JLabel turnLabel = new JLabel("Whose turn?");
-		JTextField turnName = new JTextField("Name");
-		turnPanel.add(turnLabel);
-		turnPanel.add(turnName);
-		
-		JLabel roll = new JLabel("Roll: ");
-		JTextField rollNumText = new JTextField(Integer.toString(5));
-		rollPanel.add(roll);
-		rollPanel.add(rollNumText);
-		
-		JButton accuse = new JButton("Make Accusation");
-		JButton next = new JButton("NEXT!");
+		turnPanel.add(new JLabel("Whose turn?"));
+		JTextField nameVal = new JTextField("Name");
+		nameVal.setEditable(false);
+		turnPanel.add(nameVal);
+
+		rollPanel.add(new JLabel("Roll: "));
+		JTextField rollVal = new JTextField(Integer.toString(5));
+		rollVal.setEditable(false);
+		rollPanel.add(rollVal);
 		
 		inner1x4.add(turnPanel);
 		inner1x4.add(rollPanel);
-		inner1x4.add(accuse);
-		inner1x4.add(next);
+		inner1x4.add(new JButton("Make Accusation"));
+		inner1x4.add(new JButton("NEXT!"));
 		add(inner1x4);
 		
 		JPanel temp1x0 = new JPanel();
 		temp1x0.setBorder(new TitledBorder(new EtchedBorder(), "Guess"));
 		temp1x0.setLayout(new GridLayout(0, 1));
-		JTextField tempText = new JTextField("I have no guess!");
-		temp1x0.add(tempText);
-		
+		JTextField guessVal = new JTextField("I have no guess!");
+		guessVal.setEditable(false);
+		temp1x0.add(guessVal);
 		inner0x2.add(temp1x0);
 		
 		temp1x0 = new JPanel();
 		temp1x0.setBorder(new TitledBorder(new EtchedBorder(), "Guess Result"));
 		temp1x0.setLayout(new GridLayout(0, 1));
-		tempText = new JTextField("So you have nothing?");
-		temp1x0.add(tempText);
-		
+		JTextField guessResult = new JTextField("So you have nothing?");
+		guessResult.setEditable(false);
+		temp1x0.add(guessResult);
 		inner0x2.add(temp1x0);
+		
 		add(inner0x2);
 		
 	} //end constructor
@@ -81,5 +77,17 @@ public class GameControlPanel extends JPanel
 		curPlayer = player;
 		
 	} //end setPlayer
+	
+	public void setResult(String result)
+	{
+		curResult = result;
+		
+	} //end setResult
+	
+	public void setRollNum(int rollNum)
+	{
+		curRoll = rollNum;
+		
+	} //end setRollNum
 	
 } //end GameControlPanel

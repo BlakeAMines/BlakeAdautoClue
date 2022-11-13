@@ -16,6 +16,7 @@ import org.junit.jupiter.api.BeforeAll;
 
 import clueGame.Board;
 import clueGame.Card;
+import clueGame.ComputerPlayer;
 import clueGame.Player;
 import clueGame.Solution;
 
@@ -36,14 +37,7 @@ public class RunUI
 		frame.setSize(750, 180);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
-		
-		// test filling in the data
-		/*
-		panel.setTurn("HI", 5);
-		panel.setGuess( "I have no guess!");
-		panel.setGuessResult( "So you have nothing?");
-		*/
-		
+
 	} //end gameSetup
 	
 	@Test
