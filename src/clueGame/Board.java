@@ -34,6 +34,7 @@ public class Board
 	
 	private ArrayList<Card> cleanDeck;
  	private ArrayList<Card> gameDeck;
+ 	private Map<Card, Player> cardOwnerships;
 	
 	private Solution theAnswer;
 	
@@ -49,6 +50,7 @@ public class Board
 	public void initialize()
 	{		
 		roomMap = new HashMap<>();
+		cardOwnerships = new HashMap<>();
 		playerList = new ArrayList<>();
 		gameDeck = new ArrayList<>();
 		cleanDeck = new ArrayList<>();
@@ -599,7 +601,7 @@ public class Board
 			for(int i = 0; i < gameDeck.size(); i++)
 			{
 				playerList.get(i % playerList.size()).updateHand(gameDeck.get(i));
-				
+
 			} //end nested for 
 		
 		} //end if
@@ -681,5 +683,5 @@ public class Board
 		return null;
 		
 	} //end cellToCard
-	
+		
 } //end Board

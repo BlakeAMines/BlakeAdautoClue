@@ -24,6 +24,7 @@ import clueGame.Solution;
 
 public class RunUI 
 {
+	public static final int NUM_ROOMS = 9;
 	public static final int NUM_PLAYERS = 6;
 	public static final int NUM_WEAPONS = 6;
 	public static final int NUM_CARDS = 21;
@@ -61,9 +62,16 @@ public class RunUI
 	
 	@Test
 	public void testCardPanel()
-	{
+	{	
 		HumanPlayer testPlayer = new HumanPlayer("New name", "New Color", "New Room");
-		testPlayer.setSeen(board.getCleanDeck());
+		ArrayList<Card> tempHand = new ArrayList<>();
+		testPlayer.setSeen(board.getGameDeck());
+		
+		tempHand.add(board.getCleanDeck().get(0));
+		tempHand.add(board.getCleanDeck().get(NUM_ROOMS));
+		tempHand.add(board.getCleanDeck().get(NUM_ROOMS + NUM_PLAYERS));
+		
+		testPlayer.setHand(tempHand);
 		
 		CardsPanel panel = new CardsPanel(testPlayer);
 		JFrame frame = new JFrame();

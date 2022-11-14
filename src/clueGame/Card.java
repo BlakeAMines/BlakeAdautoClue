@@ -47,5 +47,5 @@ public class Card
 		return cardType;
 		
 	} //end getType
-	
+		
 } //end card
