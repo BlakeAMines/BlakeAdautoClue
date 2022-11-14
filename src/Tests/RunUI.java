@@ -18,6 +18,7 @@ import org.junit.jupiter.api.BeforeAll;
 import clueGame.Board;
 import clueGame.Card;
 import clueGame.CardsPanel;
+import clueGame.ClueGame;
 import clueGame.ComputerPlayer;
 import clueGame.Player;
 import clueGame.Solution;
@@ -42,7 +43,7 @@ public class RunUI
 		
 	} //end gameSetup
 	
-	@Test
+	//@Test
 	public void testGameControlPanel() 
 	{		
 		GameControlPanel panel = new GameControlPanel();
@@ -71,7 +72,6 @@ public class RunUI
 		tempHand.add(board.getCleanDeck().get(0));
 		tempHand.add(board.getCleanDeck().get(NUM_ROOMS));
 		tempHand.add(board.getCleanDeck().get(NUM_ROOMS + NUM_PLAYERS));
-		
 		testPlayer.setHand(tempHand);
 		
 		CardsPanel panel = new CardsPanel(testPlayer);
@@ -86,5 +86,16 @@ public class RunUI
 		System.out.println("Make a breakpoint here");
 		
 	} //end testCardPanel
+	
+	@Test
+	public void drawBoard()
+	{		
+		ClueGame game = new ClueGame();
+		
+		game.setVisible(true);
+		
+		System.out.println("Hey");
+		
+	} //end drawBoard
 
 } //end GameSetupTests

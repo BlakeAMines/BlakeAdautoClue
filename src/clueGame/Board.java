@@ -1,5 +1,7 @@
 package clueGame;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -12,7 +14,9 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 
-public class Board 
+import javax.swing.JPanel;
+
+public class Board extends JPanel
 {
 	private BoardCell[][] grid;
 	
@@ -690,5 +694,14 @@ public class Board
 		return cardOwnerships;
 		
 	} //end getOwnerships
+	
+	public void paintComponent(Graphics graphic)
+	{
+		super.paintComponent(graphic);
+		
+		graphic.setColor(Color.orange);
+		graphic.drawRect(40, 40, 40, 40);
+		
+	} //end paintComponent
 		
 } //end Board

@@ -40,6 +40,7 @@ public class CardsPanel extends JPanel
 		people.add(new JLabel("In Hand: "));
 		handPeople = new JPanel();
 		handPeople.setLayout(new GridLayout(0, 1));
+		handPeople.add(new JTextField("None"));
 		people.add(handPeople);
 
 		people.add(new JLabel("Seen: "));
@@ -55,6 +56,7 @@ public class CardsPanel extends JPanel
 		rooms.add(new JLabel("In Hand: "));
 		handRooms = new JPanel();
 		handRooms.setLayout(new GridLayout(0, 1));
+		handRooms.add(new JTextField("None"));
 		rooms.add(handRooms);
 		
 		rooms.add(new JLabel("Seen: "));
@@ -70,6 +72,7 @@ public class CardsPanel extends JPanel
 		weapons.add(new JLabel("In Hand: "));
 		handWeapons = new JPanel();
 		handWeapons.setLayout(new GridLayout(0, 1));
+		handWeapons.add(new JTextField("None"));
 		weapons.add(handWeapons);
 		
 		weapons.add(new JLabel("Seen: "));
