@@ -42,9 +42,9 @@ public class RunUI
 		
 	} //end gameSetup
 	
-	//@Test
+	@Test
 	public void testGameControlPanel() 
-	{
+	{		
 		GameControlPanel panel = new GameControlPanel();
 		JFrame frame = new JFrame(); 
 		frame.setContentPane(panel);
@@ -60,12 +60,13 @@ public class RunUI
 	
 	} //end testGameControlPanel
 	
-	@Test
+	//@Test
 	public void testCardPanel()
 	{	
 		HumanPlayer testPlayer = new HumanPlayer("New name", "New Color", "New Room");
 		ArrayList<Card> tempHand = new ArrayList<>();
 		testPlayer.setSeen(board.getGameDeck());
+		testPlayer.setSeen(board.getOwnerships());
 		
 		tempHand.add(board.getCleanDeck().get(0));
 		tempHand.add(board.getCleanDeck().get(NUM_ROOMS));

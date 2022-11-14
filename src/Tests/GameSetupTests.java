@@ -1,6 +1,8 @@
 package Tests;
 
 import clueGame.GameControlPanel;
+
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -54,7 +56,7 @@ public class GameSetupTests
 				
 				//These assertions check that the player's information is read in correctly
 				Assert.assertFalse(testList.get(i).isHuman());
-				Assert.assertEquals(testList.get(i).getColor(), "Red");
+				Assert.assertEquals(testList.get(i).getColor(), Color.RED);
 				
 			} //end nested if
 			
@@ -64,7 +66,7 @@ public class GameSetupTests
 				
 				//These assertions check that the player's information is read in correctly
 				Assert.assertTrue(testList.get(i).isHuman());
-				Assert.assertEquals(testList.get(i).getColor(), "Green");
+				Assert.assertEquals(testList.get(i).getColor(), Color.GREEN);
 				
 			} //end nested else if
 			

@@ -1,5 +1,7 @@
 package clueGame;
 
+import java.awt.Color;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -9,7 +11,8 @@ import java.util.Set;
 public abstract class Player 
 {
 	private String name;
-	private String color;
+	private String colorName;
+	private Color color;
 	
 	private ArrayList<Card> cards;
 	protected Set<Card> seenCards;
@@ -30,8 +33,22 @@ public abstract class Player
 		seenCards = new HashSet<>();
 		
 		name = initName;
-		color = initColor;
-
+		colorName = initColor.toLowerCase();
+		
+		try 
+		{
+			Field field = Class.forName("java.awt.Color").getField(colorName);
+			color = (Color)field.get(null);
+			
+		} //end try
+		
+		catch(Exception invalidColor)
+		{
+			color = null;
+			
+		} //end catch
+		
+		
 		rand = new Random();
 		
 		ArrayList<Card> tempGameDeck = Board.getInstance().getCleanDeck();
@@ -46,7 +63,7 @@ public abstract class Player
 	protected Player(String initName, String initColor, String initRoomName, int roll)
 	{
 		name = initName;
-		color = initColor;
+		colorName = initColor;
 		rollNum = roll;		
 		
 	} //end constructor
@@ -126,9 +143,9 @@ public abstract class Player
 	
 	public abstract boolean isHuman();
 	
-	public String getColor()
+	public String getColorName()
 	{
-		return color;
+		return colorName;
 		
 	} //end getColor
 	
@@ -180,5 +197,11 @@ public abstract class Player
 		return seenCards;
 		
 	} //end getSeen
+	
+	public Color getColor()
+	{
+		return color;
+		
+	} //end getColor
 	
 } //end Player

@@ -120,8 +120,8 @@ public class ComputerAITest
 			
 		} //end for
 			
-		Assert.assertTrue(foundCount1 >= 2 && foundCount1 <= 8);
-		Assert.assertTrue(foundCount2 >= 2 && foundCount2 <= 8);	
+		Assert.assertTrue(foundCount1 >= 1 && foundCount1 <= 9);
+		Assert.assertTrue(foundCount2 >= 1 && foundCount2 <= 9);	
 		
 		Assert.assertTrue(tempPerson.equals(unseenPerson) || tempPerson.equals(unseenPerson2));
 		

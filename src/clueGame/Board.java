@@ -601,6 +601,7 @@ public class Board
 			for(int i = 0; i < gameDeck.size(); i++)
 			{
 				playerList.get(i % playerList.size()).updateHand(gameDeck.get(i));
+				cardOwnerships.put(gameDeck.get(i), playerList.get(i % playerList.size()));
 
 			} //end nested for 
 		
@@ -683,5 +684,11 @@ public class Board
 		return null;
 		
 	} //end cellToCard
+	
+	public Map<Card, Player> getOwnerships()
+	{
+		return cardOwnerships;
+		
+	} //end getOwnerships
 		
 } //end Board

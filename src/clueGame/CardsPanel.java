@@ -1,8 +1,10 @@
 package clueGame;
 
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.swing.JLabel;
@@ -19,9 +21,9 @@ public class CardsPanel extends JPanel
 	private JPanel seenRooms;
 	private JPanel handWeapons;
 	private JPanel seenWeapons;
-	private Player player;
+	private HumanPlayer player;
 	
-	public CardsPanel(Player initPlayer)
+	public CardsPanel(HumanPlayer initPlayer)
 	{		
 		player = initPlayer;
 		
@@ -97,24 +99,36 @@ public class CardsPanel extends JPanel
 		
 		Set<Card> seenCards = player.getSeen();
 		List<Card> hand = player.getHand();
+		Map<Card, Player> ownerships = player.getHumanSeen();
+		
+		JTextField temp;
 		
 		for(Card curCard : seenCards)
 		{
 			if(curCard.getType().equals(CardType.PERSON) && !hand.contains(curCard))
 			{
-				seenPeople.add(new JTextField(curCard.getName()));
+				temp = new JTextField(curCard.getName());
+				temp.setBackground(ownerships.get(curCard).getColor());
+				
+				seenPeople.add(temp);
 				
 			} //end nested if
 			
 			else if(curCard.getType().equals(CardType.ROOM) && !hand.contains(curCard))
 			{
-				seenRooms.add(new JTextField(curCard.getName()));
+				temp = new JTextField(curCard.getName());
+				temp.setBackground(ownerships.get(curCard).getColor());
+				
+				seenRooms.add(temp);
 				
 			} //end nested else if
 			
 			else if(curCard.getType().equals(CardType.WEAPON) && !hand.contains(curCard))
 			{
-				seenWeapons.add(new JTextField(curCard.getName()));
+				temp = new JTextField(curCard.getName());
+				temp.setBackground(ownerships.get(curCard).getColor());
+				
+				seenWeapons.add(temp);
 				
 			} //end nested else if
 			
