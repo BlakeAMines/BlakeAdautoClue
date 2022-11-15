@@ -15,71 +15,50 @@ import javax.swing.border.TitledBorder;
 
 public class CardsPanel extends JPanel
 {
-	private JPanel handPeople;
-	private JPanel seenPeople;
-	private JPanel handRooms;
-	private JPanel seenRooms;
-	private JPanel handWeapons;
-	private JPanel seenWeapons;
+	private JPanel people;
+	private JPanel rooms;
+	private JPanel weapons;
 	private HumanPlayer player;
 	
 	public CardsPanel(HumanPlayer initPlayer)
 	{		
 		player = initPlayer;
 		
-		setLayout(new GridLayout(0, 1));
+		setLayout(new GridLayout(1, 0));
 		
 		JPanel knownCards = new JPanel();
 		knownCards.setLayout(new GridLayout(0, 1));
 		knownCards.setBorder(new TitledBorder(new EtchedBorder(), "Known Cards"));
 		
-		JPanel people = new JPanel();
+		people = new JPanel();
 		people.setLayout(new GridLayout(0, 1));
 		people.setBorder(new TitledBorder(new EtchedBorder(), "People"));
 		
 		people.add(new JLabel("In Hand: "));
-		handPeople = new JPanel();
-		handPeople.setLayout(new GridLayout(0, 1));
-		handPeople.add(new JTextField("None"));
-		people.add(handPeople);
+		people.add(new JTextField("None"));
 
 		people.add(new JLabel("Seen: "));
-		seenPeople = new JPanel();
-		seenPeople.setLayout(new GridLayout(0, 1));
-		seenPeople.add(new JTextField("None"));
-		people.add(seenPeople);
+		people.add(new JTextField("None"));
 		
-		JPanel rooms = new JPanel();
+		rooms = new JPanel();
 		rooms.setLayout(new GridLayout(0, 1));
 		rooms.setBorder(new TitledBorder(new EtchedBorder(), "Rooms"));
 		
 		rooms.add(new JLabel("In Hand: "));
-		handRooms = new JPanel();
-		handRooms.setLayout(new GridLayout(0, 1));
-		handRooms.add(new JTextField("None"));
-		rooms.add(handRooms);
+		rooms.add(new JTextField("None"));
 		
 		rooms.add(new JLabel("Seen: "));
-		seenRooms = new JPanel();
-		seenRooms.setLayout(new GridLayout(0, 1));
-		seenRooms.add(new JTextField("None"));
-		rooms.add(seenRooms);
+		rooms.add(new JTextField("None"));
 		
-		JPanel weapons = new JPanel();
+		weapons = new JPanel();
 		weapons.setLayout(new GridLayout(0, 1));
 		weapons.setBorder(new TitledBorder(new EtchedBorder(), "Weapons"));
 		
 		weapons.add(new JLabel("In Hand: "));
-		handWeapons = new JPanel();
-		handWeapons.setLayout(new GridLayout(0, 1));
-		handWeapons.add(new JTextField("None"));
-		weapons.add(handWeapons);
+		weapons.add(new JTextField("None"));
 		
 		weapons.add(new JLabel("Seen: "));
-		seenWeapons = new JPanel();
-		seenWeapons.setLayout(new GridLayout(0, 1));
-		seenWeapons.add(new JTextField("None"));
-		weapons.add(seenWeapons);
+		weapons.add(new JTextField("None"));
 		
 		knownCards.add(people);
 		knownCards.add(rooms);
@@ -91,20 +70,46 @@ public class CardsPanel extends JPanel
 
 	public void updateKnown()
 	{
-		handPeople.removeAll();
-		seenPeople.removeAll();
+		people.removeAll();
+		people.add(new JLabel("In Hand: "));
 		
-		handRooms.removeAll();
-		seenRooms.removeAll();
+		rooms.removeAll();
+		rooms.add(new JLabel("In Hand: "));
 		
-		handWeapons.removeAll();
-		seenWeapons.removeAll();
+		weapons.removeAll();
+		rooms.add(new JLabel ("In Hand: "));
 		
 		Set<Card> seenCards = player.getSeen();
 		List<Card> hand = player.getHand();
 		Map<Card, Player> ownerships = player.getHumanSeen();
 		
 		JTextField temp;
+		
+		for(int i = 0; i < hand.size(); i++)
+		{
+			if(hand.get(i).getType().equals(CardType.PERSON))
+			{
+				people.add(new JTextField(hand.get(i).getName()));
+				
+			} //end nested if
+			
+			else if(hand.get(i).getType().equals(CardType.ROOM))
+			{
+				rooms.add(new JTextField(hand.get(i).getName()));
+				
+			} //end nested else if
+			
+			else if(hand.get(i).getType().equals(CardType.WEAPON))
+			{
+				weapons.add(new JTextField(hand.get(i).getName()));
+				
+			} //end nested else if
+			
+		} //end for
+		
+		people.add(new JLabel("Seen: "));
+		rooms.add(new JLabel("Seen: "));
+		weapons.add(new JLabel("Seen: "));
 		
 		for(Card curCard : seenCards)
 		{
@@ -113,7 +118,7 @@ public class CardsPanel extends JPanel
 				temp = new JTextField(curCard.getName());
 				temp.setBackground(ownerships.get(curCard).getColor());
 				
-				seenPeople.add(temp);
+				people.add(temp);
 				
 			} //end nested if
 			
@@ -122,7 +127,7 @@ public class CardsPanel extends JPanel
 				temp = new JTextField(curCard.getName());
 				temp.setBackground(ownerships.get(curCard).getColor());
 				
-				seenRooms.add(temp);
+				rooms.add(temp);
 				
 			} //end nested else if
 			
@@ -131,29 +136,7 @@ public class CardsPanel extends JPanel
 				temp = new JTextField(curCard.getName());
 				temp.setBackground(ownerships.get(curCard).getColor());
 				
-				seenWeapons.add(temp);
-				
-			} //end nested else if
-			
-		} //end for
-		
-		for(int i = 0; i < hand.size(); i++)
-		{
-			if(hand.get(i).getType().equals(CardType.PERSON))
-			{
-				handPeople.add(new JTextField(hand.get(i).getName()));
-				
-			} //end nested if
-			
-			else if(hand.get(i).getType().equals(CardType.ROOM))
-			{
-				handRooms.add(new JTextField(hand.get(i).getName()));
-				
-			} //end nested else if
-			
-			else if(hand.get(i).getType().equals(CardType.WEAPON))
-			{
-				handWeapons.add(new JTextField(hand.get(i).getName()));
+				weapons.add(temp);
 				
 			} //end nested else if
 			

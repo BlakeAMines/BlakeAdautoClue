@@ -750,5 +750,21 @@ public class Board extends JPanel
 		} //end for 
 				
 	} //end paintComponent
+	
+	public HumanPlayer getHumanPlayer()
+	{
+		for(int i = 0; i < playerList.size(); i++)
+		{
+			if(playerList.get(i).isHuman())
+			{
+				return (HumanPlayer) playerList.get(i);
+				
+			} //end nested if
+			
+		} //end for
+		
+		return null;
+		
+	} //end getHumanPlayer
 		
 } //end Board

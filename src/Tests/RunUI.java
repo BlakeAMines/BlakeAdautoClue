@@ -43,7 +43,8 @@ public class RunUI
 		
 	} //end gameSetup
 	
-	//@Test
+	//Run this for C22A-1
+	@Test
 	public void testGameControlPanel() 
 	{		
 		GameControlPanel panel = new GameControlPanel();
@@ -61,6 +62,7 @@ public class RunUI
 	
 	} //end testGameControlPanel
 	
+	//Run this for C22A-2
 	//@Test
 	public void testCardPanel()
 	{	
@@ -87,14 +89,15 @@ public class RunUI
 		
 	} //end testCardPanel
 	
-	@Test
+	//Run this for C23A
+	//@Test
 	public void drawBoard()
-	{		
+	{				
 		ClueGame game = new ClueGame();
 		
 		game.setVisible(true);
 		
-		System.out.println("Hey");
+		System.out.println("Make a breakpoint here");
 		
 	} //end drawBoard
 
