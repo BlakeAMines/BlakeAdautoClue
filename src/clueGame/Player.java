@@ -1,6 +1,7 @@
 package clueGame;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -203,5 +204,11 @@ public abstract class Player
 		return color;
 		
 	} //end getColor
+	
+	public void drawPerson(Graphics graphic)
+	{
+		
+		
+	} //end drawPerson
 	
 } //end Player

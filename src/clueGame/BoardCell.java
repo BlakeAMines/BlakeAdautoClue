@@ -1,5 +1,7 @@
 package clueGame;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,6 +22,9 @@ public class BoardCell
 	private boolean isDoorway;
 	private boolean isOccupied;
 	
+	private boolean isWalkway;
+	private boolean isRoom;
+	
 	private DoorDirection doorDirection;
 	
 	private Set<BoardCell> adjList;
@@ -32,6 +37,9 @@ public class BoardCell
 		isDoorway = false;
 		isPassage = false;
 		isAllowed = false;
+		
+		isWalkway = false;
+		isRoom = false;
 		
 		row = initRow;
 		
@@ -114,10 +122,26 @@ public class BoardCell
 		if(roomLabel || initial == 'W')
 		{
 			isAllowed = true;
-			
-		}
-		
+
+		} //end if
+					
 	} //end handleAllow
+	
+	public void handleType()
+	{
+		if(initial == 'W')
+		{
+			isWalkway = true;
+			
+		} //end 
+		
+		else if(initial != 'X')
+		{
+			isRoom = true;
+			
+		} //end else if
+		
+	} //end handleType
 	
 	public boolean isAllowed()
 	{
@@ -203,5 +227,77 @@ public class BoardCell
 		return col;
 		
 	} //end getRow
+	
+	public void drawCell(Graphics graphic, int cellSize, int xPos, int yPos)
+	{
+		graphic.setColor(Color.black);
+		graphic.drawRect(xPos, yPos, cellSize, cellSize);
+		
+		if(isWalkway)
+		{
+			graphic.setColor(Color.orange);
+
+		} //end if
+		
+		else if(isRoom)
+		{
+			graphic.setColor(Color.lightGray);
+			
+		} //end else if
+		
+		graphic.fillRect(xPos, yPos, cellSize, cellSize);
+		
+		graphic.setColor(Color.black);
+				
+		//Draw a rectangle instead
+		if(isDoorway)
+		{
+			drawDoor(graphic, cellSize, xPos, yPos);
+			
+		} //end if
+
+	} //end drawCell
+	
+	public void drawDoor(Graphics graphic, int size, int xPos, int yPos)
+	{
+		graphic.setColor(Color.green);
+		
+		if(doorDirection.equals(DoorDirection.UP))
+		{
+			graphic.fillRect(xPos, yPos - size/4, size, size/4);
+			
+		} //end if
+		
+		else if(doorDirection.equals(DoorDirection.DOWN))
+		{
+			graphic.fillRect(xPos, yPos + size, size, size/4);
+			
+		} //end if
+		
+		else if(doorDirection.equals(DoorDirection.RIGHT))
+		{
+			graphic.fillRect(xPos + size, yPos, size/4, size);
+			
+		} //end if
+		
+		else if(doorDirection.equals(DoorDirection.LEFT))
+		{
+			graphic.fillRect(xPos - (size/4), yPos, size/4, size);
+			
+		} //end if
+		
+	} //end drawDoor
+	
+	public void drawGrid(Graphics graphic, int size, int xPos, int yPos)
+	{
+		graphic.setColor(Color.black);
+		
+		if(!isRoom)
+		{
+			graphic.drawRect(xPos, yPos, size, size);
+			
+		} //end if
+		
+	} //end drawGrid
 	
 } //end BoardCell

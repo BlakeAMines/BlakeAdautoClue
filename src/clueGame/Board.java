@@ -267,6 +267,7 @@ public class Board extends JPanel
 				} //end nested if
 				
 				grid[curRow][curColumn].handleAllow();
+				grid[curRow][curColumn].handleType();
 				
 			} //end nested for
 			
@@ -696,12 +697,58 @@ public class Board extends JPanel
 	} //end getOwnerships
 	
 	public void paintComponent(Graphics graphic)
-	{
+	{		
+		int minDimension = getWidth();
+		
+		if(getWidth() > getHeight())
+		{
+			minDimension = getHeight();
+			
+		} //end if
+				
+		int cellSize = minDimension / numRows;
+		
 		super.paintComponent(graphic);
+		graphic.setColor(Color.black);
 		
-		graphic.setColor(Color.orange);
-		graphic.drawRect(40, 40, 40, 40);
+		for(int i = 0; i < numColumns; i++)
+		{
+			for(int j = 0; j < numRows; j++)
+			{
+				grid[j][i].drawCell(graphic, cellSize, (i * cellSize), (j * cellSize));
+				
+			} //end nested for
+			
+		} //end for
 		
+		for(int i = 0; i < numColumns; i++)
+		{
+			for(int j = 0; j < numRows; j++)
+			{
+				if(grid[j][i].isLabel())
+				{
+					roomMap.get(grid[j][i].getInitial()).drawRoomName(graphic, (i * cellSize), (j * cellSize));
+					
+				} //end nested if
+				
+				else if(grid[j][i].isDoorway())
+				{
+					grid[j][i].drawCell(graphic, cellSize, (i * cellSize), (j * cellSize));
+					
+				} //end nested else if
+
+				grid[j][i].drawGrid(graphic, cellSize, (i * cellSize), (j * cellSize));
+								
+			} //end nested for
+			
+		} //end for
+		
+		for(int i = 0; i < playerList.size(); i++)
+		{
+			playerList.get(i).drawPerson(graphic);
+			
+		} //end for 
+				
 	} //end paintComponent
 		
 } //end Board
