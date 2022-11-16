@@ -7,9 +7,9 @@ public class HumanPlayer extends Player
 {
 	Map<Card, Player> humanSeen;
 	
-	public HumanPlayer(String initName, String initColor, String initRoomName) 
+	public HumanPlayer(String initName, String initColor, int xPos, int yPos) 
 	{
-		super(initName, initColor, initRoomName);
+		super(initName, initColor, xPos, yPos);
 		
 		humanSeen = new HashMap<>();
 

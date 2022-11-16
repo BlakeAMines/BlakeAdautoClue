@@ -154,15 +154,15 @@ public class Board extends JPanel
 					{
 						numPeople++;
 						
-						if(readInfo[4].equals("Human"))
+						if(readInfo[5].equals("Human"))
 						{
-							playerList.add(new HumanPlayer(readInfo[1], readInfo[2], readInfo[3]));
+							playerList.add(new HumanPlayer(readInfo[1], readInfo[2], Integer.parseInt(readInfo[3]), Integer.parseInt(readInfo[4])));
 							
 						} //end nested if
 						
 						else
 						{
-							playerList.add(new ComputerPlayer(readInfo[1], readInfo[2], readInfo[3]));
+							playerList.add(new ComputerPlayer(readInfo[1], readInfo[2], Integer.parseInt(readInfo[3]), Integer.parseInt(readInfo[4])));
 							
 						} //end nested else
 						
@@ -697,7 +697,13 @@ public class Board extends JPanel
 	} //end getOwnerships
 	
 	public void paintComponent(Graphics graphic)
-	{		
+	{				
+		int offset = getWidth() / numColumns;
+		
+		//TEMPORARY
+			offset = 0;
+		//END TEMPORARY
+		
 		int minDimension = getWidth();
 		
 		if(getWidth() > getHeight())
@@ -709,13 +715,12 @@ public class Board extends JPanel
 		int cellSize = minDimension / numRows;
 		
 		super.paintComponent(graphic);
-		graphic.setColor(Color.black);
 		
 		for(int i = 0; i < numColumns; i++)
 		{
 			for(int j = 0; j < numRows; j++)
 			{
-				grid[j][i].drawCell(graphic, cellSize, (i * cellSize), (j * cellSize));
+				grid[j][i].drawCell(graphic, cellSize, (i * cellSize) + offset, (j * cellSize));
 				
 			} //end nested for
 			
@@ -727,17 +732,17 @@ public class Board extends JPanel
 			{
 				if(grid[j][i].isLabel())
 				{
-					roomMap.get(grid[j][i].getInitial()).drawRoomName(graphic, (i * cellSize), (j * cellSize));
+					roomMap.get(grid[j][i].getInitial()).drawRoomName(graphic, (i * cellSize) + offset, (j * cellSize));
 					
 				} //end nested if
 				
 				else if(grid[j][i].isDoorway())
 				{
-					grid[j][i].drawCell(graphic, cellSize, (i * cellSize), (j * cellSize));
+					grid[j][i].drawCell(graphic, cellSize, (i * cellSize) + offset, (j * cellSize));
 					
 				} //end nested else if
 
-				grid[j][i].drawGrid(graphic, cellSize, (i * cellSize), (j * cellSize));
+				grid[j][i].drawGrid(graphic, cellSize, (i * cellSize) + offset, (j * cellSize));
 								
 			} //end nested for
 			
@@ -745,7 +750,7 @@ public class Board extends JPanel
 		
 		for(int i = 0; i < playerList.size(); i++)
 		{
-			playerList.get(i).drawPerson(graphic);
+			playerList.get(i).drawPerson(graphic, cellSize);
 			
 		} //end for 
 				

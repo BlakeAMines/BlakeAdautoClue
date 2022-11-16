@@ -44,7 +44,7 @@ public class RunUI
 	} //end gameSetup
 	
 	//Run this for C22A-1
-	@Test
+	//@Test
 	public void testGameControlPanel() 
 	{		
 		GameControlPanel panel = new GameControlPanel();
@@ -66,7 +66,7 @@ public class RunUI
 	//@Test
 	public void testCardPanel()
 	{	
-		HumanPlayer testPlayer = new HumanPlayer("New name", "New Color", "New Room");
+		HumanPlayer testPlayer = new HumanPlayer("New name", "New Color", 0, 0);
 		ArrayList<Card> tempHand = new ArrayList<>();
 		testPlayer.setSeen(board.getGameDeck());
 		testPlayer.setSeen(board.getOwnerships());
@@ -90,13 +90,12 @@ public class RunUI
 	} //end testCardPanel
 	
 	//Run this for C23A
-	//@Test
+	@Test
 	public void drawBoard()
 	{				
 		ClueGame game = new ClueGame();
 		
 		game.setVisible(true);
-		
 		System.out.println("Make a breakpoint here");
 		
 	} //end drawBoard

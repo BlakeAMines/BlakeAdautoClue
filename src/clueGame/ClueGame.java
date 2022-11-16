@@ -22,7 +22,7 @@ public class ClueGame extends JFrame
 		
 		setSize(800, 800);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+			
 		add(board, BorderLayout.CENTER);
 		add(controlPanel, BorderLayout.SOUTH);
 		add(cardPanel, BorderLayout.EAST);

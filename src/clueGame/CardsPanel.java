@@ -24,18 +24,16 @@ public class CardsPanel extends JPanel
 	{		
 		player = initPlayer;
 		
-		setLayout(new GridLayout(1, 0));
+		setLayout(new GridLayout(3, 1));
 		
-		JPanel knownCards = new JPanel();
-		knownCards.setLayout(new GridLayout(0, 1));
-		knownCards.setBorder(new TitledBorder(new EtchedBorder(), "Known Cards"));
+		setBorder(new TitledBorder(new EtchedBorder(), "Known Cards"));
 		
 		people = new JPanel();
 		people.setLayout(new GridLayout(0, 1));
 		people.setBorder(new TitledBorder(new EtchedBorder(), "People"));
 		
 		people.add(new JLabel("In Hand: "));
-		people.add(new JTextField("None"));
+		people.add(new JTextField("None",12));
 
 		people.add(new JLabel("Seen: "));
 		people.add(new JTextField("None"));
@@ -60,11 +58,10 @@ public class CardsPanel extends JPanel
 		weapons.add(new JLabel("Seen: "));
 		weapons.add(new JTextField("None"));
 		
-		knownCards.add(people);
-		knownCards.add(rooms);
-		knownCards.add(weapons);
+		add(people);
+		add(rooms);
+		add(weapons);
 		
-		add(knownCards);
 
 	} //end CardsPanel	
 
@@ -77,7 +74,7 @@ public class CardsPanel extends JPanel
 		rooms.add(new JLabel("In Hand: "));
 		
 		weapons.removeAll();
-		rooms.add(new JLabel ("In Hand: "));
+		weapons.add(new JLabel ("In Hand: "));
 		
 		Set<Card> seenCards = player.getSeen();
 		List<Card> hand = player.getHand();
@@ -89,19 +86,19 @@ public class CardsPanel extends JPanel
 		{
 			if(hand.get(i).getType().equals(CardType.PERSON))
 			{
-				people.add(new JTextField(hand.get(i).getName()));
+				people.add(new JTextField(hand.get(i).getName(),12));
 				
 			} //end nested if
 			
 			else if(hand.get(i).getType().equals(CardType.ROOM))
 			{
-				rooms.add(new JTextField(hand.get(i).getName()));
+				rooms.add(new JTextField(hand.get(i).getName(),12));
 				
 			} //end nested else if
 			
 			else if(hand.get(i).getType().equals(CardType.WEAPON))
 			{
-				weapons.add(new JTextField(hand.get(i).getName()));
+				weapons.add(new JTextField(hand.get(i).getName(),12));
 				
 			} //end nested else if
 			
@@ -141,7 +138,8 @@ public class CardsPanel extends JPanel
 			} //end nested else if
 			
 		} //end for
-		
+		revalidate();
+
 	} //end updateKnown
 	
 } //end CardsPanel

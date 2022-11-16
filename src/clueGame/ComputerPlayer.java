@@ -5,9 +5,9 @@ import java.util.Set;
 
 public class ComputerPlayer extends Player
 {
-	public ComputerPlayer(String initName, String initColor, String initRoomName) 
+	public ComputerPlayer(String initName, String initColor, int xPos, int yPos) 
 	{
-		super(initName, initColor, initRoomName);
+		super(initName, initColor, xPos, yPos);
 
 	} //end Constructor	
 	

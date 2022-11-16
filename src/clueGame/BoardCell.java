@@ -264,25 +264,25 @@ public class BoardCell
 		
 		if(doorDirection.equals(DoorDirection.UP))
 		{
-			graphic.fillRect(xPos, yPos - size/4, size, size/4);
+			graphic.fillRect(xPos+1, yPos - size/4, size-1, size/4);
 			
 		} //end if
 		
 		else if(doorDirection.equals(DoorDirection.DOWN))
 		{
-			graphic.fillRect(xPos, yPos + size, size, size/4);
+			graphic.fillRect(xPos+1, yPos + size, size-1, size/4);
 			
 		} //end if
 		
 		else if(doorDirection.equals(DoorDirection.RIGHT))
 		{
-			graphic.fillRect(xPos + size, yPos, size/4, size);
+			graphic.fillRect(xPos + size, yPos+1, size/4, size-1);
 			
 		} //end if
 		
 		else if(doorDirection.equals(DoorDirection.LEFT))
 		{
-			graphic.fillRect(xPos - (size/4), yPos, size/4, size);
+			graphic.fillRect(xPos - (size/4), yPos+1, size/4, size-1);
 			
 		} //end if
 		

@@ -72,7 +72,7 @@ public class ComputerAITest
 		board.shuffleDeck();
 		
 		//This creates a new player with a known hand
-		testPlayer = new ComputerPlayer("TestName", "TestColor", "TestRoom");
+		testPlayer = new ComputerPlayer("TestName", "TestColor", 0, 0);
 		
 		testPlayer.updateSeen(seenRoom);
 		testPlayer.updateSeen(seenPerson);

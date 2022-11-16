@@ -27,7 +27,7 @@ public abstract class Player
 	
 	protected Random rand;
 	
-	protected Player(String initName, String initColor, String initRoomName)
+	protected Player(String initName, String initColor, int xPos, int yPos)
 	{
 		cards = new ArrayList<>();
 		unseenCards = new ArrayList<>();
@@ -35,6 +35,8 @@ public abstract class Player
 		
 		name = initName;
 		colorName = initColor.toLowerCase();
+		curRow = xPos;
+		curColumn = yPos;
 		
 		try 
 		{
@@ -205,9 +207,11 @@ public abstract class Player
 		
 	} //end getColor
 	
-	public void drawPerson(Graphics graphic)
+	public void drawPerson(Graphics graphic, int cellSize)
 	{
+		graphic.setColor(color);
 		
+		graphic.fillRect(curColumn * cellSize, curRow * cellSize, cellSize, cellSize);
 		
 	} //end drawPerson
 	

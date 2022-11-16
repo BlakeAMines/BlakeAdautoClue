@@ -49,6 +49,7 @@ public class GameSetupTests
 		//This runs through the gameBoard's playerList and ensures that predetermined characters are in the txts
 		for(int i = 0; i < testList.size(); i++)
 		{
+			System.out.println(testList.get(i).getName());
 			//These if and else if statements check for certain characters which should be in the playerList
 			if(testList.get(i).getName().equals("Frightening Person"))
 			{

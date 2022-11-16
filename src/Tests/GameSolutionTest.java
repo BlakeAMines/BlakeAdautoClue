@@ -62,17 +62,17 @@ public class GameSolutionTest
 		badWeapon = board.getCleanDeck().get(NUM_ROOMS + NUM_PLAYERS + 1);
 		
 		//This creates a testPlayer whose hand has three known cards
-		testPlayer = new ComputerPlayer("Name", "PieceColor", "StartRoom");
+		testPlayer = new ComputerPlayer("Name", "PieceColor", 0, 0);
 				
 		testPlayer.updateHand(goodRoom);
 		testPlayer.updateHand(goodPerson);
 		testPlayer.updateHand(goodWeapon);
 		
 		//This creates four players with predetermined hands and puts them in a list to test correct behavior with a given solution
-		startPerson = new ComputerPlayer("Suggester", "Color", "Room");
-		human = new HumanPlayer("Human", "Color", "Room");
-		hasCard = new ComputerPlayer("Computer", "Color", "Room");
-		noCard = new ComputerPlayer("NoCard", "Color", "Room");
+		startPerson = new ComputerPlayer("Suggester", "Color", 0, 0);
+		human = new HumanPlayer("Human", "Color", 0, 0);
+		hasCard = new ComputerPlayer("Computer", "Color", 0, 0);
+		noCard = new ComputerPlayer("NoCard", "Color", 0, 0);
 		
 		startPerson.updateHand(goodPerson);
 		human.updateHand(badWeapon);
