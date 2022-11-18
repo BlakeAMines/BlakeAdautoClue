@@ -42,6 +42,8 @@ public class Board extends JPanel
 	
 	private Solution theAnswer;
 	
+	private int curPlayerIndex;
+	
 	static Board theInstance = new Board();
 	
 	private Board()
@@ -70,6 +72,8 @@ public class Board extends JPanel
 		generateAnswer();
 		shuffleDeck();
 		distributeDeck();
+		
+		curPlayerIndex = 0;
 		
 	} //end initialize
 
@@ -332,7 +336,7 @@ public class Board extends JPanel
 		
 		//This will handle the special cases for adjacencies (doors and passages) and return if the cell is available
 		handleValid(cell);
-				
+		
 		//incr will switch between plus or minus one to keep the following code more condense
 		int incr = 1;
 		
@@ -696,12 +700,14 @@ public class Board extends JPanel
 		
 	} //end getOwnerships
 	
+	@Override
 	public void paintComponent(Graphics graphic)
 	{				
-		int offset = getWidth() / numColumns;
+		int xOffset = getWidth() / numColumns;
+		int yOffset = getHeight() / numRows;
 		
 		//TEMPORARY
-			offset = 0;
+			//offset = 0;
 		//END TEMPORARY
 		
 		int minDimension = getWidth();
@@ -720,7 +726,7 @@ public class Board extends JPanel
 		{
 			for(int j = 0; j < numRows; j++)
 			{
-				grid[j][i].drawCell(graphic, cellSize, (i * cellSize) + offset, (j * cellSize));
+				grid[j][i].drawCell(graphic, cellSize, (i * cellSize) + xOffset, (j * cellSize) + yOffset);
 				
 			} //end nested for
 			
@@ -730,27 +736,36 @@ public class Board extends JPanel
 		{
 			for(int j = 0; j < numRows; j++)
 			{
+				//Come back to this part; do this logic in cell & run through roomMap instead
 				if(grid[j][i].isLabel())
 				{
-					roomMap.get(grid[j][i].getInitial()).drawRoomName(graphic, (i * cellSize) + offset, (j * cellSize));
+					roomMap.get(grid[j][i].getInitial()).drawRoomName(graphic, (i * cellSize) + xOffset, (j * cellSize) + yOffset);
 					
 				} //end nested if
 				
+				//Move logic into cell, fix readability
 				else if(grid[j][i].isDoorway())
 				{
-					grid[j][i].drawCell(graphic, cellSize, (i * cellSize) + offset, (j * cellSize));
+					grid[j][i].drawCell(graphic, cellSize, (i * cellSize) + xOffset, (j * cellSize) + yOffset);
 					
 				} //end nested else if
+				
+				//TEMPORARY
+				if(targets.contains(grid[j][i]))
+				{
+					grid[j][i].drawTarget(graphic, cellSize, (i * cellSize) + xOffset, (j * cellSize) + yOffset);
+					
+				} //end if
 
-				grid[j][i].drawGrid(graphic, cellSize, (i * cellSize) + offset, (j * cellSize));
+				grid[j][i].drawGrid(graphic, cellSize, (i * cellSize) + xOffset, (j * cellSize) + yOffset);
 								
 			} //end nested for
 			
 		} //end for
 		
 		for(int i = 0; i < playerList.size(); i++)
-		{
-			playerList.get(i).drawPerson(graphic, cellSize);
+		{			
+			playerList.get(i).drawPerson(graphic, cellSize, xOffset, yOffset);
 			
 		} //end for 
 				
@@ -771,5 +786,24 @@ public class Board extends JPanel
 		return null;
 		
 	} //end getHumanPlayer
+	
+	public Player nextPlayer()
+	{
+		curPlayerIndex += 1;
+		
+		return playerList.get(curPlayerIndex % playerList.size());
+		
+	} //end nextPlayer
+	
+	public void displayTargets(int roll)
+	{
+		int curRow = playerList.get(curPlayerIndex % playerList.size()).getRow();
+		int curCol = playerList.get(curPlayerIndex % playerList.size()).getColumn();
+		
+		calcTargets(grid[curRow][curCol], roll);
+		
+		repaint();
+	
+	} //end displayTargets
 		
 } //end Board

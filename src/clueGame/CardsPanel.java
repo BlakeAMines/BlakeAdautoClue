@@ -33,7 +33,7 @@ public class CardsPanel extends JPanel
 		people.setBorder(new TitledBorder(new EtchedBorder(), "People"));
 		
 		people.add(new JLabel("In Hand: "));
-		people.add(new JTextField("None",12));
+		people.add(new JTextField("None", 16));
 
 		people.add(new JLabel("Seen: "));
 		people.add(new JTextField("None"));
@@ -62,7 +62,6 @@ public class CardsPanel extends JPanel
 		add(rooms);
 		add(weapons);
 		
-
 	} //end CardsPanel	
 
 	public void updateKnown()
@@ -86,19 +85,19 @@ public class CardsPanel extends JPanel
 		{
 			if(hand.get(i).getType().equals(CardType.PERSON))
 			{
-				people.add(new JTextField(hand.get(i).getName(),12));
+				people.add(new JTextField(hand.get(i).getName(), 16));
 				
 			} //end nested if
 			
 			else if(hand.get(i).getType().equals(CardType.ROOM))
 			{
-				rooms.add(new JTextField(hand.get(i).getName(),12));
+				rooms.add(new JTextField(hand.get(i).getName(), 16));
 				
 			} //end nested else if
 			
 			else if(hand.get(i).getType().equals(CardType.WEAPON))
 			{
-				weapons.add(new JTextField(hand.get(i).getName(),12));
+				weapons.add(new JTextField(hand.get(i).getName(), 16));
 				
 			} //end nested else if
 			
@@ -138,6 +137,7 @@ public class CardsPanel extends JPanel
 			} //end nested else if
 			
 		} //end for
+		
 		revalidate();
 
 	} //end updateKnown

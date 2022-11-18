@@ -38,6 +38,7 @@ public abstract class Player
 		curRow = xPos;
 		curColumn = yPos;
 		
+		//I learned how to do this from an online resource
 		try 
 		{
 			Field field = Class.forName("java.awt.Color").getField(colorName);
@@ -51,15 +52,16 @@ public abstract class Player
 			
 		} //end catch
 		
-		
 		rand = new Random();
 		
+		//This adds the board's clean deck as a copy to the player's unseen cards
+		//I chose to do this instead of copying it directly because the player doesn't need to know what the actual deck is
 		ArrayList<Card> tempGameDeck = Board.getInstance().getCleanDeck();
 		for(int i = 0; i < tempGameDeck.size(); i++)
 		{
 			unseenCards.add(tempGameDeck.get(i));
 			
-		} //end for 
+		} //end for
 		
 	} //end constructor
 	
@@ -71,6 +73,7 @@ public abstract class Player
 		
 	} //end constructor
 	
+	//This function takes a suggestion in and returns a card which disproves it if they can, or returns null otherwise
 	public Card disproveSuggestion(Solution suggestion)
 	{
 		Card response = null;
@@ -207,12 +210,27 @@ public abstract class Player
 		
 	} //end getColor
 	
-	public void drawPerson(Graphics graphic, int cellSize)
+	public void drawPerson(Graphics graphic, int cellSize, int xOffset, int yOffset)
 	{
 		graphic.setColor(color);
 		
-		graphic.fillRect(curColumn * cellSize, curRow * cellSize, cellSize, cellSize);
+		graphic.fillOval((curColumn * cellSize) + xOffset, (curRow * cellSize) + yOffset, cellSize, cellSize);
+		
+		graphic.setColor(Color.black);
+		graphic.drawOval((curColumn * cellSize) + xOffset, (curRow * cellSize) + yOffset, cellSize, cellSize);
 		
 	} //end drawPerson
+	
+	public int getColumn()
+	{
+		return curColumn;
+		
+	} //end getColumn
+	
+	public int getRow()
+	{
+		return curRow;
+		
+	} //end getColumn
 	
 } //end Player

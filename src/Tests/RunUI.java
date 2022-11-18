@@ -55,7 +55,8 @@ public class RunUI
 		frame.setVisible(true);
 		
 		panel.setGuess("New Guess");
-		panel.setPlayer(new ComputerPlayer("New Name", "Color", "Room", 6));
+		panel.setPlayer(new ComputerPlayer("New Name", "Color", 0, 0));
+		panel.setRoll(6);
 		panel.setResult("New Result");
 		
 		System.out.println("Make a breakpoint here");

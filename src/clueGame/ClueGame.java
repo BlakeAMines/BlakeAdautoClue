@@ -10,6 +10,8 @@ public class ClueGame extends JFrame
 	
 	public ClueGame()
 	{		
+		//SplashText intro = new SplashText();
+		
 		board = Board.getInstance();
 
 		board.setConfigFiles("ClueLayout.csv", "ClueSetup.txt");

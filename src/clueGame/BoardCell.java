@@ -22,6 +22,8 @@ public class BoardCell
 	private boolean isDoorway;
 	private boolean isOccupied;
 	
+	private boolean targetFlag;
+	
 	private boolean isWalkway;
 	private boolean isRoom;
 	
@@ -40,6 +42,8 @@ public class BoardCell
 		
 		isWalkway = false;
 		isRoom = false;
+		
+		targetFlag = false;
 		
 		row = initRow;
 		
@@ -255,6 +259,13 @@ public class BoardCell
 			drawDoor(graphic, cellSize, xPos, yPos);
 			
 		} //end if
+		
+		if(targetFlag)
+		{
+			graphic.setColor(Color.white);
+			graphic.fillRect(xPos, yPos, cellSize, cellSize);
+			
+		} //end if
 
 	} //end drawCell
 	
@@ -299,5 +310,13 @@ public class BoardCell
 		} //end if
 		
 	} //end drawGrid
+	
+	//TEMPORARY
+	public void drawTarget(Graphics graphic, int size, int xPos, int yPos)
+	{
+		graphic.setColor(Color.MAGENTA);
+		graphic.fillRect(xPos, yPos, size, size);
+				
+	} //end drawTarget
 	
 } //end BoardCell
