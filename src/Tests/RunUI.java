@@ -64,7 +64,7 @@ public class RunUI
 	} //end testGameControlPanel
 	
 	//Run this for C22A-2
-	//s@Test
+	//@Test
 	public void testCardPanel()
 	{	
 		HumanPlayer testPlayer = new HumanPlayer("New name", "New Color", 0, 0);

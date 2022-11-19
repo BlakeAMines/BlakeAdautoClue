@@ -442,7 +442,7 @@ public class Board extends JPanel
 		//Runs through each of the adjacent cells
 		for(BoardCell curCell : curStartCell.getCellAdjList())
 		{			
-			if(!visited.contains(curCell) && (!curCell.getOccupied() || curCell.isRoomCenter()))
+			if(!visited.contains(curCell) && (!curCell.isOccupied() || curCell.isRoomCenter()))
 			{
 				//The cell being investigated cannot be revisited
 				visited.add(curCell);
@@ -712,10 +712,7 @@ public class Board extends JPanel
 	{				
 		Player curPlayer = playerList.get(curPlayerIndex % playerList.size());
 		BoardCell moveCell;
-		
-		int prevRow = curPlayer.getRow();
-		int prevCol = curPlayer.getColumn();
-		
+				
 		xOffset = getWidth() / numColumns;
 		yOffset = getHeight() / numRows;
 		
@@ -775,13 +772,11 @@ public class Board extends JPanel
 				{
 					//Make computer decisions
 					
-				} //end nested else		
-				
+				} //end nested else	
+								
 				moveCell = curPlayer.selectTarget(targets);
 				moveCell.setOccupied(true);
-				
-				grid[prevRow][prevCol].setOccupied(false);
-
+								
 				grid[j][i].drawGrid(graphic, cellSize, (i * cellSize) + xOffset, (j * cellSize) + yOffset);
 								
 			} //end nested for
@@ -789,8 +784,19 @@ public class Board extends JPanel
 		} //end for
 		
 		for(int i = 0; i < playerList.size(); i++)
-		{			
-			playerList.get(i).drawPerson(graphic, cellSize, xOffset, yOffset);
+		{					
+			int tempOffset = xOffset;
+			
+			int row = playerList.get(i).getRow();
+			int col = playerList.get(i).getColumn();
+			
+			if(grid[row][col].isRoomCenter())
+			{
+				tempOffset += i * (cellSize / 4);
+				
+			} //end nested if
+			
+			playerList.get(i).drawPerson(graphic, cellSize, tempOffset, yOffset);
 			
 		} //end for 
 				
@@ -844,6 +850,12 @@ public class Board extends JPanel
 					((HumanPlayer) curPlayer).moveHuman(cell);
 					
 					curPlayer.setFinished(true);
+					
+					if(cell.isRoomCenter())
+					{
+						//Make suggestion
+						
+					} //end nested if
 					
 					nextPlayer();
 					

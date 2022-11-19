@@ -73,7 +73,7 @@ public class BoardCell
 		
 	} //end setOccupied
 	
-	public boolean getOccupied()
+	public boolean isOccupied()
 	{
 		return isOccupied;
 		
@@ -324,7 +324,5 @@ public class BoardCell
 		graphic.fillRect(xPos, yPos, size, size);
 				
 	} //end drawTarget
-	
-	
-	
+		
 } //end BoardCell
