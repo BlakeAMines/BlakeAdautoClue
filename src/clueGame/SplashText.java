@@ -16,14 +16,15 @@ public class SplashText extends JFrame
 {
 	private JButton okButton;
 
+	//This constructor includes a String to set the message displayed to prevent repeat code
 	public SplashText(String display)
 	{
 		setTitle("Clue Game");
 		setSize(400, 200);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
+		//This adds an OK button which closes the popup when pressed
 		okButton = new JButton("OK");
-		
 		okButton.addActionListener(new ActionListener()
 		{
 			@Override
@@ -35,6 +36,7 @@ public class SplashText extends JFrame
 			
 		}); //end addActionListener
 		
+		//This creates the JFrame with the proper text and button
 		JPanel tempPanel1 = new JPanel();
 		tempPanel1.setLayout(new GridLayout(1, 1));
 		tempPanel1.add(new JLabel(display));

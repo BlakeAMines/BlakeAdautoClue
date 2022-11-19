@@ -710,16 +710,15 @@ public class Board extends JPanel
 	@Override
 	public void paintComponent(Graphics graphic)
 	{				
+		//This sets a local Player variable to the current player to simplify code
 		Player curPlayer = playerList.get(curPlayerIndex % playerList.size());
 		BoardCell moveCell;
 				
+		//The offset to center the board is given by its location and grid dimension
 		xOffset = getWidth() / numColumns;
 		yOffset = getHeight() / numRows;
 		
-		//TEMPORARY
-			//offset = 0;
-		//END TEMPORARY
-		
+		//This is used to keep the cells square-shaped
 		int minDimension = getWidth();
 		
 		if(getWidth() > getHeight())
@@ -732,6 +731,7 @@ public class Board extends JPanel
 		
 		super.paintComponent(graphic);
 		
+		//This fills the cells in before drawing the grid pattern, players, and room names
 		for(int i = 0; i < numColumns; i++)
 		{
 			for(int j = 0; j < numRows; j++)
@@ -742,25 +742,29 @@ public class Board extends JPanel
 			
 		} //end for
 		
+		//This is used to draw parts of the board that appear above the cells
 		for(int i = 0; i < numColumns; i++)
 		{
 			for(int j = 0; j < numRows; j++)
 			{
-				//Come back to this part; do this logic in cell & run through roomMap instead
+				//This uses the cell's label character to draw the room's information inside of the Room class
+				//TO DO: Come back to this part. Do this logic in cell & run through roomMap instead
 				if(grid[j][i].isLabel())
 				{
 					roomMap.get(grid[j][i].getInitial()).drawRoomName(graphic, (i * cellSize) + xOffset, (j * cellSize) + yOffset);
 					
 				} //end nested if
 				
-				//Move logic into cell, fix readability
+				//This redraws the doors above the cells
+				//TO DO: Move logic into cell, fix readability
 				else if(grid[j][i].isDoorway())
 				{
 					grid[j][i].drawCell(graphic, cellSize, (i * cellSize) + xOffset, (j * cellSize) + yOffset);
 					
 				} //end nested else if
 				
-				//TEMPORARY; refactor this
+				//This draws the targets when it's the human's turn by checking if a given cell is in their targets
+				//TO DO: refactor this
 				if(curPlayer.isHuman() && targets.contains(grid[j][i]))
 				{
 					curPlayer.setFinished(false);
@@ -768,40 +772,50 @@ public class Board extends JPanel
 					
 				} //end nested if
 				
+				//TO DO: add functionality for this in the next assignment
 				else
 				{
 					//Make computer decisions
 					
 				} //end nested else	
-								
+							
+				//This calls a computer player to select a target then sets it occupied
+				//or simply sets the selected cell to occupied if the current player is a human
 				moveCell = curPlayer.selectTarget(targets);
 				moveCell.setOccupied(true);
 								
+				//This draws the grid pattern over everything else except for room cells
 				grid[j][i].drawGrid(graphic, cellSize, (i * cellSize) + xOffset, (j * cellSize) + yOffset);
 								
 			} //end nested for
 			
 		} //end for
 		
+		//This runs through the player list to have each player draw themselves
 		for(int i = 0; i < playerList.size(); i++)
-		{					
+		{				
+			//Inside of a room, each player will have their own spot based on their position in the list
+			//TO DO: refactor this to work in a prettier way instead
 			int tempOffset = xOffset;
 			
 			int row = playerList.get(i).getRow();
 			int col = playerList.get(i).getColumn();
 			
+			//This moves the players' avatars over slightly depending on where they are in the playerList
 			if(grid[row][col].isRoomCenter())
 			{
 				tempOffset += i * (cellSize / 4);
 				
 			} //end nested if
 			
+			//This then has the player draw themselves using the offset
 			playerList.get(i).drawPerson(graphic, cellSize, tempOffset, yOffset);
 			
 		} //end for 
 				
 	} //end paintComponent
 	
+	//This returns the humanPlayer in the playerList
 	public HumanPlayer getHumanPlayer()
 	{
 		for(int i = 0; i < playerList.size(); i++)
@@ -818,6 +832,7 @@ public class Board extends JPanel
 		
 	} //end getHumanPlayer
 	
+	//This increments the player index and moves onto the next turn, returning the result
 	public Player nextPlayer()
 	{
 		curPlayerIndex += 1;
@@ -826,6 +841,7 @@ public class Board extends JPanel
 		
 	} //end nextPlayer
 	
+	//This calls calc targets for the current player and calls repaint to draw them if it is a human
 	public void displayTargets(int roll)
 	{
 		int curRow = playerList.get(curPlayerIndex % playerList.size()).getRow();
@@ -837,25 +853,31 @@ public class Board extends JPanel
 	
 	} //end displayTarget
 	
+	//When the player presses on the board and it is their turn, this checks if they pressed on a valid square
 	public void checkSpot(int xPos, int yPos)
 	{
 		Player curPlayer = playerList.get(curPlayerIndex % playerList.size());
 		
 		if(curPlayer.isHuman() && !curPlayer.isFinished())
 		{			
+			//This runs through the targets to check if the player pressed within the bounds of each
 			for(BoardCell cell : targets)
 			{				
+				//This if statement uses the pixel coordinates of where the user clicked to check
+				//TO DO: Refactor this to improve clarity
 				if(xPos >= (cell.getCol()*cellSize) + xOffset && xPos <= (cell.getCol()*cellSize) + cellSize + xOffset && yPos >= (cell.getRow()*cellSize) + yOffset && yPos <= (cell.getRow()*cellSize) + cellSize + yOffset)
 				{
+					//This will move the player, handle suggestions, set their status to finished, and move on to the next player
+					
 					((HumanPlayer) curPlayer).moveHuman(cell);
-					
-					curPlayer.setFinished(true);
-					
+						
 					if(cell.isRoomCenter())
 					{
 						//Make suggestion
 						
 					} //end nested if
+					
+					curPlayer.setFinished(true);
 					
 					nextPlayer();
 					
@@ -873,6 +895,8 @@ public class Board extends JPanel
 	
 	private class boardPress implements MouseListener
 	{
+		//When the board is clicked, the coordinates of the selection are checked
+		//The game already ensured that it's the player's turn
 		@Override
 		public void mouseClicked(MouseEvent click) 
 		{						
@@ -895,5 +919,17 @@ public class Board extends JPanel
 		public void mouseExited(MouseEvent e) {}
 		
 	} //end boardPress
+	
+	/*
+	//I commented this main out because my program won't run on my machine if I run main, but it should work
+	//If there are issues, please use the JUnit test to run the program, but this main should work as intended
+	public static void main(String[] args)
+	{
+		ClueGame game = new ClueGame();
+		
+		game.setVisible(true);
+		
+	}
+	*/
 			
 } //end Board

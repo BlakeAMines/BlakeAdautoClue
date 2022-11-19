@@ -42,12 +42,12 @@ public class GameControlPanel extends JPanel
 		
 		turnPanel.setLayout(new GridLayout(2, 0));
 		turnPanel.add(new JLabel("Whose turn?"));
-		nameVal = new JTextField("Name");
+		nameVal = new JTextField("...");
 		nameVal.setEditable(false);
 		turnPanel.add(nameVal);
 
 		rollPanel.add(new JLabel("Roll: "));
-		rollVal = new JTextField(Integer.toString(5));
+		rollVal = new JTextField(Integer.toString(0));
 		rollVal.setEditable(false);
 		rollPanel.add(rollVal);
 		

@@ -11,10 +11,11 @@ public class ClueGame extends JFrame
 {
 	Board board;
 	
+	//This constructor creates the splash text and begins the game
 	public ClueGame()
 	{		
-		SplashText intro = new SplashText("This is clue");
-		intro.add(new JLabel("You are the green player 'Regular Person'"));
+		SplashText intro = new SplashText("This is clue. You are the green player 'Regular Person'");
+		intro.add(new JLabel("Press the 'NEXT' button to begin"));
 		
 		board = Board.getInstance();
 

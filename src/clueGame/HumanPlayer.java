@@ -52,6 +52,7 @@ public class HumanPlayer extends Player
 		
 	} //end selectTarget
 	
+	//This sets a human's current position to unoccupied before moving them
 	public void moveHuman(BoardCell cell)
 	{
 		Board.getInstance().getCell(curRow, curColumn).setOccupied(false);
