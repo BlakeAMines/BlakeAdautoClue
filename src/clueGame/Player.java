@@ -20,8 +20,10 @@ public abstract class Player
 	protected ArrayList<Card> unseenCards;
 	
 	protected Card curRoom;	
-	private int curRow;
-	private int curColumn;
+	protected int curRow;
+	protected int curColumn;
+
+	private boolean isFinished;
 	
 	int rollNum;
 	
@@ -37,6 +39,8 @@ public abstract class Player
 		colorName = initColor.toLowerCase();
 		curRow = xPos;
 		curColumn = yPos;
+		
+		isFinished = true;
 		
 		//I learned how to do this from an online resource
 		try 
@@ -232,5 +236,19 @@ public abstract class Player
 		return curRow;
 		
 	} //end getColumn
+
+	public boolean isFinished()
+	{
+		return isFinished;
+		
+	} //end isFinished
 	
+	public void setFinished(boolean finish)
+	{
+		isFinished = finish;
+		
+	} //end setFinished
+
+	protected abstract BoardCell selectTarget(Set<BoardCell> targets);
+		
 } //end Player

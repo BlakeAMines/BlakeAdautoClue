@@ -2,10 +2,11 @@ package clueGame;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class HumanPlayer extends Player
 {
-	Map<Card, Player> humanSeen;
+	private Map<Card, Player> humanSeen;
 	
 	public HumanPlayer(String initName, String initColor, int xPos, int yPos) 
 	{
@@ -42,4 +43,20 @@ public class HumanPlayer extends Player
 		
 	} //end getHumanSeen
 
+	@Override
+	protected BoardCell selectTarget(Set<BoardCell> targets) 
+	{
+		return Board.getInstance().getCell(curRow, curColumn);
+		
+		//Add selection checks for targets on the board
+		
+	} //end selectTarget
+	
+	public void moveHuman(BoardCell cell)
+	{
+		curRow = cell.getRow();
+		curColumn = cell.getCol();
+		
+	} //end moveHuman
+	
 } //end HumanPlayer

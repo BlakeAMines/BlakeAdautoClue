@@ -1,6 +1,8 @@
 package clueGame;
 
 import java.awt.BorderLayout;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.JFrame;
 
@@ -30,5 +32,5 @@ public class ClueGame extends JFrame
 		add(cardPanel, BorderLayout.EAST);
 				
 	} //end ClueGame
-	
+		
 } //end ClueGame

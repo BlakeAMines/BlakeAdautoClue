@@ -64,7 +64,7 @@ public class RunUI
 	} //end testGameControlPanel
 	
 	//Run this for C22A-2
-	//@Test
+	//s@Test
 	public void testCardPanel()
 	{	
 		HumanPlayer testPlayer = new HumanPlayer("New name", "New Color", 0, 0);
@@ -97,6 +97,7 @@ public class RunUI
 		ClueGame game = new ClueGame();
 		
 		game.setVisible(true);
+		
 		System.out.println("Make a breakpoint here");
 		
 	} //end drawBoard

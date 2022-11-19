@@ -28,6 +28,8 @@ public class GameControlPanel extends JPanel
 	
 	public GameControlPanel() 
 	{
+		player = new ComputerPlayer("Name", "Color", 0, 0);
+		
 		JPanel inner1x4 = new JPanel();
 		JPanel turnPanel = new JPanel();
 		JPanel rollPanel = new JPanel();
@@ -118,16 +120,27 @@ public class GameControlPanel extends JPanel
 	{
 		//Is human player finished
 		
-		int random = rand.nextInt(6) + 1;
-		
-		player = board.nextPlayer();
+		if(!player.isFinished())
+		{
+			//Make this a splash text popup
+			System.out.println("Please finish the turn first");
+			
+		} //end if
+
+		else
+		{
+			int random = rand.nextInt(6) + 1;
+			
+			player = board.nextPlayer();
+					
+			setRoll(random);
+			
+			setPlayer(player);
+			
+			board.displayTargets(random);
+			
+		} //end else
 				
-		setRoll(random);
-		
-		setPlayer(player);
-		
-		board.displayTargets(random);
-		
 	} //end nextPress
 		
 } //end GameControlPanel

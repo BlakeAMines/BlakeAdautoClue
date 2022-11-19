@@ -266,6 +266,12 @@ public class BoardCell
 			graphic.fillRect(xPos, yPos, cellSize, cellSize);
 			
 		} //end if
+		
+		if(isPassage)
+		{
+			graphic.drawString(Character.toString(secretPassage), xPos + cellSize / 2, yPos + cellSize / 2);
+			
+		} //end isPassage
 
 	} //end drawCell
 	
@@ -318,5 +324,7 @@ public class BoardCell
 		graphic.fillRect(xPos, yPos, size, size);
 				
 	} //end drawTarget
+	
+	
 	
 } //end BoardCell

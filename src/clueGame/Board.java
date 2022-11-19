@@ -2,6 +2,8 @@ package clueGame;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -44,6 +46,10 @@ public class Board extends JPanel
 	
 	private int curPlayerIndex;
 	
+	private int xOffset;
+	private int yOffset;
+	private int cellSize;
+	
 	static Board theInstance = new Board();
 	
 	private Board()
@@ -55,6 +61,7 @@ public class Board extends JPanel
 	//Works as a pseudo-constructor to load a new Clue game
 	public void initialize()
 	{		
+		addMouseListener(new boardPress());
 		roomMap = new HashMap<>();
 		cardOwnerships = new HashMap<>();
 		playerList = new ArrayList<>();
@@ -703,8 +710,14 @@ public class Board extends JPanel
 	@Override
 	public void paintComponent(Graphics graphic)
 	{				
-		int xOffset = getWidth() / numColumns;
-		int yOffset = getHeight() / numRows;
+		Player curPlayer = playerList.get(curPlayerIndex % playerList.size());
+		BoardCell moveCell;
+		
+		int prevRow = curPlayer.getRow();
+		int prevCol = curPlayer.getColumn();
+		
+		xOffset = getWidth() / numColumns;
+		yOffset = getHeight() / numRows;
 		
 		//TEMPORARY
 			//offset = 0;
@@ -718,7 +731,7 @@ public class Board extends JPanel
 			
 		} //end if
 				
-		int cellSize = minDimension / numRows;
+		cellSize = minDimension / numRows;
 		
 		super.paintComponent(graphic);
 		
@@ -750,12 +763,24 @@ public class Board extends JPanel
 					
 				} //end nested else if
 				
-				//TEMPORARY
-				if(targets.contains(grid[j][i]))
+				//TEMPORARY; refactor this
+				if(curPlayer.isHuman() && targets.contains(grid[j][i]))
 				{
+					curPlayer.setFinished(false);
 					grid[j][i].drawTarget(graphic, cellSize, (i * cellSize) + xOffset, (j * cellSize) + yOffset);
 					
-				} //end if
+				} //end nested if
+				
+				else
+				{
+					//Make computer decisions
+					
+				} //end nested else		
+				
+				moveCell = curPlayer.selectTarget(targets);
+				moveCell.setOccupied(true);
+				
+				grid[prevRow][prevCol].setOccupied(false);
 
 				grid[j][i].drawGrid(graphic, cellSize, (i * cellSize) + xOffset, (j * cellSize) + yOffset);
 								
@@ -804,6 +829,52 @@ public class Board extends JPanel
 		
 		repaint();
 	
-	} //end displayTargets
+	} //end displayTarget
+	
+	public void checkSpot(int xPos, int yPos)
+	{
+		Player curPlayer = playerList.get(curPlayerIndex % playerList.size());
 		
+		if(curPlayer.isHuman())
+		{			
+			for(BoardCell cell : targets)
+			{				
+				if(xPos >= (cell.getCol()*cellSize) + xOffset && xPos <= (cell.getCol()*cellSize) + cellSize + xOffset && yPos >= (cell.getRow()*cellSize) + yOffset && yPos <= (cell.getRow()*cellSize) + cellSize + yOffset)
+				{
+					((HumanPlayer) curPlayer).moveHuman(cell);
+					return;
+					
+				} //end nested if
+				
+			} //end for
+			
+		} //end if
+		
+	} //end checkSpot
+	
+	private class boardPress implements MouseListener
+	{
+		@Override
+		public void mouseClicked(MouseEvent click) 
+		{						
+			checkSpot(click.getX(), click.getY());
+			
+			repaint();
+			
+		} //end repaint
+
+		@Override
+		public void mousePressed(MouseEvent e) {}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {}
+
+		@Override
+		public void mouseExited(MouseEvent e) {}
+		
+	} //end boardPress
+			
 } //end Board

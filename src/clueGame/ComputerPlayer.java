@@ -73,6 +73,9 @@ public class ComputerPlayer extends Player
 		{
 			if(curCell.isRoomCenter() && !seenCards.contains(Board.getInstance().cellToCard(curCell)))
 			{				
+				curRow = curCell.getRow();
+				curColumn = curCell.getCol();
+				
 				return curCell;
 				
 			} //end nested if
@@ -83,6 +86,9 @@ public class ComputerPlayer extends Player
 		{
 			if(counter == random)
 			{
+				curRow = curCell.getRow();
+				curColumn = curCell.getCol();
+				
 				return curCell;
 				
 			} //end nested if
