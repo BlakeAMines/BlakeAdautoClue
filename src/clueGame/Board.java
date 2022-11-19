@@ -865,8 +865,7 @@ public class Board extends JPanel
 				
 			} //end for
 			
-			//Make this a JFrame
-			System.out.println("Please select a target");
+			new SplashText("Please select a valid square");
 			
 		} //end if
 		

@@ -5,6 +5,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 public class ClueGame extends JFrame
 {
@@ -12,7 +13,8 @@ public class ClueGame extends JFrame
 	
 	public ClueGame()
 	{		
-		//SplashText intro = new SplashText();
+		SplashText intro = new SplashText("This is clue");
+		intro.add(new JLabel("You are the green player 'Regular Person'"));
 		
 		board = Board.getInstance();
 

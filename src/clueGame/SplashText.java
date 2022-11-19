@@ -16,7 +16,7 @@ public class SplashText extends JFrame
 {
 	private JButton okButton;
 
-	public SplashText()
+	public SplashText(String display)
 	{
 		setTitle("Clue Game");
 		setSize(400, 200);
@@ -24,9 +24,20 @@ public class SplashText extends JFrame
 		
 		okButton = new JButton("OK");
 		
+		okButton.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent press) 
+			{
+				setVisible(false);
+				
+			} //end actionPerformed
+			
+		}); //end addActionListener
+		
 		JPanel tempPanel1 = new JPanel();
 		tempPanel1.setLayout(new GridLayout(1, 1));
-		tempPanel1.add(new JLabel("Yeah this is Clue"));
+		tempPanel1.add(new JLabel(display));
 		
 		add(tempPanel1, BorderLayout.NORTH);
 		
@@ -39,17 +50,6 @@ public class SplashText extends JFrame
 		setVisible(true);
 				
 	} //end constructor
-		
-	class buttonListener implements ActionListener
-	{
-		@Override
-		public void actionPerformed(ActionEvent press) 
-		{
-			setVisible(false);
-			
-		} //end actionPerformed
-				
-	} //end buttonListener
 	
 } //end SplashText
 
