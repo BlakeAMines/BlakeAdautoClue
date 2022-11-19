@@ -835,18 +835,26 @@ public class Board extends JPanel
 	{
 		Player curPlayer = playerList.get(curPlayerIndex % playerList.size());
 		
-		if(curPlayer.isHuman())
+		if(curPlayer.isHuman() && !curPlayer.isFinished())
 		{			
 			for(BoardCell cell : targets)
 			{				
 				if(xPos >= (cell.getCol()*cellSize) + xOffset && xPos <= (cell.getCol()*cellSize) + cellSize + xOffset && yPos >= (cell.getRow()*cellSize) + yOffset && yPos <= (cell.getRow()*cellSize) + cellSize + yOffset)
 				{
 					((HumanPlayer) curPlayer).moveHuman(cell);
+					
+					curPlayer.setFinished(true);
+					
+					nextPlayer();
+					
 					return;
 					
 				} //end nested if
 				
 			} //end for
+			
+			//Make this a JFrame
+			System.out.println("Please select a target");
 			
 		} //end if
 		
