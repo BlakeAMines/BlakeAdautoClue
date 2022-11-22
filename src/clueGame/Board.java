@@ -653,7 +653,10 @@ public class Board extends JPanel
 		{
 			for(int curCol = 0; curCol < numRows; curCol++)
 			{
-				grid[curCol][curRow].drawCell(graphic, cellSize, (curRow * cellSize) + xOffset, (curCol * cellSize) + yOffset);
+				int xPos = (curRow * cellSize) + xOffset;
+				int yPos = (curCol * cellSize) + yOffset;
+				
+				grid[curCol][curRow].drawCell(graphic, cellSize, xPos, yPos);
 				
 			} //end nested for
 			
@@ -664,11 +667,11 @@ public class Board extends JPanel
 		{
 			for(int curCol = 0; curCol < numRows; curCol++)
 			{
-				//This sets the current cell and pixel positions for clarity and to prevent rewriting code
-				BoardCell curCell = grid[curCol][curRow];
-				
 				int xPos = (curRow * cellSize) + xOffset;
 				int yPos = (curCol * cellSize) + yOffset;
+				
+				//This sets the current cell and pixel positions for clarity and to prevent rewriting code
+				BoardCell curCell = grid[curCol][curRow];
 				
 				//This uses the cell's label character to draw the room's information inside of the Room class
 				if(curCell.isLabel())
