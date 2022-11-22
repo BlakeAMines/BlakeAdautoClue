@@ -232,6 +232,7 @@ public class BoardCell
 		
 	} //end getRow
 	
+	//This draws a cell on the board and contains logic for what color and shape to draw
 	public void drawCell(Graphics graphic, int cellSize, int xPos, int yPos)
 	{		
 		if(isWalkway)
@@ -262,6 +263,7 @@ public class BoardCell
 
 	} //end drawCell
 	
+	//This draws a door, but must be called after drawing the cells below
 	public void drawDoor(Graphics graphic, int size, int xPos, int yPos)
 	{
 		graphic.setColor(Color.green);
@@ -292,6 +294,7 @@ public class BoardCell
 		
 	} //end drawDoor
 	
+	//This draws a grid outline over every cell on the board
 	public void drawGrid(Graphics graphic, int size, int xPos, int yPos)
 	{
 		graphic.setColor(Color.black);
@@ -304,7 +307,8 @@ public class BoardCell
 		
 	} //end drawGrid
 	
-	//TEMPORARY
+	//This is a special draw which is only for targets
+	//I put it in cell because the cells don't know if they are targets
 	public void drawTarget(Graphics graphic, int size, int xPos, int yPos)
 	{
 		graphic.setColor(Color.MAGENTA);
@@ -312,11 +316,14 @@ public class BoardCell
 				
 	} //end drawTarget
 	
+	//This is test code
+	/*
 	public void drawOccupied(Graphics graphic, int size, int xPos, int yPos)
 	{
 		graphic.setColor(Color.BLUE);
 		graphic.fillRect(xPos, yPos, size, size);
 		
 	} //end drawOccupied
+	*/
 		
 } //end BoardCell

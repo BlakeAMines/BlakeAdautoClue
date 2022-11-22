@@ -663,13 +663,13 @@ public class Board extends JPanel
 		{
 			for(int curCol = 0; curCol < numRows; curCol++)
 			{
+				//This sets the current cell and pixel positions for clarity and to prevent rewriting code
 				BoardCell curCell = grid[curCol][curRow];
 				
 				int xPos = (curRow * cellSize) + xOffset;
 				int yPos = (curCol * cellSize) + yOffset;
 				
 				//This uses the cell's label character to draw the room's information inside of the Room class
-				//TO DO: Come back to this part. Do this logic in cell & run through roomMap instead
 				if(curCell.isLabel())
 				{
 					roomMap.get(curCell.getInitial()).drawRoomName(graphic, xPos, yPos);
@@ -677,7 +677,6 @@ public class Board extends JPanel
 				} //end nested if
 				
 				//This redraws the doors above the cells
-				//TO DO: Move logic into cell, fix readability
 				else if(curCell.isDoorway())
 				{
 					curCell.drawDoor(graphic, cellSize, xPos, yPos);
@@ -685,7 +684,6 @@ public class Board extends JPanel
 				} //end nested else if
 				
 				//This draws the targets when it's the human's turn by checking if a given cell is in their targets
-				//TO DO: refactor this
 				if(curPlayer.isHuman() && targets.contains(curCell))
 				{
 					curCell.drawTarget(graphic, cellSize, xPos, yPos);
@@ -699,7 +697,7 @@ public class Board extends JPanel
 			
 		} //end for
 		
-		//This runs through the player list to have each player draw themselves
+		//This runs through the player list to have each player draw themselves over the cells
 		for(int i = 0; i < playerList.size(); i++)
 		{				
 			//Inside of a room, each player will have their own spot based on their position in the list
@@ -797,22 +795,24 @@ public class Board extends JPanel
 	//When the player presses on the board and it is their turn, this checks if they pressed on a valid square
 	public void checkSpot(int xPos, int yPos)
 	{
+		//This is set to the current player for readability
 		Player curPlayer = playerList.get(curPlayerIndex % playerList.size());
 		
 		int curRow = curPlayer.getRow();
 		int curCol = curPlayer.getColumn();
 		
+		//This runs through the targets when the player clicks on the board to ensure they click on a target
 		if(curPlayer.isHuman() && !curPlayer.isFinished())
 		{			
 			//This runs through the targets to check if the player pressed within the bounds of each
 			for(BoardCell cell : targets)
 			{				
-				//This if statement uses the pixel coordinates of where the user clicked to check
-				//TO DO: Refactor this to improve clarity
+				//This if statement checks the pixel coordinates of a target cell compared to a player's click
 				if(xPos >= (cell.getCol()*cellSize) + xOffset && xPos <= (cell.getCol()*cellSize) + cellSize + xOffset && yPos >= (cell.getRow()*cellSize) + yOffset && yPos <= (cell.getRow()*cellSize) + cellSize + yOffset)
 				{
 					//This will move the player, handle suggestions, set their status to finished, and move on to the next player
 					
+					//This moves the player to their cell of choice and sets their previous position to unoccupied
 					((HumanPlayer) curPlayer).moveHuman(cell);
 					grid[curRow][curCol].setOccupied(false);
 					
@@ -832,6 +832,7 @@ public class Board extends JPanel
 				
 			} //end for
 			
+			//If the player selects an invalid square, a splash text box appears
 			new SplashText("Please select a valid square");
 			
 		} //end if
