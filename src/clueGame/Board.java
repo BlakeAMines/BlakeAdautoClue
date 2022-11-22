@@ -501,68 +501,6 @@ public class Board extends JPanel
 		
 	} //end calcValid
 	
-	public Set<BoardCell> getTargets()
-	{
-		return targets;
-		
-	} //end getTargets
-	
-	public Set<BoardCell> getAdjList(int cellRow, int cellCol)
-	{
-		return grid[cellRow][cellCol].getCellAdjList();
-		
-	} //end getAdjList
-	
-	//Overloading getRoom using room symbol
-	public Room getRoom(char roomLabel)
-	{
-		return roomMap.get(roomLabel);
-		
-	} //end getRoom
-	
-	//Overloading getRoom using cell
-	public Room getRoom(BoardCell cell)
-	{
-		return roomMap.get(cell.getInitial());
-		
-	} //end getRoom
-	
-	public BoardCell getCell(int row, int col)
-	{
-		return grid[row][col];
-
-	} //end getCell
-	
-	public int getNumColumns()
-	{
-		return numColumns;
-		
-	} //end getNumCols
-	
-	public int getNumRows()
-	{
-		return numRows;
-		
-	} //end getNumRows
-	
-	public List<Player> getPlayerList()
-	{
-		return playerList;
-		
-	} //end getPlayerList
-		
-	public ArrayList<Card> getGameDeck()
-	{
-		return gameDeck;
-		
-	} //end getGameDeck
-	
-	public ArrayList<Card> getCleanDeck()
-	{
-		return cleanDeck;
-		
-	} //end getCleanDeck
-	
 	public void makeCard(String cardName, String cardType)
 	{
 		if(!cardType.equals("Space"))
@@ -605,13 +543,7 @@ public class Board extends JPanel
 		} //end if
 		
 	} //end generateAnswer
-	
-	public Solution getAnswer()
-	{
-		return theAnswer;
 		
-	} //end getAnswer
-	
 	public void distributeDeck()
 	{
 		if(numRooms > 0 && numPeople > 0 && numWeapons > 0)
@@ -672,19 +604,7 @@ public class Board extends JPanel
 		} //end for
 		
 	} //end loadCleanDeck
-	
-	public void setPlayerList(ArrayList<Player> newList)
-	{
-		playerList = newList;
 		
-	} //end setPlayerList
-	
-	public void setGameDeck(ArrayList<Card> newDeck)
-	{
-		gameDeck = newDeck;
-		
-	} //end setGameDeck
-	
 	public Card cellToCard(BoardCell cell)
 	{
 		Card searchRoom = new Card(roomMap.get(cell.getInitial()).getName(), "Room");
@@ -702,12 +622,6 @@ public class Board extends JPanel
 		return null;
 		
 	} //end cellToCard
-	
-	public Map<Card, Player> getOwnerships()
-	{
-		return cardOwnerships;
-		
-	} //end getOwnerships
 	
 	@Override
 	public void paintComponent(Graphics graphic)
@@ -746,37 +660,37 @@ public class Board extends JPanel
 		//This is used to draw parts of the board that appear above the cells
 		for(int curRow = 0; curRow < numColumns; curRow++)
 		{
-			for(int curColumn = 0; curColumn < numRows; curColumn++)
+			for(int curCol = 0; curCol < numRows; curCol++)
 			{
 				int xPos = (curRow * cellSize) + xOffset;
-				int yPos = (curColumn * cellSize) + yOffset;
+				int yPos = (curCol * cellSize) + yOffset;
 				
 				//This uses the cell's label character to draw the room's information inside of the Room class
 				//TO DO: Come back to this part. Do this logic in cell & run through roomMap instead
-				if(grid[curColumn][curRow].isLabel())
+				if(grid[curCol][curRow].isLabel())
 				{
-					roomMap.get(grid[curColumn][curRow].getInitial()).drawRoomName(graphic, xPos, yPos);
+					roomMap.get(grid[curCol][curRow].getInitial()).drawRoomName(graphic, xPos, yPos);
 
 				} //end nested if
 				
 				//This redraws the doors above the cells
 				//TO DO: Move logic into cell, fix readability
-				else if(grid[curColumn][curRow].isDoorway())
+				else if(grid[curCol][curRow].isDoorway())
 				{
-					grid[curColumn][curRow].drawDoor(graphic, cellSize, xPos, yPos);
+					grid[curCol][curRow].drawDoor(graphic, cellSize, xPos, yPos);
 
 				} //end nested else if
 				
 				//This draws the targets when it's the human's turn by checking if a given cell is in their targets
 				//TO DO: refactor this
-				if(curPlayer.isHuman() && targets.contains(grid[curColumn][curRow]))
+				if(curPlayer.isHuman() && targets.contains(grid[curCol][curRow]))
 				{
-					grid[curColumn][curRow].drawTarget(graphic, cellSize, xPos, yPos);
+					grid[curCol][curRow].drawTarget(graphic, cellSize, xPos, yPos);
 					
 				} //end nested if
 												
 				//This draws the grid pattern over everything else except for room cells
-				grid[curColumn][curRow].drawGrid(graphic, cellSize, xPos, yPos);
+				grid[curCol][curRow].drawGrid(graphic, cellSize, xPos, yPos);
 								
 			} //end nested for
 			
@@ -957,5 +871,91 @@ public class Board extends JPanel
 		controlPanel = panel;
 		
 	} //end setPanel
+	
+	public Set<BoardCell> getTargets()
+	{
+		return targets;
+		
+	} //end getTargets
+	
+	public Set<BoardCell> getAdjList(int cellRow, int cellCol)
+	{
+		return grid[cellRow][cellCol].getCellAdjList();
+		
+	} //end getAdjList
+	
+	//Overloading getRoom using room symbol
+	public Room getRoom(char roomLabel)
+	{
+		return roomMap.get(roomLabel);
+		
+	} //end getRoom
+	
+	//Overloading getRoom using cell
+	public Room getRoom(BoardCell cell)
+	{
+		return roomMap.get(cell.getInitial());
+		
+	} //end getRoom
+	
+	public BoardCell getCell(int row, int col)
+	{
+		return grid[row][col];
+
+	} //end getCell
+	
+	public int getNumColumns()
+	{
+		return numColumns;
+		
+	} //end getNumCols
+	
+	public int getNumRows()
+	{
+		return numRows;
+		
+	} //end getNumRows
+	
+	public List<Player> getPlayerList()
+	{
+		return playerList;
+		
+	} //end getPlayerList
+		
+	public ArrayList<Card> getGameDeck()
+	{
+		return gameDeck;
+		
+	} //end getGameDeck
+	
+	public ArrayList<Card> getCleanDeck()
+	{
+		return cleanDeck;
+		
+	} //end getCleanDeck
+	
+	public void setPlayerList(ArrayList<Player> newList)
+	{
+		playerList = newList;
+		
+	} //end setPlayerList
+	
+	public void setGameDeck(ArrayList<Card> newDeck)
+	{
+		gameDeck = newDeck;
+		
+	} //end setGameDeck
 			
+	public Solution getAnswer()
+	{
+		return theAnswer;
+		
+	} //end getAnswer
+	
+	public Map<Card, Player> getOwnerships()
+	{
+		return cardOwnerships;
+		
+	} //end getOwnerships
+	
 } //end Board
