@@ -635,7 +635,7 @@ public class Board extends JPanel
 	{
 		return theAnswer.equals(accusation);
 		
-	} //end checkAccusation;
+	} //end checkAccusation
 	
 	public Card handleSuggestion(Solution testSuggestion)
 	{
@@ -712,6 +712,7 @@ public class Board extends JPanel
 	{				
 		//This sets a local Player variable to the current player to simplify code
 		Player curPlayer = playerList.get(curPlayerIndex % playerList.size());
+		
 		BoardCell moveCell;
 				
 		//The offset to center the board is given by its location and grid dimension
@@ -778,13 +779,8 @@ public class Board extends JPanel
 					//Make computer decisions
 					
 				} //end nested else	
-							
-				//This calls a computer player to select a target then sets it occupied
-				//or simply sets the selected cell to occupied if the current player is a human
-				moveCell = curPlayer.selectTarget(targets);
-				moveCell.setOccupied(true);
-								
-				//This draws the grid pattern over everything else except for room cells
+															
+				//This draws the grid pattern over everything else except for room cells			
 				grid[j][i].drawGrid(graphic, cellSize, (i * cellSize) + xOffset, (j * cellSize) + yOffset);
 								
 			} //end nested for
@@ -841,17 +837,40 @@ public class Board extends JPanel
 		
 	} //end nextPlayer
 	
-	//This calls calc targets for the current player and calls repaint to draw them if it is a human
-	public void displayTargets(int roll)
+	//This calls calc ss for the current player and calls repaint to draw them if it is a human
+	public int displayTargets()
 	{
-		int curRow = playerList.get(curPlayerIndex % playerList.size()).getRow();
-		int curCol = playerList.get(curPlayerIndex % playerList.size()).getColumn();
+		Random rand = new Random();
+		
+		int roll = rand.nextInt(6) + 1;
+		
+		BoardCell moveCell;
+		
+		Player curPlayer = playerList.get(curPlayerIndex % playerList.size());
+		
+		int curRow = curPlayer.getRow();
+		int curCol = curPlayer.getColumn();
 		
 		calcTargets(grid[curRow][curCol], roll);
 		
+		//This calls a computer player to select a target then sets it occupied
+		//or simply sets the selected cell to occupied if the current player is a human
+		moveCell = curPlayer.selectTarget(targets);
+		moveCell.setOccupied(true);
+				
 		repaint();
+		
+		nextPlayer();
+		
+		return roll;
 	
 	} //end displayTarget
+	
+	public Player getCurPlayer()
+	{
+		return playerList.get(curPlayerIndex % playerList.size());
+		
+	} //end getCurPlayers
 	
 	//When the player presses on the board and it is their turn, this checks if they pressed on a valid square
 	public void checkSpot(int xPos, int yPos)
@@ -919,17 +938,5 @@ public class Board extends JPanel
 		public void mouseExited(MouseEvent e) {}
 		
 	} //end boardPress
-	
-	/*
-	//I commented this main out because my program won't run on my machine if I run main, but it should work
-	//If there are issues, please use the JUnit test to run the program, but this main should work as intended
-	public static void main(String[] args)
-	{
-		ClueGame game = new ClueGame();
-		
-		game.setVisible(true);
-		
-	}
-	*/
 			
 } //end Board

@@ -324,5 +324,12 @@ public class BoardCell
 		graphic.fillRect(xPos, yPos, size, size);
 				
 	} //end drawTarget
+	
+	public void drawOccupied(Graphics graphic, int size, int xPos, int yPos)
+	{
+		graphic.setColor(Color.BLUE);
+		graphic.fillRect(xPos, yPos, size, size);
+		
+	} //end drawOccupied
 		
 } //end BoardCell

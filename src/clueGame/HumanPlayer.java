@@ -57,8 +57,12 @@ public class HumanPlayer extends Player
 	{
 		Board.getInstance().getCell(curRow, curColumn).setOccupied(false);
 		
+		cell.setOccupied(true);
+		
 		curRow = cell.getRow();
 		curColumn = cell.getCol();
+		
+		Board.getInstance().repaint();
 		
 	} //end moveHuman
 	

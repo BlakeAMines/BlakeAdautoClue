@@ -35,5 +35,17 @@ public class ClueGame extends JFrame
 		add(cardPanel, BorderLayout.EAST);
 				
 	} //end ClueGame
+	
+	/*
+	//I commented this main out because my program won't run on my machine if I run main, but it should work
+	//If there are issues, please use the JUnit test to run the program, but this main should work as intended
+	public static void main(String[] args)
+	{
+		ClueGame game = new ClueGame();
+		
+		game.setVisible(true);
+		
+	}
+	*/
 		
 } //end ClueGame

@@ -129,15 +129,8 @@ public class GameControlPanel extends JPanel
 
 		else
 		{
-			int random = rand.nextInt(6) + 1;
-			
-			player = board.nextPlayer();
-					
-			setRoll(random);
-			
-			setPlayer(player);
-			
-			board.displayTargets(random);
+			setRoll(board.displayTargets());
+			setPlayer(board.getCurPlayer());	
 			
 		} //end else
 				

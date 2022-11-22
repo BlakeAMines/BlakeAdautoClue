@@ -89,7 +89,7 @@ public class RunUI
 		System.out.println("Make a breakpoint here");
 		
 	} //end testCardPanel
-	
+		
 	//Run this for C23A
 	@Test
 	public void drawBoard()
