@@ -39,6 +39,7 @@ public class Board extends JPanel
 	private ArrayList<Player> playerList;
 	
 	private ArrayList<Card> cleanDeck;
+
  	private ArrayList<Card> gameDeck;
  	private Map<Card, Player> cardOwnerships;
 	
@@ -662,35 +663,37 @@ public class Board extends JPanel
 		{
 			for(int curCol = 0; curCol < numRows; curCol++)
 			{
+				BoardCell curCell = grid[curCol][curRow];
+				
 				int xPos = (curRow * cellSize) + xOffset;
 				int yPos = (curCol * cellSize) + yOffset;
 				
 				//This uses the cell's label character to draw the room's information inside of the Room class
 				//TO DO: Come back to this part. Do this logic in cell & run through roomMap instead
-				if(grid[curCol][curRow].isLabel())
+				if(curCell.isLabel())
 				{
-					roomMap.get(grid[curCol][curRow].getInitial()).drawRoomName(graphic, xPos, yPos);
+					roomMap.get(curCell.getInitial()).drawRoomName(graphic, xPos, yPos);
 
 				} //end nested if
 				
 				//This redraws the doors above the cells
 				//TO DO: Move logic into cell, fix readability
-				else if(grid[curCol][curRow].isDoorway())
+				else if(curCell.isDoorway())
 				{
-					grid[curCol][curRow].drawDoor(graphic, cellSize, xPos, yPos);
+					curCell.drawDoor(graphic, cellSize, xPos, yPos);
 
 				} //end nested else if
 				
 				//This draws the targets when it's the human's turn by checking if a given cell is in their targets
 				//TO DO: refactor this
-				if(curPlayer.isHuman() && targets.contains(grid[curCol][curRow]))
+				if(curPlayer.isHuman() && targets.contains(curCell))
 				{
-					grid[curCol][curRow].drawTarget(graphic, cellSize, xPos, yPos);
+					curCell.drawTarget(graphic, cellSize, xPos, yPos);
 					
 				} //end nested if
 												
 				//This draws the grid pattern over everything else except for room cells
-				grid[curCol][curRow].drawGrid(graphic, cellSize, xPos, yPos);
+				curCell.drawGrid(graphic, cellSize, xPos, yPos);
 								
 			} //end nested for
 			
@@ -746,27 +749,28 @@ public class Board extends JPanel
 		
 	} //end nextPlayer
 	
-	//This calls calc targets for the current player and calls repaint to draw them if it is a human
+	//This handles the turn for a human or computer player by iterating the players, rolling the dice, and making a move
 	public void handleTurn()
 	{	
+		//These is used to shorten future uses of the player and cell they choose
 		Player curPlayer = getCurPlayer();
 		BoardCell moveCell;
+		
 		Random rand = new Random();
+			
+		//This changes the player to the next one and marks their current position as unoccupied
+		curPlayer = nextPlayer();
 		int curRow = curPlayer.getRow();
 		int curCol = curPlayer.getColumn();
 		grid[curRow][curCol].setOccupied(false);
-		
-		curPlayer = nextPlayer();
-		
-		curRow = curPlayer.getRow();
-		curCol = curPlayer.getColumn();
-		
+
+		//This rolls the dice and calculates the targets. The update to the player's roll is for display purposes
 		int roll = rand.nextInt(6) + 1;
-		
 		curPlayer.setRoll(roll);
-						
 		calcTargets(grid[curRow][curCol], roll);
-				
+		
+		//This leaves a marker to ensure the player clicks on the board and repaints to show targets
+		//The player occupies a target when they make a decision
 		if(curPlayer.isHuman())
 		{
 			curPlayer.setFinished(false);
@@ -774,6 +778,7 @@ public class Board extends JPanel
 			
 		} //end if
 		
+		//If it's a computer's turn, the computer player selects a target and occupies it
 		else
 		{
 			//Do accusation

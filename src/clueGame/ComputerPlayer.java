@@ -76,6 +76,8 @@ public class ComputerPlayer extends Player
 				curRow = curCell.getRow();
 				curColumn = curCell.getCol();
 
+				curCell.setOccupied(true);
+				
 				return curCell;
 				
 			} //end nested if
@@ -88,6 +90,8 @@ public class ComputerPlayer extends Player
 			{
 				curRow = curCell.getRow();
 				curColumn = curCell.getCol();
+				
+				curCell.setOccupied(true);
 
 				return curCell;
 				
