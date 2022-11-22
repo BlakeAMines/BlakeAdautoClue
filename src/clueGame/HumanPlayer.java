@@ -52,7 +52,7 @@ public class HumanPlayer extends Player
 		
 	} //end selectTarget
 	
-	//This sets a human's current position to unoccupied before moving them
+	//This moves a human and sets their cell to occupied
 	public void moveHuman(BoardCell cell)
 	{
 		cell.setOccupied(true);

@@ -714,8 +714,7 @@ public class Board extends JPanel
 	{				
 		//This sets a local Player variable to the current player to simplify code
 		Player curPlayer = playerList.get(curPlayerIndex % playerList.size());
-		BoardCell moveCell;
-				
+		
 		//The offset to center the board is given by its location and grid dimension
 		xOffset = getWidth() / numColumns;
 		yOffset = getHeight() / numRows;
@@ -745,42 +744,39 @@ public class Board extends JPanel
 		} //end for
 		
 		//This is used to draw parts of the board that appear above the cells
-		for(int i = 0; i < numColumns; i++)
+		for(int curRow = 0; curRow < numColumns; curRow++)
 		{
-			for(int j = 0; j < numRows; j++)
+			for(int curColumn = 0; curColumn < numRows; curColumn++)
 			{
+				int xPos = (curRow * cellSize) + xOffset;
+				int yPos = (curColumn * cellSize) + yOffset;
+				
 				//This uses the cell's label character to draw the room's information inside of the Room class
 				//TO DO: Come back to this part. Do this logic in cell & run through roomMap instead
-				if(grid[j][i].isLabel())
+				if(grid[curColumn][curRow].isLabel())
 				{
-					roomMap.get(grid[j][i].getInitial()).drawRoomName(graphic, (i * cellSize) + xOffset, (j * cellSize) + yOffset);
-					
+					roomMap.get(grid[curColumn][curRow].getInitial()).drawRoomName(graphic, xPos, yPos);
+
 				} //end nested if
 				
 				//This redraws the doors above the cells
 				//TO DO: Move logic into cell, fix readability
-				else if(grid[j][i].isDoorway())
+				else if(grid[curColumn][curRow].isDoorway())
 				{
-					grid[j][i].drawCell(graphic, cellSize, (i * cellSize) + xOffset, (j * cellSize) + yOffset);
-					
+					grid[curColumn][curRow].drawDoor(graphic, cellSize, xPos, yPos);
+
 				} //end nested else if
 				
 				//This draws the targets when it's the human's turn by checking if a given cell is in their targets
 				//TO DO: refactor this
-				if(curPlayer.isHuman() && targets.contains(grid[j][i]))
+				if(curPlayer.isHuman() && targets.contains(grid[curColumn][curRow]))
 				{
-					grid[j][i].drawTarget(graphic, cellSize, (i * cellSize) + xOffset, (j * cellSize) + yOffset);
-					
-				} //end nested if
-				
-				if(grid[j][i].isOccupied())
-				{
-					grid[j][i].drawOccupied(graphic, cellSize, (i * cellSize) + xOffset, (j * cellSize) + yOffset);
+					grid[curColumn][curRow].drawTarget(graphic, cellSize, xPos, yPos);
 					
 				} //end nested if
 												
 				//This draws the grid pattern over everything else except for room cells
-				grid[j][i].drawGrid(graphic, cellSize, (i * cellSize) + xOffset, (j * cellSize) + yOffset);
+				grid[curColumn][curRow].drawGrid(graphic, cellSize, xPos, yPos);
 								
 			} //end nested for
 			

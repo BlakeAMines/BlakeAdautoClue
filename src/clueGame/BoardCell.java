@@ -233,10 +233,7 @@ public class BoardCell
 	} //end getRow
 	
 	public void drawCell(Graphics graphic, int cellSize, int xPos, int yPos)
-	{
-		graphic.setColor(Color.black);
-		graphic.drawRect(xPos, yPos, cellSize, cellSize);
-		
+	{		
 		if(isWalkway)
 		{
 			graphic.setColor(Color.orange);
@@ -248,17 +245,14 @@ public class BoardCell
 			graphic.setColor(Color.lightGray);
 			
 		} //end else if
+		
+		else
+		{
+			graphic.setColor(Color.black);
+			
+		} //end else
 				
 		graphic.fillRect(xPos, yPos, cellSize, cellSize);
-		
-		graphic.setColor(Color.black);
-				
-		//Draw a rectangle instead
-		if(isDoorway)
-		{
-			drawDoor(graphic, cellSize, xPos, yPos);
-			
-		} //end if
 				
 		if(isPassage)
 		{
@@ -274,25 +268,25 @@ public class BoardCell
 		
 		if(doorDirection.equals(DoorDirection.UP))
 		{
-			graphic.fillRect(xPos+1, yPos - size/4, size-1, size/4);
+			graphic.fillRect(xPos + 1, yPos - size / 4, size - 1, size / 4);
 			
 		} //end if
 		
 		else if(doorDirection.equals(DoorDirection.DOWN))
 		{
-			graphic.fillRect(xPos+1, yPos + size, size-1, size/4);
+			graphic.fillRect(xPos + 1, yPos + size, size - 1, size / 4);
 			
 		} //end if
 		
 		else if(doorDirection.equals(DoorDirection.RIGHT))
 		{
-			graphic.fillRect(xPos + size, yPos+1, size/4, size-1);
+			graphic.fillRect(xPos + size, yPos + 1, size / 4, size - 1);
 			
 		} //end if
 		
 		else if(doorDirection.equals(DoorDirection.LEFT))
 		{
-			graphic.fillRect(xPos - (size/4), yPos+1, size/4, size-1);
+			graphic.fillRect(xPos - (size / 4), yPos + 1, size / 4, size - 1);
 			
 		} //end if
 		
