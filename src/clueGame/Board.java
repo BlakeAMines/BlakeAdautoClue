@@ -648,11 +648,12 @@ public class Board extends JPanel
 		super.paintComponent(graphic);
 		
 		//This fills the cells in before drawing the grid pattern, players, and room names
-		for(int i = 0; i < numColumns; i++)
+		//The curRow and curCol are switched because of the difference in the coordinate systems of the CSV and the drawing
+		for(int curRow = 0; curRow < numColumns; curRow++)
 		{
-			for(int j = 0; j < numRows; j++)
+			for(int curCol = 0; curCol < numRows; curCol++)
 			{
-				grid[j][i].drawCell(graphic, cellSize, (i * cellSize) + xOffset, (j * cellSize) + yOffset);
+				grid[curCol][curRow].drawCell(graphic, cellSize, (curRow * cellSize) + xOffset, (curCol * cellSize) + yOffset);
 				
 			} //end nested for
 			
