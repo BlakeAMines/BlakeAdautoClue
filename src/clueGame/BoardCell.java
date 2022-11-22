@@ -248,7 +248,7 @@ public class BoardCell
 			graphic.setColor(Color.lightGray);
 			
 		} //end else if
-		
+				
 		graphic.fillRect(xPos, yPos, cellSize, cellSize);
 		
 		graphic.setColor(Color.black);
@@ -259,14 +259,7 @@ public class BoardCell
 			drawDoor(graphic, cellSize, xPos, yPos);
 			
 		} //end if
-		
-		if(targetFlag)
-		{
-			graphic.setColor(Color.white);
-			graphic.fillRect(xPos, yPos, cellSize, cellSize);
-			
-		} //end if
-		
+				
 		if(isPassage)
 		{
 			graphic.drawString(Character.toString(secretPassage), xPos + cellSize / 2, yPos + cellSize / 2);

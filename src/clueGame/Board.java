@@ -50,6 +50,8 @@ public class Board extends JPanel
 	private int yOffset;
 	private int cellSize;
 	
+	private GameControlPanel controlPanel;
+	
 	static Board theInstance = new Board();
 	
 	private Board()
@@ -712,7 +714,6 @@ public class Board extends JPanel
 	{				
 		//This sets a local Player variable to the current player to simplify code
 		Player curPlayer = playerList.get(curPlayerIndex % playerList.size());
-		
 		BoardCell moveCell;
 				
 		//The offset to center the board is given by its location and grid dimension
@@ -768,19 +769,17 @@ public class Board extends JPanel
 				//TO DO: refactor this
 				if(curPlayer.isHuman() && targets.contains(grid[j][i]))
 				{
-					curPlayer.setFinished(false);
 					grid[j][i].drawTarget(graphic, cellSize, (i * cellSize) + xOffset, (j * cellSize) + yOffset);
 					
 				} //end nested if
 				
-				//TO DO: add functionality for this in the next assignment
-				else
+				if(grid[j][i].isOccupied())
 				{
-					//Make computer decisions
+					grid[j][i].drawOccupied(graphic, cellSize, (i * cellSize) + xOffset, (j * cellSize) + yOffset);
 					
-				} //end nested else	
-															
-				//This draws the grid pattern over everything else except for room cells			
+				} //end nested if
+												
+				//This draws the grid pattern over everything else except for room cells
 				grid[j][i].drawGrid(graphic, cellSize, (i * cellSize) + xOffset, (j * cellSize) + yOffset);
 								
 			} //end nested for
@@ -832,50 +831,61 @@ public class Board extends JPanel
 	public Player nextPlayer()
 	{
 		curPlayerIndex += 1;
-		
+
 		return playerList.get(curPlayerIndex % playerList.size());
 		
 	} //end nextPlayer
 	
-	//This calls calc ss for the current player and calls repaint to draw them if it is a human
-	public int displayTargets()
-	{
+	//This calls calc targets for the current player and calls repaint to draw them if it is a human
+	public void handleTurn()
+	{	
+		Player curPlayer = getCurPlayer();
+		BoardCell moveCell;
 		Random rand = new Random();
+		int curRow = curPlayer.getRow();
+		int curCol = curPlayer.getColumn();
+		grid[curRow][curCol].setOccupied(false);
+		
+		curPlayer = nextPlayer();
+		
+		curRow = curPlayer.getRow();
+		curCol = curPlayer.getColumn();
 		
 		int roll = rand.nextInt(6) + 1;
 		
-		BoardCell moveCell;
-		
-		Player curPlayer = playerList.get(curPlayerIndex % playerList.size());
-		
-		int curRow = curPlayer.getRow();
-		int curCol = curPlayer.getColumn();
-		
+		curPlayer.setRoll(roll);
+						
 		calcTargets(grid[curRow][curCol], roll);
-		
-		//This calls a computer player to select a target then sets it occupied
-		//or simply sets the selected cell to occupied if the current player is a human
-		moveCell = curPlayer.selectTarget(targets);
-		moveCell.setOccupied(true);
 				
-		repaint();
+		if(curPlayer.isHuman())
+		{
+			curPlayer.setFinished(false);
+			repaint();
+			
+		} //end if
 		
-		nextPlayer();
+		else
+		{
+			//Do accusation
+			moveCell = curPlayer.selectTarget(targets);
+			moveCell.setOccupied(true);
+			//Do suggestion
+			
+		} //end else
 		
-		return roll;
+		controlPanel.update();
+		
+		repaint();		
 	
 	} //end displayTarget
-	
-	public Player getCurPlayer()
-	{
-		return playerList.get(curPlayerIndex % playerList.size());
-		
-	} //end getCurPlayers
 	
 	//When the player presses on the board and it is their turn, this checks if they pressed on a valid square
 	public void checkSpot(int xPos, int yPos)
 	{
 		Player curPlayer = playerList.get(curPlayerIndex % playerList.size());
+		
+		int curRow = curPlayer.getRow();
+		int curCol = curPlayer.getColumn();
 		
 		if(curPlayer.isHuman() && !curPlayer.isFinished())
 		{			
@@ -889,16 +899,17 @@ public class Board extends JPanel
 					//This will move the player, handle suggestions, set their status to finished, and move on to the next player
 					
 					((HumanPlayer) curPlayer).moveHuman(cell);
-						
+					grid[curRow][curCol].setOccupied(false);
+					
+					repaint();
+					
 					if(cell.isRoomCenter())
 					{
 						//Make suggestion
 						
 					} //end nested if
-					
-					curPlayer.setFinished(true);
-					
-					nextPlayer();
+										
+					handleTurn();
 					
 					return;
 					
@@ -938,5 +949,17 @@ public class Board extends JPanel
 		public void mouseExited(MouseEvent e) {}
 		
 	} //end boardPress
+	
+	public Player getCurPlayer()
+	{
+		return playerList.get(curPlayerIndex % playerList.size());
+		
+	} //end getCurPlayer
+	
+	public void setPanel(GameControlPanel panel)
+	{
+		controlPanel = panel;
+		
+	} //end setPanel
 			
 } //end Board

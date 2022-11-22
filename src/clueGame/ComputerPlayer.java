@@ -73,13 +73,9 @@ public class ComputerPlayer extends Player
 		{
 			if(curCell.isRoomCenter() && !seenCards.contains(Board.getInstance().cellToCard(curCell)))
 			{				
-				Board.getInstance().getCell(curRow, curColumn).setOccupied(false);
-				
 				curRow = curCell.getRow();
 				curColumn = curCell.getCol();
-				
-				curCell.setOccupied(true);
-				
+
 				return curCell;
 				
 			} //end nested if
@@ -90,13 +86,9 @@ public class ComputerPlayer extends Player
 		{
 			if(counter == random)
 			{
-				Board.getInstance().getCell(curRow, curColumn).setOccupied(false);
-				
 				curRow = curCell.getRow();
 				curColumn = curCell.getCol();
-				
-				curCell.setOccupied(true);
-				
+
 				return curCell;
 				
 			} //end nested if

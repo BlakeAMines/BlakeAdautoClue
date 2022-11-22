@@ -118,22 +118,29 @@ public class GameControlPanel extends JPanel
 	
 	public void nextPress()
 	{
-		//Is human player finished
+		player = board.getCurPlayer();
 		
 		if(!player.isFinished())
 		{
 			//Make this a splash text popup
-			System.out.println("Please finish the turn first");
+			new SplashText("Please finish the turn first");
 			
 		} //end if
 
 		else
-		{
-			setRoll(board.displayTargets());
-			setPlayer(board.getCurPlayer());	
-			
+		{		
+			board.handleTurn();
+		
 		} //end else
 				
 	} //end nextPress
+	
+	public void update()
+	{
+		player = board.getCurPlayer();
+		setPlayer(player);
+		setRoll(player.getRoll());
+		
+	} //end update
 		
 } //end GameControlPanel

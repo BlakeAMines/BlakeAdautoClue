@@ -22,10 +22,9 @@ public abstract class Player
 	protected Card curRoom;	
 	protected int curRow;
 	protected int curColumn;
+	private int rollNum;
 
 	private boolean isFinished;
-	
-	int rollNum;
 	
 	protected Random rand;
 	
@@ -177,6 +176,12 @@ public abstract class Player
 		curColumn = setCol;
 		
 	} //end setCoords
+	
+	public void setRoll(int roll)
+	{
+		rollNum = roll;
+		
+	} //end setRoll
 	
 	public int getRoll()
 	{
