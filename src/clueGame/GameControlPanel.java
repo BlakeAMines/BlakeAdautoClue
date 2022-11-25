@@ -1,5 +1,6 @@
 package clueGame;
 
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,6 +22,8 @@ public class GameControlPanel extends JPanel
 	private JTextField rollVal;
 	private JTextField guessVal;
 	private JTextField guessResult;
+	
+	private JButton next;
 	
 	private Player player;
 	
@@ -53,21 +56,26 @@ public class GameControlPanel extends JPanel
 		
 		inner1x4.add(turnPanel);
 		inner1x4.add(rollPanel);
-		inner1x4.add(new JButton("Make Accusation"));
 		
-		JButton next = new JButton("NEXT!");
+		JButton accuse = new JButton("Make Accusation");
+		accuse.addActionListener(new suggestListener());
+		
+		inner1x4.add(accuse);
+		
+		next = new JButton("NEXT!");
 		
 		next.addActionListener(new ActionListener()
 		{
 			@Override
 			public void actionPerformed(ActionEvent press) 
 			{
+				next.setBackground(Color.red);
 				nextPress();
 				
 			} //end actionPerformed
 			
 		}); //end addActionListener
-		
+				
 		inner1x4.add(next);
 		add(inner1x4);
 		
@@ -138,9 +146,28 @@ public class GameControlPanel extends JPanel
 	public void update()
 	{
 		player = board.getCurPlayer();
+		
+		if(!player.isHuman() && player.isFinished())
+		{
+			next.setBackground(Color.green);
+			
+		} //end if
+		
 		setPlayer(player);
 		setRoll(player.getRoll());
 		
 	} //end update
+		
+	class suggestListener implements ActionListener
+	{
+		SuggestionDialog suggest;
+		@Override
+		public void actionPerformed(ActionEvent press) 
+		{
+			suggest = new SuggestionDialog();
+			
+		} //end actionPerformed
+				
+	} //end suggestListener
 		
 } //end GameControlPanel

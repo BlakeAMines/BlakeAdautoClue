@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 
 import org.junit.Assert;
@@ -22,6 +23,7 @@ import clueGame.ClueGame;
 import clueGame.ComputerPlayer;
 import clueGame.Player;
 import clueGame.Solution;
+import clueGame.SuggestionDialog;
 
 public class RunUI 
 {
@@ -44,7 +46,7 @@ public class RunUI
 	} //end gameSetup
 	
 	//Run this for C22A-1
-	//@Test
+	@Test
 	public void testGameControlPanel() 
 	{		
 		GameControlPanel panel = new GameControlPanel();
@@ -89,9 +91,19 @@ public class RunUI
 		System.out.println("Make a breakpoint here");
 		
 	} //end testCardPanel
+	
+	//Make Suggestion Test
+	//@Test
+	public void suggestionDialog()
+	{
+		SuggestionDialog suggest = new SuggestionDialog();
+				
+		System.out.println("Make a breakpoint here");
+		
+	} //end suggestionDialog
 		
 	//Run this for C23A
-	@Test
+	//@Test
 	public void drawBoard()
 	{				
 		ClueGame game = new ClueGame();

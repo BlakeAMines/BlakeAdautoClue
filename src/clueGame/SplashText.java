@@ -21,8 +21,7 @@ public class SplashText extends JFrame
 	{
 		setTitle("Clue Game");
 		setSize(400, 200);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+
 		//This adds an OK button which closes the popup when pressed
 		okButton = new JButton("OK");
 		okButton.addActionListener(new ActionListener()
