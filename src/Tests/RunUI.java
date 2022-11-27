@@ -46,7 +46,7 @@ public class RunUI
 	} //end gameSetup
 	
 	//Run this for C22A-1
-	@Test
+	//@Test
 	public void testGameControlPanel() 
 	{		
 		GameControlPanel panel = new GameControlPanel();
@@ -103,7 +103,7 @@ public class RunUI
 	} //end suggestionDialog
 		
 	//Run this for C23A
-	//@Test
+	@Test
 	public void drawBoard()
 	{				
 		ClueGame game = new ClueGame();

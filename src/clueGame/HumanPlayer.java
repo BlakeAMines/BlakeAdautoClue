@@ -55,6 +55,12 @@ public class HumanPlayer extends Player
 	//This moves a human and sets their cell to occupied
 	public void moveHuman(BoardCell cell)
 	{
+		if(!cell.isRoomCenter())
+		{
+			setFinished(true);
+			
+		} //end if
+		
 		cell.setOccupied(true);
 		curRow = cell.getRow();
 		curColumn = cell.getCol();

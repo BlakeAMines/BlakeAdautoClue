@@ -17,7 +17,7 @@ public class SplashText extends JFrame
 	private JButton okButton;
 
 	//This constructor includes a String to set the message displayed to prevent repeat code
-	public SplashText(String display)
+	public SplashText(String display, boolean visible)
 	{
 		setTitle("Clue Game");
 		setSize(400, 200);
@@ -48,7 +48,7 @@ public class SplashText extends JFrame
 		
 		add(tempPanel2, BorderLayout.SOUTH);
 		
-		setVisible(true);
+		setVisible(visible);
 				
 	} //end constructor
 	

@@ -52,6 +52,7 @@ public class Board extends JPanel
 	private int cellSize;
 	
 	private GameControlPanel controlPanel;
+	private SuggestionDialog suggestDialog;
 	
 	static Board theInstance = new Board();
 	
@@ -824,11 +825,17 @@ public class Board extends JPanel
 					
 					if(cell.isRoomCenter())
 					{
-						//Make suggestion
+						suggestDialog.setPlayer(curPlayer);
+						suggestDialog.setCurRoom(this.cellToCard(cell));
+						suggestDialog.setVisible(true);
 						
 					} //end nested if
 										
-					handleTurn();
+					if(curPlayer.isFinished())
+					{
+						handleTurn();
+						
+					} //end else
 					
 					return;
 					
@@ -837,7 +844,7 @@ public class Board extends JPanel
 			} //end for
 			
 			//If the player selects an invalid square, a splash text box appears
-			new SplashText("Please select a valid square");
+			SplashText square = new SplashText("Please select a valid square", true);
 			
 		} //end if
 		
@@ -881,6 +888,12 @@ public class Board extends JPanel
 		controlPanel = panel;
 		
 	} //end setPanel
+	
+	public void setSuggestDialog(SuggestionDialog dialog)
+	{
+		suggestDialog = dialog;
+		
+	} //end setSuggestDialog
 	
 	public Set<BoardCell> getTargets()
 	{

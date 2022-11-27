@@ -14,7 +14,7 @@ public class ClueGame extends JFrame
 	//This constructor creates the splash text and begins the game
 	public ClueGame()
 	{		
-		SplashText intro = new SplashText("This is clue. You are the green player 'Regular Person'");
+		SplashText intro = new SplashText("This is clue. You are the green player 'Regular Person'", true);
 		intro.add(new JLabel("Press the 'NEXT' button to begin"));
 		
 		board = Board.getInstance();
@@ -27,10 +27,13 @@ public class ClueGame extends JFrame
 		
 		CardsPanel cardPanel = new CardsPanel(board.getHumanPlayer());
 		
+		SuggestionDialog suggestDialog = new SuggestionDialog();
+		
 		setSize(800, 800);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		board.setPanel(controlPanel);
+		board.setSuggestDialog(suggestDialog);
 			
 		add(board, BorderLayout.CENTER);
 		add(controlPanel, BorderLayout.SOUTH);

@@ -29,6 +29,8 @@ public class GameControlPanel extends JPanel
 	
 	private Random rand = new Random();
 	
+	private SplashText turnWarn;
+	
 	public GameControlPanel() 
 	{
 		player = new ComputerPlayer("Name", "Color", 0, 0);
@@ -97,6 +99,8 @@ public class GameControlPanel extends JPanel
 		
 		add(inner0x2);
 		
+		turnWarn = new SplashText("Please finish the turn first", false);
+		
 	} //end constructor
 	
 	public void setGuess(String guess)
@@ -131,7 +135,7 @@ public class GameControlPanel extends JPanel
 		if(!player.isFinished())
 		{
 			//Make this a splash text popup
-			new SplashText("Please finish the turn first");
+			turnWarn.setVisible(true);
 			
 		} //end if
 
@@ -164,7 +168,7 @@ public class GameControlPanel extends JPanel
 		@Override
 		public void actionPerformed(ActionEvent press) 
 		{
-			suggest = new SuggestionDialog();
+			
 			
 		} //end actionPerformed
 				

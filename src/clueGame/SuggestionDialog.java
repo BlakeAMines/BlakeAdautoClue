@@ -3,6 +3,7 @@ package clueGame;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -13,6 +14,10 @@ import javax.swing.JTextField;
 
 public class SuggestionDialog extends JDialog
 {
+	Board board = Board.getInstance();
+	
+	private Player curPlayer;
+	
 	private JPanel leftPanel;
 	private JPanel rightPanel;
 	
@@ -32,6 +37,13 @@ public class SuggestionDialog extends JDialog
 			@Override
 			public void actionPerformed(ActionEvent press) 
 			{
+				if(!curPlayer.equals(null))
+				{
+					curPlayer.setFinished(true);
+					board.handleTurn();
+					
+				} //end if
+				
 				System.out.println(curRoom.getText());
 				System.out.println(people.getSelectedItem());
 				System.out.println(weapons.getSelectedItem());
@@ -65,13 +77,8 @@ public class SuggestionDialog extends JDialog
 		curRoom = new JTextField("Room...");
 		curRoom.setEditable(false);
 		
-		weapons = new JComboBox<String>();
-		weapons.addItem("Weapon 1");
-		weapons.addItem("Weapon 2");
-		
 		people = new JComboBox<String>();
-		people.addItem("Person 1");
-		people.addItem("Person 2");
+		weapons = new JComboBox<String>();
 		
 		rightPanel = new JPanel();
 		rightPanel.setLayout(new GridLayout(4, 1));
@@ -83,8 +90,48 @@ public class SuggestionDialog extends JDialog
 		add(leftPanel);
 		add(rightPanel);
 		
-		setVisible(true);
+		setComboBoxes();
+		
+		setVisible(false);
 		
 	} //end constructor
+	
+	public void setCurRoom(Card room)
+	{
+		curRoom.removeAll();
+		curRoom.setText(room.getName());
+		
+	} //end setComboBoxes
+	
+	public void setComboBoxes()
+	{
+		ArrayList<Card> deck = board.getCleanDeck();
+		
+		people.removeAll();
+		weapons.removeAll();
+		
+		for(int i = 0; i < deck.size(); i++)
+		{
+			if(deck.get(i).getType().equals(CardType.PERSON))
+			{
+				people.addItem(deck.get(i).getName());
+				
+			} //end nested if
+			
+			else if(deck.get(i).getType().equals(CardType.WEAPON))
+			{
+				weapons.addItem(deck.get(i).getName());
+				
+			} //end nested if
+			
+		} //end for 
+		
+	} //end setComboBoxes
+	
+	public void setPlayer(Player player)
+	{
+		curPlayer = player;
+		
+	} //end setPlayer
 
 } //end SuggestionDialoge
