@@ -86,6 +86,12 @@ public class Board extends JPanel
 		
 		curPlayerIndex = 0;
 		
+		for(int i = 0; i < playerList.size(); i++)
+		{
+			playerList.get(i).setUnseen(cleanDeck);
+			
+		} //end for
+		
 	} //end initialize
 
 	public static Board getInstance()
@@ -577,7 +583,7 @@ public class Board extends JPanel
 	{
 		Card disproveCard = null;
 		
-		int start = 0;
+		int start = (curPlayerIndex % playerList.size());
 		
 		for(int i = start; i < playerList.size(); i++)
 		{
@@ -784,11 +790,16 @@ public class Board extends JPanel
 		//If it's a computer's turn, the computer player selects a target and occupies it
 		else
 		{
-			//Do accusation
-			moveCell = curPlayer.selectTarget(targets);
-			moveCell.setOccupied(true);
-			//Do suggestion
+			Solution suggestion = ((ComputerPlayer) curPlayer).selectTarget(targets);
 			
+			/*
+			if(!suggestion.equals(null))
+			{
+				curPlayer.updateSeen(handleSuggestion(suggestion));
+				
+			} //end nested if
+			*/
+							
 		} //end else
 		
 		controlPanel.update();
@@ -829,6 +840,8 @@ public class Board extends JPanel
 						suggestDialog.setCurRoom(this.cellToCard(cell));
 						suggestDialog.setVisible(true);
 						
+						//Do something with the suggestion dialog
+												
 					} //end nested if
 										
 					if(curPlayer.isFinished())
@@ -856,9 +869,9 @@ public class Board extends JPanel
 		//The game already ensured that it's the player's turn
 		@Override
 		public void mouseClicked(MouseEvent click) 
-		{						
+		{		
 			checkSpot(click.getX(), click.getY());
-			
+						
 			repaint();
 			
 		} //end repaint

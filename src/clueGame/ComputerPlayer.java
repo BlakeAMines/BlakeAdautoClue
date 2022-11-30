@@ -64,7 +64,7 @@ public class ComputerPlayer extends Player
 		
 	} //end makeAccusation
 	
-	public BoardCell selectTarget(Set<BoardCell> targets)
+	public Solution selectTarget(Set<BoardCell> targets)
 	{
 		int counter = 0;
 		int random = rand.nextInt(targets.size());
@@ -77,13 +77,13 @@ public class ComputerPlayer extends Player
 				curColumn = curCell.getCol();
 
 				curCell.setOccupied(true);
-				
-				return curCell;
+								
+				return makeSuggestion();
 				
 			} //end nested if
 			
 		} //end for
-		
+				
 		for(BoardCell curCell : targets)
 		{
 			if(counter == random)
@@ -93,7 +93,7 @@ public class ComputerPlayer extends Player
 				
 				curCell.setOccupied(true);
 
-				return curCell;
+				return null;
 				
 			} //end nested if
 			
@@ -101,7 +101,7 @@ public class ComputerPlayer extends Player
 			
 		} //end for
 
-		return new BoardCell(-1, -1, '!');
+		return null;
 		
 	} //eng selectTarget
 	

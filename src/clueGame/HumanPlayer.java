@@ -42,15 +42,6 @@ public class HumanPlayer extends Player
 		return humanSeen;
 		
 	} //end getHumanSeen
-
-	@Override
-	protected BoardCell selectTarget(Set<BoardCell> targets) 
-	{
-		return Board.getInstance().getCell(curRow, curColumn);
-		
-		//Add selection checks for targets on the board
-		
-	} //end selectTarget
 	
 	//This moves a human and sets their cell to occupied
 	public void moveHuman(BoardCell cell)

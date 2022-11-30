@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import clueGame.Board;
+import clueGame.BoardCell;
 import clueGame.Card;
 import clueGame.ComputerPlayer;
 import clueGame.HumanPlayer;
@@ -67,13 +68,15 @@ public class ComputerAITest
 		tempDeck.add(unseenPerson2);
 		tempDeck.add(unseenWeapon);
 		
+		//This creates a new player with a known hand
+		testPlayer = new ComputerPlayer("TestName", "TestColor", 0, 0);
+				
 		board.setGameDeck(tempDeck);
 		board.loadCleanDeck();
 		board.shuffleDeck();
 		
-		//This creates a new player with a known hand
-		testPlayer = new ComputerPlayer("TestName", "TestColor", 0, 0);
-		
+		testPlayer.setUnseen(board.getCleanDeck());
+				
 		testPlayer.updateSeen(seenRoom);
 		testPlayer.updateSeen(seenPerson);
 		testPlayer.updateSeen(seenWeapon);
@@ -145,7 +148,10 @@ public class ComputerAITest
 		
 		board.calcTargets(board.getCell(3, 18), 1);
 		
-		Assert.assertTrue(testPlayer.selectTarget(board.getTargets()).equals(board.getCell(1, 20)));
+		testPlayer.selectTarget(board.getTargets());
+		BoardCell selected = board.getCell(testPlayer.getRow(), testPlayer.getColumn());
+		
+		Assert.assertTrue(selected.equals(board.getCell(1, 20)));
 		
 	} //end unseenTargetsTest
 	
@@ -161,7 +167,10 @@ public class ComputerAITest
 		
 		for(int i = 0; i < 30; i++)
 		{
-			if(testPlayer.selectTarget(board.getTargets()).equals(board.getCell(2, 1)))
+			testPlayer.selectTarget(board.getTargets());
+			BoardCell selected = board.getCell(testPlayer.getRow(), testPlayer.getColumn());
+			
+			if(selected.equals(board.getCell(2, 1)))
 			{
 				hadRoom++;
 				
@@ -187,19 +196,22 @@ public class ComputerAITest
 		
 		for(int i = 0; i < 45; i++)
 		{
-			if(testPlayer.selectTarget(board.getTargets()).equals(board.getCell(4, 4)))
+			testPlayer.selectTarget(board.getTargets());
+			BoardCell selected = board.getCell(testPlayer.getRow(), testPlayer.getColumn());
+			
+			if(selected.equals(board.getCell(4, 4)))
 			{
 				cellCounter1++;
 				
 			} //end nested if
 			
-			if(testPlayer.selectTarget(board.getTargets()).equals(board.getCell(4, 10)))
+			if(selected.equals(board.getCell(4, 10)))
 			{
 				cellCounter2++;
 				
 			} //end nested if
 			
-			if(testPlayer.selectTarget(board.getTargets()).equals(board.getCell(6, 10)))
+			if(selected.equals(board.getCell(6, 10)))
 			{
 				cellCounter3++;
 				

@@ -56,17 +56,21 @@ public abstract class Player
 		} //end catch
 		
 		rand = new Random();
-		
+						
+	} //end constructor
+	
+	public void setUnseen(ArrayList<Card> tempGameDeck)
+	{
+		unseenCards.clear();
 		//This adds the board's clean deck as a copy to the player's unseen cards
 		//I chose to do this instead of copying it directly because the player doesn't need to know what the actual deck is
-		ArrayList<Card> tempGameDeck = Board.getInstance().getCleanDeck();
 		for(int i = 0; i < tempGameDeck.size(); i++)
-		{
+		{			
 			unseenCards.add(tempGameDeck.get(i));
 			
 		} //end for
 		
-	} //end constructor
+	} //end setUnseen
 	
 	protected Player(String initName, String initColor, String initRoomName, int roll)
 	{
@@ -253,7 +257,5 @@ public abstract class Player
 		isFinished = finish;
 		
 	} //end setFinished
-
-	protected abstract BoardCell selectTarget(Set<BoardCell> targets);
 		
 } //end Player

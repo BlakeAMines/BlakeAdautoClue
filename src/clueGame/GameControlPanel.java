@@ -165,10 +165,11 @@ public class GameControlPanel extends JPanel
 	class suggestListener implements ActionListener
 	{
 		SuggestionDialog suggest;
+		
 		@Override
 		public void actionPerformed(ActionEvent press) 
 		{
-			
+			new AccusationDialog();
 			
 		} //end actionPerformed
 				

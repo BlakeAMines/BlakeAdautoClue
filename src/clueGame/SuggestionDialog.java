@@ -18,44 +18,27 @@ public class SuggestionDialog extends JDialog
 	
 	private Player curPlayer;
 	
-	private JPanel leftPanel;
-	private JPanel rightPanel;
+	protected JPanel leftPanel;
+	protected JPanel rightPanel;
 	
 	private JTextField curRoom;
-	private JComboBox<String> weapons;
-	private JComboBox<String> people;
+	protected JComboBox<String> weapons;
+	protected JComboBox<String> people;
+	
+	protected JButton cancel;
+	protected JButton submit;
 	
 	public SuggestionDialog()
 	{
 		setTitle("Make a suggestion");
 		setSize(300, 200);
 		setLayout(new GridLayout(0, 2));
+		setModal(true);
 				
-		JButton submit = new JButton("Submit");
-		submit.addActionListener(new ActionListener()
-		{
-			@Override
-			public void actionPerformed(ActionEvent press) 
-			{
-				if(!curPlayer.equals(null))
-				{
-					curPlayer.setFinished(true);
-					board.handleTurn();
-					
-				} //end if
-				
-				System.out.println(curRoom.getText());
-				System.out.println(people.getSelectedItem());
-				System.out.println(weapons.getSelectedItem());
-				//Submit the suggestion to the game
-				
-				setVisible(false);
-				
-			} //end actionPerformed
-			
-		}); //end addActionListener
+		submit = new JButton("Submit");
+		submit.addActionListener(new SubmitSuggestListener());
 		
-		JButton cancel = new JButton("Cancel");
+		cancel = new JButton("Cancel");
 		cancel.addActionListener(new ActionListener()
 		{
 			@Override
@@ -133,5 +116,28 @@ public class SuggestionDialog extends JDialog
 		curPlayer = player;
 		
 	} //end setPlayer
+	
+	class SubmitSuggestListener implements ActionListener
+	{		
+		@Override
+		public void actionPerformed(ActionEvent press) 
+		{
+			if(!curPlayer.equals(null))
+			{
+				curPlayer.setFinished(true);
+				board.handleTurn();
+				
+			} //end if
+			
+			System.out.println(curRoom.getText());
+			System.out.println(people.getSelectedItem());
+			System.out.println(weapons.getSelectedItem());
+			//Submit the suggestion to the game
+			
+			setVisible(false);
+			
+		} //end actionPerformed
+				
+	} //end suggestListener
 
 } //end SuggestionDialoge

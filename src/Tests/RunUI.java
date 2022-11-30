@@ -37,11 +37,7 @@ public class RunUI
 	@BeforeAll
 	public static void gameSetup()
 	{		
-		board = Board.getInstance();
 
-		board.setConfigFiles("ClueLayout.csv", "ClueSetup.txt");
-
-		board.initialize();
 		
 	} //end gameSetup
 	
